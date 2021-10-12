@@ -4,8 +4,8 @@ const Signup = () => {
   const history = useHistory();
 
   return (
-    <Grid centered columns={2}>
-      <Grid.Column style={{ border: "1px solid red" }}>
+    <Grid centered columns={4} style={{ paddingTop: "20px" }}>
+      <Grid.Column>
         <Form>
           <Form.Field>
             <input placeholder="Email" type="text" />

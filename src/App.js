@@ -5,12 +5,11 @@ import ProblemsListing from "containers/problemsListing";
 import { getEasyAssignUser } from "utils/utilities";
 
 const App = () => {
-  console.log("APP====")
   return (
     <div>
       <Switch>
-        <Route exact path="/" component={Login} />
-        <Route exact path="/create-account" component={Signup} />
+        <ProtectedRoute exact path="/" component={Login} />
+        <ProtectedRoute exact path="/create-account" component={Signup} />
         <PrivateRoute exact path="/problems" component={ProblemsListing} />
         <Redirect from="*" to="/" />
       </Switch>
@@ -28,6 +27,19 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
         <Component {...props} />
       ) : (
         <Redirect to="/" />
+      );
+    }}
+  />
+);
+
+export const ProtectedRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={(props) => {
+      return getEasyAssignUser() && getEasyAssignUser().id ? (
+        <Redirect to="/problems" />
+      ) : (
+        <Component {...props} />
       );
     }}
   />

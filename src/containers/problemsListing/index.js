@@ -1,3 +1,8 @@
+import { Grid } from "semantic-ui-react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { getEasyAssignUser } from "utils/utilities";
+
 const ProblemsListing = () => {
   return (
     <div>
@@ -8,4 +13,11 @@ const ProblemsListing = () => {
   );
 };
 
-export default ProblemsListing;
+const mapStateToProps = (state) => {
+  return {
+    user: getEasyAssignUser(),
+  };
+};
+const mapDispatch = (dispatch) => bindActionCreators({}, dispatch);
+
+export default connect(mapStateToProps, mapDispatch)(ProblemsListing);
