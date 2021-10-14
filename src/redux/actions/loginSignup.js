@@ -1,6 +1,7 @@
 import types from "../types/loginSignup";
 // import * as API from "../../services";
 import { sleep } from "utils/utilities";
+import { loggedInUser } from "mock_data"
 
 export const loginUser = ({ values }) => {
   return async (dispatch) => {
@@ -10,16 +11,9 @@ export const loginUser = ({ values }) => {
     try {
       // const { data, error } = await API.loginUser({ values });
       await sleep(2000);
-      let user = {
-        id: "123",
-        token: "123456",
-        userRole: "admin",
-        username: "abc",
-        email: "abc@gmail.com",
-      };
       return dispatch({
         type: types.USER_LOGIN_SUCCESS,
-        payload: user,
+        payload: loggedInUser,
       });
     } catch (error) {
       console.log("errorrr loginUser", error);

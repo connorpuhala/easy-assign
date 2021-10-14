@@ -1,4 +1,4 @@
-import { Grid, Button, Form, Dimmer, Loader, Message } from "semantic-ui-react";
+import { Grid, Button, Form, Message } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import { Formik } from "formik";
 import { loginValidationSchema } from "utils/validations";
@@ -6,7 +6,7 @@ import { loginUser } from "redux/actions/loginSignup";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { setEasyAssignUser } from "utils/utilities";
-
+import { LoaderWithinWrapper } from "components/global/loader";
 const Login = ({
   loginUser,
   isLogging,
@@ -21,6 +21,8 @@ const Login = ({
       if (action.type === "USER_LOGIN_SUCCESS") {
         setEasyAssignUser(action.payload);
         history.push("/problems");
+      } else {
+        console.log("login error----", action);
       }
     });
   };
@@ -28,11 +30,7 @@ const Login = ({
   return (
     <Grid centered columns={4} style={{ paddingTop: "20px" }}>
       <Grid.Column>
-        {isLogging && (
-          <Dimmer active inverted>
-            <Loader size="medium">Loading</Loader>
-          </Dimmer>
-        )}
+        {isLogging && <LoaderWithinWrapper text="Logging in..." />}
         {isLoggingError && (
           <Message error header="Error" content={isLoggingErrorMsg} />
         )}
@@ -40,7 +38,6 @@ const Login = ({
           initialValues={{ email: "", password: "" }}
           validationSchema={loginValidationSchema}
           onSubmit={(values, { setSubmitting }) => {
-            console.log("onSubmit=== values", values);
             loginHandler({ values });
           }}
         >

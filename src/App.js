@@ -6,14 +6,12 @@ import { getEasyAssignUser } from "utils/utilities";
 
 const App = () => {
   return (
-    <div>
-      <Switch>
-        <ProtectedRoute exact path="/" component={Login} />
-        <ProtectedRoute exact path="/create-account" component={Signup} />
-        <PrivateRoute exact path="/problems" component={ProblemsListing} />
-        <Redirect from="*" to="/" />
-      </Switch>
-    </div>
+    <Switch>
+      <ProtectedRoute exact path="/" component={Login} />
+      <ProtectedRoute exact path="/create-account" component={Signup} />
+      <PrivateRoute exact path="/problems" component={ProblemsListing} />
+      <Redirect from="*" to="/" />
+    </Switch>
   );
 };
 
