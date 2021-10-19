@@ -1,7 +1,7 @@
 import types from "../types/prolems";
 // import * as API from "../../services";
 import { sleep } from "utils/utilities";
-import { allTags } from "mock_data";
+import { allTags, problemsByTagsData } from "mock_data";
 
 export const getAllTags = () => {
   return async (dispatch) => {
@@ -31,11 +31,11 @@ export const getProblemsByTags = ({ tags }) => {
       type: types.GET_PROBLEMS_BY_TAGS_REQUEST,
     });
     try {
-      // const { data, error } = await API.getAllTags();
+      // const { data, error } = await API.getProblemsByTags({ tags });
       await sleep(2000);
       return dispatch({
         type: types.GET_PROBLEMS_BY_TAGS_SUCCESS,
-        payload: allTags,
+        payload: problemsByTagsData,
       });
     } catch (error) {
       console.log("errorrr getAllTags", error);

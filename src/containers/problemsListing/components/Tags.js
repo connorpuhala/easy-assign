@@ -24,18 +24,18 @@ const Tags = ({
     if (checked) {
       selectedTags.push(tagId);
       setSelectedTags([...selectedTags]);
-      // getProblemsByTags({tags: selectedTags })
+      getProblemsByTags({ tags: selectedTags });
     } else {
       let existingTagIndex = selectedTags.findIndex((i) => i === tagId);
       if (existingTagIndex > -1) {
         selectedTags.splice(existingTagIndex, 1);
         setSelectedTags([...selectedTags]);
-        // getProblemsByTags({tags: selectedTags })
+        getProblemsByTags({ tags: selectedTags });
       }
     }
   };
   return (
-    <Grid.Row columns={3} style={{ border: "2px solid yellow" }}>
+    <Grid.Row columns={3}>
       {isGetAllTags && <LoaderWithinWrapper />}
       {tags.length
         ? tags.map((tag, index) => (
@@ -75,7 +75,7 @@ export default connect(mapStateToProps, mapDispatch)(Tags);
 const TagItem = ({ tag, selectTagOnChangeHandler }) => {
   // const [checked, setChecked] = useState(false);
   return (
-    <Grid.Column style={{ border: "2px solid green" }}>
+    <Grid.Column >
       id: {tag.id}
       <Checkbox
         label={{ children: tag.label }}
