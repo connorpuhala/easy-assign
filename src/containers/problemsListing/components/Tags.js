@@ -14,6 +14,8 @@ const Tags = ({
   isGetAllTagsErrorMsg,
   getAllTags,
   getProblemsByTags,
+  mode,
+  getSelectedTags,
 }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   useEffect(() => {
@@ -24,13 +26,21 @@ const Tags = ({
     if (checked) {
       selectedTags.push(tagId);
       setSelectedTags([...selectedTags]);
-      getProblemsByTags({ tags: selectedTags });
+      if (mode === "listing") {
+        getProblemsByTags({ tags: selectedTags });
+      } else {
+        getSelectedTags(selectedTags);
+      }
     } else {
       let existingTagIndex = selectedTags.findIndex((i) => i === tagId);
       if (existingTagIndex > -1) {
         selectedTags.splice(existingTagIndex, 1);
         setSelectedTags([...selectedTags]);
-        getProblemsByTags({ tags: selectedTags });
+        if (mode === "listing") {
+          getProblemsByTags({ tags: selectedTags });
+        } else {
+          getSelectedTags(selectedTags);
+        }
       }
     }
   };
@@ -75,7 +85,7 @@ export default connect(mapStateToProps, mapDispatch)(Tags);
 const TagItem = ({ tag, selectTagOnChangeHandler }) => {
   // const [checked, setChecked] = useState(false);
   return (
-    <Grid.Column >
+    <Grid.Column>
       id: {tag.id}
       <Checkbox
         label={{ children: tag.label }}

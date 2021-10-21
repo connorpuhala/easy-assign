@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Grid, Image, Segment, Button, Dropdown } from "semantic-ui-react";
+import {
+  Grid,
+  Image,
+  Segment,
+  Button,
+  Dropdown,
+  Icon,
+  Menu,
+  Confirm,
+} from "semantic-ui-react";
 import { connect } from "react-redux";
 import { getEasyAssignUser } from "utils/utilities";
 import { LoaderWithinWrapper } from "components/global/loader";
@@ -13,36 +22,81 @@ const Problems = ({
   isGetProblemsByTagsError,
   isGetProblemsByTagsErrorMsg,
 }) => {
-  const [isCreateProblemModal, setIsCreateProblemModal] = useState(false);
+  const [isCreateProblemModal, setIsCreateProblemModal] = useState({
+    isOpen: false,
+    mode: "",
+  });
+  const [selectedProblem, setSelectedProblem] = useState(null);
 
   const createProblemModalHandler = (val) => {
-    console.log("setIsCreateProblemModal");
-    setIsCreateProblemModal(val);
+    console.log("setIsCreateProblemModal val", val);
+    if (val.isOpen === false) {
+      setSelectedProblem(null);
+      setIsCreateProblemModal({ isOpen: false, mode: "" });
+    }
+    if (val.isOpen) {
+      if (val.mode === "Edit") {
+        setSelectedProblem(val.problem);
+      } else {
+        setSelectedProblem(null);
+      }
+      setIsCreateProblemModal({ isOpen: val.isOpen, mode: val.mode });
+    }
   };
+
+  const deleteProblem = () => {
+    console.log("deleteProblem");
+  };
+
+  const createProblemHandler = ({ data, mode }) => {
+    console.log("createProblem ===", data, mode);
+  };
+
   return (
-    <Grid.Row columns={3}>
-      {isGetProblemsByTags ? <LoaderWithinWrapper /> : null}
-      <div>
-        {problems.length
-          ? problems.map((problem, index) => {
-              return (
-                <ProblemItem
-                  key={problem.id}
-                  problem={problem}
-                  user={user}
-                  createProblemModalHandler={createProblemModalHandler}
-                />
-              );
-            })
-          : null}
-      </div>
-      {isCreateProblemModal ? (
-        <CreateProblemModal
-          isOpen={isCreateProblemModal}
-          onClose={setIsCreateProblemModal}
-        />
+    <>
+      {user.userRole === "admin" ? (
+        <Grid.Row columns={3}>
+          <Button
+            primary
+            onClick={() =>
+              createProblemModalHandler({
+                isOpen: true,
+                mode: "Create",
+              })
+            }
+          >
+            Create Problem
+          </Button>
+        </Grid.Row>
       ) : null}
-    </Grid.Row>
+      <Button secondary>Download</Button>
+      <Grid.Row columns={3}>
+        {isGetProblemsByTags ? <LoaderWithinWrapper /> : null}
+        <div>
+          {problems.length
+            ? problems.map((problem, index) => {
+                return (
+                  <ProblemItem
+                    key={problem.id}
+                    problem={problem}
+                    user={user}
+                    createProblemModalHandler={createProblemModalHandler}
+                    deleteProblem={deleteProblem}
+                  />
+                );
+              })
+            : null}
+        </div>
+        {isCreateProblemModal.isOpen ? (
+          <CreateProblemModal
+            isCreateProblemModal={isCreateProblemModal}
+            onClose={setIsCreateProblemModal}
+            selectedProblem={selectedProblem}
+            createProblem={createProblemHandler}
+          />
+        ) : null}
+      </Grid.Row>
+    </>
   );
 };
 
@@ -66,12 +120,24 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps)(Problems);
 
-const options = [
-  { key: "edit", icon: "edit", text: "Edit", value: "edit" },
-  { key: "delete", icon: "delete", text: "Delete", value: "delete" },
-];
-export const ProblemItem = ({ problem, user, createProblemModalHandler }) => {
+export const ProblemItem = ({
+  problem,
+  user,
+  createProblemModalHandler,
+  deleteProblem,
+}) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isConfirmBox, setIsConfirmBox] = useState(false);
+
+  const onConfirmBoxDelete = (v) => {
+    deleteProblem();
+    setIsConfirmBox(false);
+  };
+
+  const onConfirmBoxCancel = (v, d) => {
+    setIsConfirmBox(false);
+  };
+
   return (
     <Segment raised vertical padded color="olive" style={{ margin: "10px" }}>
       id: {problem.id}
@@ -83,16 +149,34 @@ export const ProblemItem = ({ problem, user, createProblemModalHandler }) => {
         onLoad={() => setIsLoading(false)}
       />
       {user.userRole === "admin" ? (
-        <Button.Group color="teal">
-          <Button onClick={() => createProblemModalHandler(true)}>Edit</Button>
-          <Dropdown
-            className="button icon"
-            floating
-            options={options}
-            trigger={<></>}
-          />
-        </Button.Group>
+        <Dropdown text="Edit">
+          <Dropdown.Menu>
+            <Dropdown.Item
+              onClick={() => {
+                createProblemModalHandler({
+                  isOpen: true,
+                  mode: "Edit",
+                  problem,
+                });
+              }}
+            >
+              Edit
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                setIsConfirmBox(true);
+              }}
+            >
+              Delete
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       ) : null}
+      <Confirm
+        open={isConfirmBox}
+        onCancel={onConfirmBoxCancel}
+        onConfirm={() => onConfirmBoxDelete(problem.id)}
+      />
     </Segment>
   );
 };

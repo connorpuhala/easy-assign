@@ -1,4 +1,4 @@
-import { Grid, Container, Button } from "semantic-ui-react";
+import { Grid, Container } from "semantic-ui-react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getEasyAssignUser } from "utils/utilities";
@@ -10,13 +10,7 @@ const ProblemsListing = ({ user }) => {
   return (
     <Container>
       <Grid divided="vertically">
-        <Tags />
-        {user.userRole === "admin" ? (
-          <Grid.Row columns={3}>
-            <Button primary>Create Problem</Button>
-          </Grid.Row>
-        ) : null}
-        <Button secondary>Download</Button>
+        <Tags mode="listing" />
         <Problems />
       </Grid>
     </Container>

@@ -1,37 +1,58 @@
 import React from "react";
-import { Button, Header, Image, Modal } from "semantic-ui-react";
+import { useState } from "react";
+import { Button, Header, Image, Modal, Input } from "semantic-ui-react";
+import Tags from "containers/problemsListing/components/Tags";
 
-const CreateProblemModal = ({ isOpen, onClose }) => {
-  const [open, setOpen] = React.useState(false);
+const CreateProblemModal = ({
+  isCreateProblemModal,
+  onClose,
+  createProblem,
+  selectedProblem,
+}) => {
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [problemData, setProblemData] = useState({
+    image_file: null,
+    selectedTags: [],
+  });
 
+  const getSelectedTags = (tags) => {
+    console.log("getSelectedTags", tags);
+    setSelectedTags([...tags]);
+  };
+  const onChangeFileHandler = (e, data) => {
+    console.log("onChangeFileHandler", data);
+  };
   return (
     <Modal
-      onClose={() => onClose(false)}
-      // onOpen={() => setOpen(true)}
-      open={isOpen}
-      // trigger={<Button>Show Modal</Button>}
+      onClose={() => onClose({ isOpen: false })}
+      open={isCreateProblemModal.isOpen}
     >
-      <Modal.Header>Select a Photo</Modal.Header>
+      <Modal.Header>{isCreateProblemModal.mode} Problem</Modal.Header>
       <Modal.Content image>
-        <Image size="medium" src="/images/avatar/large/rachel.png" wrapped />
+        {isCreateProblemModal.mode === "Create" ? (
+          <Input
+            type="file"
+            onChange={(e, data) => onChangeFileHandler(e, data)}
+          />
+        ) : (
+          <Image size="medium" src={selectedProblem.image_url} wrapped />
+        )}
         <Modal.Description>
-          <Header>Default Profile Image</Header>
-          <p>
-            We've found the following gravatar image associated with your e-mail
-            address.
-          </p>
-          <p>Is it okay to use this photo?</p>
+          <Header>Tags</Header>
+          <Tags mode="modal" getSelectedTags={getSelectedTags} />
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="black" onClick={() => setOpen(false)}>
-          Nope
+        <Button color="black" onClick={() => onClose({ isOpen: false })}>
+          cancel
         </Button>
         <Button
-          content="Yep, that's me"
+          content="Submit"
           labelPosition="right"
           icon="checkmark"
-          onClick={() => setOpen(false)}
+          onClick={() =>
+            createProblem({ data: "", mode: isCreateProblemModal.mode })
+          }
           positive
         />
       </Modal.Actions>
