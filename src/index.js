@@ -9,6 +9,9 @@ import "semantic-ui-css/semantic.min.css";
 import "./styles/style.css";
 import rootReducer from "./redux/reducers";
 import thunk from "redux-thunk";
+import "react-notifications-component/dist/theme.css";
+import ReactNotification from "react-notifications-component";
+
 const middleware = [thunk];
 const store = createStore(rootReducer, applyMiddleware(...middleware));
 
@@ -16,6 +19,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
+        <ReactNotification />
         <App />
       </BrowserRouter>
     </Provider>

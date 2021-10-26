@@ -19,7 +19,9 @@ const Tags = ({
 }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   useEffect(() => {
-    getAllTags();
+    if (!tags.length) {
+      getAllTags();
+    }
   }, []);
 
   const selectTagOnChangeHandler = (checked, tagId) => {

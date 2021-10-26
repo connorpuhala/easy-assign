@@ -69,7 +69,7 @@ const Problems = ({
           </Button>
         </Grid.Row>
       ) : null}
-      <Button secondary>Download</Button>
+      <Button secondary disabled={!problems.length}>Download</Button>
       <Grid.Row columns={3}>
         {isGetProblemsByTags ? <LoaderWithinWrapper /> : null}
         <div>

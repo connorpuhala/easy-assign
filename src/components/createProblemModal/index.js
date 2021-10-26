@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { Button, Header, Image, Modal, Input } from "semantic-ui-react";
 import Tags from "containers/problemsListing/components/Tags";
+import { checkMimetype } from "utils/utilities";
+import createNotification from "components/global/createNotification";
 
 const CreateProblemModal = ({
   isCreateProblemModal,
@@ -18,9 +20,66 @@ const CreateProblemModal = ({
   const getSelectedTags = (tags) => {
     console.log("getSelectedTags", tags);
     setSelectedTags([...tags]);
+    setProblemData({
+      ...problemData,
+      selectedTags: tags,
+    });
   };
   const onChangeFileHandler = (e, data) => {
-    console.log("onChangeFileHandler", data);
+    let file = e.target.files && e.target.files[0];
+    if (file) {
+      if (file.type.split("/")[1] === "png") {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = function () {
+          var base64data = reader.result;
+          setProblemData({
+            ...problemData,
+            image_file: base64data,
+          });
+        };
+      } else {
+        createNotification({
+          type: "danger",
+          title: "File type not supported",
+          msg: "select .png file only",
+          timeout: 6000,
+        });
+      }
+    }
+  };
+
+  const createProblemHandler = () => {
+    if (problemData.image_file === null && !problemData.selectedTags.length) {
+      createNotification({
+        type: "danger",
+        title: "Problem description required!",
+        msg: "Please upload problem image and select appropriate tags.",
+        timeout: 6000,
+      });
+      return;
+    }
+
+    if (!problemData.selectedTags.length) {
+      createNotification({
+        type: "danger",
+        title: "No tag selected",
+        msg: "Please select appropriate tags of problem.",
+        timeout: 6000,
+      });
+      return;
+    }
+
+    if (problemData.image_file === null) {
+      createNotification({
+        type: "danger",
+        title: "No problem image found!",
+        msg: "Please upload problem image",
+        timeout: 6000,
+      });
+      return;
+    }
+    createProblem({ data: problemData, mode: isCreateProblemModal.mode });
   };
   return (
     <Modal
@@ -50,9 +109,7 @@ const CreateProblemModal = ({
           content="Submit"
           labelPosition="right"
           icon="checkmark"
-          onClick={() =>
-            createProblem({ data: "", mode: isCreateProblemModal.mode })
-          }
+          onClick={() => createProblemHandler()}
           positive
         />
       </Modal.Actions>
