@@ -6,7 +6,6 @@ import Tags from "./components/Tags";
 import Problems from "./components/Problems";
 
 const ProblemsListing = ({ user }) => {
-  console.log("user ----", user);
   return (
     <Container>
       <Grid divided="vertically">

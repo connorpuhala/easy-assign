@@ -2,8 +2,9 @@ import React from "react";
 import { useState } from "react";
 import { Button, Header, Image, Modal, Input } from "semantic-ui-react";
 import Tags from "containers/problemsListing/components/Tags";
-import { checkMimetype } from "utils/utilities";
+// import { checkMimetype } from "utils/utilities";
 import createNotification from "components/global/createNotification";
+
 
 const CreateProblemModal = ({
   isCreateProblemModal,
@@ -11,18 +12,17 @@ const CreateProblemModal = ({
   createProblem,
   selectedProblem,
 }) => {
-  const [selectedTags, setSelectedTags] = useState([]);
   const [problemData, setProblemData] = useState({
-    image_file: null,
-    selectedTags: [],
+    image: null,
+    tagIDs: [],
+    answer: "",
   });
 
   const getSelectedTags = (tags) => {
     console.log("getSelectedTags", tags);
-    setSelectedTags([...tags]);
     setProblemData({
       ...problemData,
-      selectedTags: tags,
+      tagIDs: tags,
     });
   };
   const onChangeFileHandler = (e, data) => {
@@ -35,7 +35,7 @@ const CreateProblemModal = ({
           var base64data = reader.result;
           setProblemData({
             ...problemData,
-            image_file: base64data,
+            image: base64data,
           });
         };
       } else {
@@ -50,7 +50,7 @@ const CreateProblemModal = ({
   };
 
   const createProblemHandler = () => {
-    if (problemData.image_file === null && !problemData.selectedTags.length) {
+    if (problemData.image === null && !problemData.tagIDs.length) {
       createNotification({
         type: "danger",
         title: "Problem description required!",
@@ -60,7 +60,7 @@ const CreateProblemModal = ({
       return;
     }
 
-    if (!problemData.selectedTags.length) {
+    if (!problemData.tagIDs.length) {
       createNotification({
         type: "danger",
         title: "No tag selected",
@@ -70,7 +70,7 @@ const CreateProblemModal = ({
       return;
     }
 
-    if (problemData.image_file === null) {
+    if (problemData.image === null) {
       createNotification({
         type: "danger",
         title: "No problem image found!",
@@ -80,6 +80,13 @@ const CreateProblemModal = ({
       return;
     }
     createProblem({ data: problemData, mode: isCreateProblemModal.mode });
+  };
+
+  const onChangeAnswerHandler = (data) => {
+    setProblemData({
+      ...problemData,
+      answer: data.value,
+    });
   };
   return (
     <Modal
@@ -94,11 +101,27 @@ const CreateProblemModal = ({
             onChange={(e, data) => onChangeFileHandler(e, data)}
           />
         ) : (
-          <Image size="medium" src={selectedProblem.image_url} wrapped />
+          <div style={{ position: "relative", border: "1px solid red" }}>
+            <Image size="medium" src={selectedProblem.image_url} wrapped />
+            <Input
+              style={{
+                // display: "none",
+                position: "absolute",
+                height: "100%",
+                width: "100%",
+              }}
+              type="file"
+              onChange={(e, data) => onChangeFileHandler(e, data)}
+            />
+          </div>
         )}
         <Modal.Description>
           <Header>Tags</Header>
           <Tags mode="modal" getSelectedTags={getSelectedTags} />
+          <Input
+            placeholder="Answer"
+            onChange={(e, data) => onChangeAnswerHandler(data)}
+          />
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>

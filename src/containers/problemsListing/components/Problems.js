@@ -13,6 +13,8 @@ import { connect } from "react-redux";
 import { getEasyAssignUser } from "utils/utilities";
 import { LoaderWithinWrapper } from "components/global/loader";
 import CreateProblemModal from "components/createProblemModal";
+import { createProblem } from "redux/actions/problems";
+import { bindActionCreators } from "redux";
 
 const Problems = ({
   user,
@@ -21,6 +23,7 @@ const Problems = ({
   problemsCount,
   isGetProblemsByTagsError,
   isGetProblemsByTagsErrorMsg,
+  createProblem,
 }) => {
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
     isOpen: false,
@@ -50,8 +53,14 @@ const Problems = ({
 
   const createProblemHandler = ({ data, mode }) => {
     console.log("createProblem ===", data, mode);
+    if (mode === "Create") {
+      console.log("Create mode====");
+      createProblem(data);
+    } else {
+      alert("edit is in progress...");
+    }
   };
-
+  console.log("problems====", problems);
   return (
     <>
       {user.userRole === "admin" ? (
@@ -69,7 +78,9 @@ const Problems = ({
           </Button>
         </Grid.Row>
       ) : null}
-      <Button secondary disabled={!problems.length}>Download</Button>
+      <Button secondary disabled={!problems.length}>
+        Download
+      </Button>
       <Grid.Row columns={3}>
         {isGetProblemsByTags ? <LoaderWithinWrapper /> : null}
         <div>
@@ -85,7 +96,7 @@ const Problems = ({
                   />
                 );
               })
-            : null}
+            : "No problems found. select different tags"}
         </div>
         {isCreateProblemModal.isOpen ? (
           <CreateProblemModal
@@ -118,7 +129,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Problems);
+const mapDispatch = (dispatch) =>
+  bindActionCreators({ createProblem }, dispatch);
+
+export default connect(mapStateToProps, mapDispatch)(Problems);
 
 export const ProblemItem = ({
   problem,

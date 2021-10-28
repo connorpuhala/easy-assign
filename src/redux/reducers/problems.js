@@ -61,7 +61,7 @@ const prolems = (state = initialState, action) => {
       return {
         ...state,
         isGetProblemsByTags: false,
-        problems: action.payload.problems,
+        problems: action.payload,
         problemsCount: action.payload.count,
         isGetProblemsByTagsError: false,
         isGetProblemsByTagsErrorMsg: "",
@@ -77,6 +77,31 @@ const prolems = (state = initialState, action) => {
         isGetProblemsByTagsErrorMsg: action.payload,
       };
 
+    // CREATE_PROBLEM
+    case types.CREATE_PROBLEM_REQUEST:
+      return {
+        ...state,
+        isCreateProblem: true,
+        // problems: [],
+        // problemsCount: 0,
+        isCreateProblemError: false,
+        isCreateProblemErrorMsg: "",
+      };
+    case types.CREATE_PROBLEM_SUCCESS:
+      return {
+        ...state,
+        isCreateProblem: false,
+        isCreateProblemError: false,
+        isCreateProblemErrorMsg: "",
+      };
+
+    case types.CREATE_PROBLEM_ERROR:
+      return {
+        ...state,
+        isCreateProblem: false,
+        isCreateProblemError: true,
+        isCreateProblemErrorMsg: action.payload,
+      };
     default:
       return state;
   }

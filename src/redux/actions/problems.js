@@ -1,5 +1,5 @@
 import types from "../types/prolems";
-// import * as API from "../../services";
+import * as API from "../../services";
 import { sleep } from "utils/utilities";
 import { allTags, problemsByTagsData } from "mock_data";
 
@@ -31,11 +31,37 @@ export const getProblemsByTags = ({ tags }) => {
       type: types.GET_PROBLEMS_BY_TAGS_REQUEST,
     });
     try {
-      // const { data, error } = await API.getProblemsByTags({ tags });
-      await sleep(2000);
+      const data = await API.getProblemsByTags({ tagIDs: tags });
+      console.log("data =====", data)
+      // await sleep(2000);
       return dispatch({
         type: types.GET_PROBLEMS_BY_TAGS_SUCCESS,
-        payload: problemsByTagsData,
+        payload: data,
+      });
+    } catch (error) {
+      console.log("errorrr getAllTags", error);
+      return dispatch({
+        type: types.GET_PROBLEMS_BY_TAGS_ERROR,
+        payload: error.message,
+      });
+    }
+  };
+};
+
+export const createProblem = (body) => {
+  console.log("in action")
+  return async (dispatch) => {
+    console.log("in action dispatch")
+    dispatch({
+      type: types.GET_PROBLEMS_BY_TAGS_REQUEST,
+    });
+    try {
+      const data = await API.createProblem(body);
+      console.log("data =====", data)
+      // await sleep(2000);
+      return dispatch({
+        type: types.GET_PROBLEMS_BY_TAGS_SUCCESS,
+        payload: data,
       });
     } catch (error) {
       console.log("errorrr getAllTags", error);
