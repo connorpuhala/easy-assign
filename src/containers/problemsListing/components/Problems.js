@@ -13,7 +13,7 @@ import { connect } from "react-redux";
 import { getEasyAssignUser } from "utils/utilities";
 import { LoaderWithinWrapper } from "components/global/loader";
 import CreateProblemModal from "components/createProblemModal";
-import { createProblem } from "redux/actions/problems";
+import { createProblem, createNewTag } from "redux/actions/problems";
 import { bindActionCreators } from "redux";
 
 const Problems = ({
@@ -24,6 +24,7 @@ const Problems = ({
   isGetProblemsByTagsError,
   isGetProblemsByTagsErrorMsg,
   createProblem,
+  createNewTag
 }) => {
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
     isOpen: false,
@@ -51,11 +52,20 @@ const Problems = ({
     console.log("deleteProblem");
   };
 
-  const createProblemHandler = ({ data, mode }) => {
-    console.log("createProblem ===", data, mode);
+  const createProblemHandler = ({ data, mode, newTag }) => {
+    console.log("createProblem ===", { data, mode, newTag });
     if (mode === "Create") {
-      console.log("Create mode====");
-      createProblem(data);
+      if (newTag !== "") {
+        let body = {
+          label: newTag,
+        };
+        createNewTag(body);
+      }
+      let body = {
+        ...data,
+        image: data.image.split(',')[1]
+      }
+      createProblem(body);
     } else {
       alert("edit is in progress...");
     }
@@ -130,7 +140,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatch = (dispatch) =>
-  bindActionCreators({ createProblem }, dispatch);
+  bindActionCreators({ createProblem, createNewTag }, dispatch);
 
 export default connect(mapStateToProps, mapDispatch)(Problems);
 

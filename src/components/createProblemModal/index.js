@@ -5,7 +5,6 @@ import Tags from "containers/problemsListing/components/Tags";
 // import { checkMimetype } from "utils/utilities";
 import createNotification from "components/global/createNotification";
 
-
 const CreateProblemModal = ({
   isCreateProblemModal,
   onClose,
@@ -17,6 +16,7 @@ const CreateProblemModal = ({
     tagIDs: [],
     answer: "",
   });
+  const [newTag, setNewTag] = useState("");
 
   const getSelectedTags = (tags) => {
     console.log("getSelectedTags", tags);
@@ -79,7 +79,11 @@ const CreateProblemModal = ({
       });
       return;
     }
-    createProblem({ data: problemData, mode: isCreateProblemModal.mode });
+    createProblem({
+      data: problemData,
+      mode: isCreateProblemModal.mode,
+      newTag,
+    });
   };
 
   const onChangeAnswerHandler = (data) => {
@@ -88,6 +92,8 @@ const CreateProblemModal = ({
       answer: data.value,
     });
   };
+
+  console.log("newTag ---", newTag);
   return (
     <Modal
       onClose={() => onClose({ isOpen: false })}
@@ -95,33 +101,44 @@ const CreateProblemModal = ({
     >
       <Modal.Header>{isCreateProblemModal.mode} Problem</Modal.Header>
       <Modal.Content image>
+        <Input
+          type="file"
+          onChange={(e, data) => onChangeFileHandler(e, data)}
+        />
         {isCreateProblemModal.mode === "Create" ? (
-          <Input
-            type="file"
-            onChange={(e, data) => onChangeFileHandler(e, data)}
-          />
+          <>
+            <Image size="medium" src={problemData.image} wrapped />
+            {/* {problemData.image ? (
+              <Image size="medium" src={problemData.image} wrapped />
+            ) : (
+              <Input
+                type="file"
+                onChange={(e, data) => onChangeFileHandler(e, data)}
+              />
+            )} */}
+          </>
         ) : (
           <div style={{ position: "relative", border: "1px solid red" }}>
             <Image size="medium" src={selectedProblem.image_url} wrapped />
-            <Input
-              style={{
-                // display: "none",
-                position: "absolute",
-                height: "100%",
-                width: "100%",
-              }}
-              type="file"
-              onChange={(e, data) => onChangeFileHandler(e, data)}
-            />
           </div>
         )}
+
         <Modal.Description>
           <Header>Tags</Header>
           <Tags mode="modal" getSelectedTags={getSelectedTags} />
           <Input
+            type="text"
             placeholder="Answer"
             onChange={(e, data) => onChangeAnswerHandler(data)}
           />
+          <div>
+            <h5>Create new tag</h5>
+            <Input
+              type="text"
+              placeholder="new tag"
+              onChange={(e, data) => setNewTag(data.value)}
+            />
+          </div>
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>

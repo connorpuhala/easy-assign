@@ -5,6 +5,9 @@ const initialState = {
   tagsCount: 0,
   isGetAllTagsError: false,
   isGetAllTagsErrorMsg: "",
+
+  isCreatingNewTag: false,
+
   isGetProblemsByTags: false,
   problems: [],
   problemsCount: 0,
@@ -30,7 +33,7 @@ const prolems = (state = initialState, action) => {
       return {
         ...state,
         isGetAllTags: false,
-        tags: action.payload.tags,
+        tags: action.payload.results,
         tagsCount: action.payload.count,
         isGetAllTagsError: false,
         isGetAllTagsErrorMsg: "",
@@ -61,7 +64,7 @@ const prolems = (state = initialState, action) => {
       return {
         ...state,
         isGetProblemsByTags: false,
-        problems: action.payload,
+        problems: action.payload.results,
         problemsCount: action.payload.count,
         isGetProblemsByTagsError: false,
         isGetProblemsByTagsErrorMsg: "",
@@ -102,6 +105,25 @@ const prolems = (state = initialState, action) => {
         isCreateProblemError: true,
         isCreateProblemErrorMsg: action.payload,
       };
+
+    // CREATE_TAG
+    case types.CREATE_TAG_REQUEST:
+      return {
+        ...state,
+        isCreatingNewTag: true,
+      };
+    case types.CREATE_TAG_SUCCESS:
+      return {
+        ...state,
+        isCreatingNewTag: false,
+        tags: [...state.tags, ...action.payload],
+      };
+    case types.CREATE_TAG_ERROR:
+      return {
+        ...state,
+        isCreatingNewTag: false,
+      };
+
     default:
       return state;
   }
