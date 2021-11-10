@@ -5,8 +5,6 @@ import {
   Segment,
   Button,
   Dropdown,
-  Icon,
-  Menu,
   Confirm,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
@@ -15,6 +13,8 @@ import { LoaderWithinWrapper } from "components/global/loader";
 import CreateProblemModal from "components/createProblemModal";
 import { createProblem, createNewTag } from "redux/actions/problems";
 import { bindActionCreators } from "redux";
+import createNotification from "components/global/createNotification";
+import { jsPDF } from "jspdf";
 
 const Problems = ({
   user,
@@ -24,7 +24,7 @@ const Problems = ({
   isGetProblemsByTagsError,
   isGetProblemsByTagsErrorMsg,
   createProblem,
-  createNewTag
+  createNewTag,
 }) => {
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
     isOpen: false,
@@ -53,7 +53,6 @@ const Problems = ({
   };
 
   const createProblemHandler = ({ data, mode, newTag }) => {
-    console.log("createProblem ===", { data, mode, newTag });
     if (mode === "Create") {
       if (newTag !== "") {
         let body = {
@@ -63,18 +62,61 @@ const Problems = ({
       }
       let body = {
         ...data,
-        image: data.image.split(',')[1]
-      }
-      createProblem(body);
+        image: data.image.split(",")[1],
+      };
+      createProblem(body).then((action) => {
+        if (action.type === "CREATE_PROBLEM_SUCCESS") {
+          setIsCreateProblemModal({ isOpen: false, mode: "" });
+          createNotification({
+            type: "success",
+            title: "Uploaded",
+            msg: "Problem uploaded successfully.",
+            // timeout: 6000,
+          });
+        } else {
+          createNotification({
+            type: "danger",
+            title: "Something went wrong!",
+            msg: "Please try again.",
+            timeout: 6000,
+          });
+        }
+      });
     } else {
       alert("edit is in progress...");
     }
   };
-  console.log("problems====", problems);
+  const createNewTagHandler = (newTag) => {
+    let body = {
+      label: newTag,
+    };
+    createNewTag(body);
+  };
+
+  const downloadProblemsPdfHandler = () => {
+    console.log("@downloadProblemsPdfHandler");
+    const doc = new jsPDF();
+    problems.map((prob, index) => {
+      doc.addImage(
+        prob.image_url,
+        "JPEG",
+        10,
+        10,
+        100,
+        100,
+        "heyyy"
+      );
+      if(index + 1 === problems.length){
+        doc.save("a4.pdf");
+      }
+    });
+    // doc.text("Hello world!", 10, 10);
+    // doc.save("a4.pdf");
+  };
   return (
     <>
-      {user.userRole === "admin" ? (
-        <Grid.Row columns={3}>
+      <Grid.Row columns={3}>
+        {user.userRole === "admin" ? (
           <Button
             primary
             onClick={() =>
@@ -86,11 +128,15 @@ const Problems = ({
           >
             Create Problem
           </Button>
-        </Grid.Row>
-      ) : null}
-      <Button secondary disabled={!problems.length}>
-        Download
-      </Button>
+        ) : null}
+        <Button
+          secondary
+          disabled={!problems.length}
+          onClick={() => downloadProblemsPdfHandler()}
+        >
+          Download
+        </Button>
+      </Grid.Row>
       <Grid.Row columns={3}>
         {isGetProblemsByTags ? <LoaderWithinWrapper /> : null}
         <div>
@@ -114,6 +160,7 @@ const Problems = ({
             onClose={setIsCreateProblemModal}
             selectedProblem={selectedProblem}
             createProblem={createProblemHandler}
+            createNewTag={createNewTagHandler}
           />
         ) : null}
       </Grid.Row>

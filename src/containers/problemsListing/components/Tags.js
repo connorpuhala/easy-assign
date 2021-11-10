@@ -47,7 +47,7 @@ const Tags = ({
     }
   };
   return (
-    <Grid.Row columns={3}>
+    <Grid.Row columns={mode === "modal" ? 2 : 3}>
       {isGetAllTags && <LoaderWithinWrapper />}
       {tags.length
         ? tags.map((tag, index) => (

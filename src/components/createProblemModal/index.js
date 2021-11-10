@@ -1,15 +1,26 @@
 import React from "react";
 import { useState } from "react";
-import { Button, Header, Image, Modal, Input } from "semantic-ui-react";
+import {
+  Button,
+  Header,
+  Image,
+  Modal,
+  Input,
+  Icon,
+  Grid,
+} from "semantic-ui-react";
 import Tags from "containers/problemsListing/components/Tags";
-// import { checkMimetype } from "utils/utilities";
+import { connect } from "react-redux";
 import createNotification from "components/global/createNotification";
-
+import { LoaderWithinWrapper } from "components/global/loader";
 const CreateProblemModal = ({
   isCreateProblemModal,
   onClose,
   createProblem,
   selectedProblem,
+  createNewTag,
+  isCreatingNewTag,
+  isCreateProblem,
 }) => {
   const [problemData, setProblemData] = useState({
     image: null,
@@ -19,7 +30,6 @@ const CreateProblemModal = ({
   const [newTag, setNewTag] = useState("");
 
   const getSelectedTags = (tags) => {
-    console.log("getSelectedTags", tags);
     setProblemData({
       ...problemData,
       tagIDs: tags,
@@ -50,25 +60,25 @@ const CreateProblemModal = ({
   };
 
   const createProblemHandler = () => {
-    if (problemData.image === null && !problemData.tagIDs.length) {
-      createNotification({
-        type: "danger",
-        title: "Problem description required!",
-        msg: "Please upload problem image and select appropriate tags.",
-        timeout: 6000,
-      });
-      return;
-    }
+    // if (problemData.image === null && !problemData.tagIDs.length) {
+    //   createNotification({
+    //     type: "danger",
+    //     title: "Problem description required!",
+    //     msg: "Please upload problem image and select appropriate tags.",
+    //     timeout: 6000,
+    //   });
+    //   return;
+    // }
 
-    if (!problemData.tagIDs.length) {
-      createNotification({
-        type: "danger",
-        title: "No tag selected",
-        msg: "Please select appropriate tags of problem.",
-        timeout: 6000,
-      });
-      return;
-    }
+    // if (!problemData.tagIDs.length) {
+    //   createNotification({
+    //     type: "danger",
+    //     title: "No tag selected",
+    //     msg: "Please select appropriate tags of problem.",
+    //     timeout: 6000,
+    //   });
+    //   return;
+    // }
 
     if (problemData.image === null) {
       createNotification({
@@ -93,21 +103,23 @@ const CreateProblemModal = ({
     });
   };
 
-  console.log("newTag ---", newTag);
   return (
     <Modal
       onClose={() => onClose({ isOpen: false })}
       open={isCreateProblemModal.isOpen}
     >
+      {isCreateProblem ? <LoaderWithinWrapper text="Uploading..." /> : null}
       <Modal.Header>{isCreateProblemModal.mode} Problem</Modal.Header>
+      <Input type="file" onChange={(e, data) => onChangeFileHandler(e, data)} />
       <Modal.Content image>
-        <Input
-          type="file"
-          onChange={(e, data) => onChangeFileHandler(e, data)}
-        />
         {isCreateProblemModal.mode === "Create" ? (
           <>
-            <Image size="medium" src={problemData.image} wrapped />
+            <Image
+              size="large"
+              src={problemData.image}
+              wrapped
+              style={{ height: "300px" }}
+            />
             {/* {problemData.image ? (
               <Image size="medium" src={problemData.image} wrapped />
             ) : (
@@ -126,21 +138,42 @@ const CreateProblemModal = ({
         <Modal.Description>
           <Header>Tags</Header>
           <Tags mode="modal" getSelectedTags={getSelectedTags} />
-          <Input
-            type="text"
-            placeholder="Answer"
-            onChange={(e, data) => onChangeAnswerHandler(data)}
-          />
-          <div>
+        </Modal.Description>
+      </Modal.Content>
+      <Grid
+        divided="vertically"
+        style={{ marginLeft: "unset", marginRight: "unset" }}
+      >
+        <Grid.Row columns={2} padded>
+          <Grid.Column>
+            <h5>Answer</h5>
+            <Input
+              type="text"
+              placeholder="Answer"
+              onChange={(e, data) => onChangeAnswerHandler(data)}
+            />
+          </Grid.Column>
+          <Grid.Column>
             <h5>Create new tag</h5>
             <Input
               type="text"
+              value={newTag}
               placeholder="new tag"
               onChange={(e, data) => setNewTag(data.value)}
             />
-          </div>
-        </Modal.Description>
-      </Modal.Content>
+            <Icon
+              onClick={() => {
+                createNewTag(newTag);
+                setNewTag("");
+              }}
+              name={isCreatingNewTag ? "spinner" : "plus circle"}
+              size="big"
+              disabled={newTag === ""}
+              loading={isCreatingNewTag}
+            />
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
       <Modal.Actions>
         <Button color="black" onClick={() => onClose({ isOpen: false })}>
           cancel
@@ -157,4 +190,12 @@ const CreateProblemModal = ({
   );
 };
 
-export default CreateProblemModal;
+const mapStateToProps = (state) => {
+  let { isCreatingNewTag, isCreateProblem } = state.problems;
+  return {
+    isCreatingNewTag,
+    isCreateProblem,
+  };
+};
+
+export default connect(mapStateToProps)(CreateProblemModal);

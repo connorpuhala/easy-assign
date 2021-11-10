@@ -12,7 +12,7 @@ const fetchService = ({ method, url, body, myHeaders }) =>
   })
     .then((res) => res.json())
     .then((response) => {
-      console.log("response----", response)
+      // console.log("response----", response)
       return response;
       // if (response.meta && response.meta.status === 200) {
       //   return response;
