@@ -95,23 +95,77 @@ const Problems = ({
 
   const downloadProblemsPdfHandler = () => {
     console.log("@downloadProblemsPdfHandler");
-    const doc = new jsPDF();
-    problems.map((prob, index) => {
-      doc.addImage(
-        prob.image_url,
-        "JPEG",
-        10,
-        10,
-        100,
-        100,
-        "heyyy"
-      );
-      if(index + 1 === problems.length){
-        doc.save("a4.pdf");
-      }
-    });
-    // doc.text("Hello world!", 10, 10);
-    // doc.save("a4.pdf");
+    // const doc = new jsPDF();
+    const doc = new jsPDF("p", "px", "a4");
+    var width = doc.internal.pageSize.getWidth();
+    var height = doc.internal.pageSize.getHeight();
+    var aspect = height / width;
+
+    console.log("PDF width, height, aspect: ", { width, height, aspect });
+    const pdfName = Date.now();
+    let imgCounter = 0;
+    let pageCounter = 0;
+    let cordX1 = 10;
+    let cordY1 = 10;
+
+    let cordX2 = 10;
+    let cordY2 = 320;
+
+    // case 1: only 1 image
+    if (problems.length && problems.length === 1) {
+      problems.map((prob, index) => {
+        doc.addImage(
+          prob.image_url,
+          "JPEG",
+          cordX1,
+          cordY1,
+          width - 20,
+          300,
+          "hey"
+        );
+        doc.save(pdfName);
+      });
+    } else {
+      // case:2 more than 1 images
+      problems.map((prob, index) => {
+        console.log("index===", index);
+        if (imgCounter === 0) {
+          console.log("CHECK 1 index===", index);
+          doc.addImage(
+            prob.image_url,
+            "JPEG",
+            cordX1,
+            cordY1,
+            width - 20,
+            300,
+            "hey"
+          );
+          imgCounter = imgCounter + 1;
+        } else {
+          console.log("CHECK 2 index===", index);
+          doc.addImage(
+            prob.image_url,
+            "JPEG",
+            cordX2,
+            cordY2,
+            width - 20,
+            300,
+            "hey"
+          );
+          imgCounter = imgCounter + 1;
+        }
+
+        if (imgCounter === 2) {
+          console.log("CHECK 3 index===", index);
+          doc.addPage();
+          imgCounter = 0;
+        }
+        if (index + 1 === problems.length) {
+          console.log("CHECK 4 index===", index);
+          doc.save(pdfName);
+        }
+      });
+    }
   };
   return (
     <>

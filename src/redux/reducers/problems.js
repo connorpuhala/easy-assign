@@ -64,7 +64,7 @@ const prolems = (state = initialState, action) => {
       return {
         ...state,
         isGetProblemsByTags: false,
-        problems: action.payload.results,
+        problems: action.payload.results ? action.payload.results : [],
         problemsCount: action.payload.count,
         isGetProblemsByTagsError: false,
         isGetProblemsByTagsErrorMsg: "",
