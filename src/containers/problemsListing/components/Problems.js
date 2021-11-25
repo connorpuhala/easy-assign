@@ -111,8 +111,8 @@ const Problems = ({
     let cordX2 = 10;
     let cordY2 = 320;
 
-    // case 1: only 1 image
     if (problems.length && problems.length === 1) {
+      // case 1: only 1 image
       problems.map((prob, index) => {
         doc.addImage(
           prob.image_url,
@@ -128,7 +128,7 @@ const Problems = ({
     } else {
       // case:2 more than 1 images
       problems.map((prob, index) => {
-        console.log("index===", index);
+        console.log("index===", index, "prob", prob);
         if (imgCounter === 0) {
           console.log("CHECK 1 index===", index);
           doc.addImage(

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Button,
   Header,
@@ -8,11 +8,13 @@ import {
   Input,
   Icon,
   Grid,
+  Card,
 } from "semantic-ui-react";
 import Tags from "containers/problemsListing/components/Tags";
 import { connect } from "react-redux";
 import createNotification from "components/global/createNotification";
 import { LoaderWithinWrapper } from "components/global/loader";
+import { useEffect } from "react";
 const CreateProblemModal = ({
   isCreateProblemModal,
   onClose,
@@ -28,14 +30,25 @@ const CreateProblemModal = ({
     answer: "",
   });
   const [newTag, setNewTag] = useState("");
-
+  let inputRef = useRef(null);
   const getSelectedTags = (tags) => {
     setProblemData({
       ...problemData,
       tagIDs: tags,
     });
   };
-  const onChangeFileHandler = (e, data) => {
+
+  useEffect(() => {
+    if(isCreateProblemModal.mode === "Edit"){
+      setProblemData({
+        
+      })
+    }
+  }, [])
+  useEffect(() => {}, [inputRef]);
+
+  const onChangeFileHandler = (e) => {
+    console.log("onChangeFileHandler=====");
     let file = e.target.files && e.target.files[0];
     if (file) {
       if (file.type.split("/")[1] === "png") {
@@ -110,15 +123,42 @@ const CreateProblemModal = ({
     >
       {isCreateProblem ? <LoaderWithinWrapper text="Uploading..." /> : null}
       <Modal.Header>{isCreateProblemModal.mode} Problem</Modal.Header>
-      <Input type="file" onChange={(e, data) => onChangeFileHandler(e, data)} />
+      <input
+        type="file"
+        ref={inputRef}
+        onChange={(e) => onChangeFileHandler(e)}
+        style={{ display: "none" }}
+      />
+
       <Modal.Content image>
+        <Card>
+          {/* <Card.Content header="About Amy" /> */}
+          {/* <Card.Content description={description} /> */}
+          <Card.Content
+            onClick={() => {
+              if (inputRef && inputRef.current) {
+                inputRef.current.click();
+              }
+            }}
+            extra
+            style={{ cursor: "pointer" }}
+          >
+            <Icon name="upload" />
+            Upload problem image
+          </Card.Content>
+        </Card>
         {isCreateProblemModal.mode === "Create" ? (
           <>
             <Image
               size="large"
               src={problemData.image}
               wrapped
-              style={{ height: "300px" }}
+              style={{ height: "300px", border: "1px solid blue" }}
+              onClick={() => {
+                if (inputRef && inputRef.current) {
+                  inputRef.current.click();
+                }
+              }}
             />
             {/* {problemData.image ? (
               <Image size="medium" src={problemData.image} wrapped />
@@ -131,10 +171,19 @@ const CreateProblemModal = ({
           </>
         ) : (
           <div style={{ position: "relative", border: "1px solid red" }}>
-            <Image size="medium" src={selectedProblem.image_url} wrapped />
+            <Image
+              size="medium"
+              src={selectedProblem.image_url}
+              wrapped
+              style={{ border: "1px solid blue", cursor: "pointer" }}
+              onClick={() => {
+                if (inputRef && inputRef.current) {
+                  inputRef.current.click();
+                }
+              }}
+            />
           </div>
         )}
-
         <Modal.Description>
           <Header>Tags</Header>
           <Tags mode="modal" getSelectedTags={getSelectedTags} />
@@ -144,7 +193,7 @@ const CreateProblemModal = ({
         divided="vertically"
         style={{ marginLeft: "unset", marginRight: "unset" }}
       >
-        <Grid.Row columns={2} padded>
+        <Grid.Row columns={2} padded="true">
           <Grid.Column>
             <h5>Answer</h5>
             <Input
