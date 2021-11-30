@@ -11,7 +11,11 @@ import { connect } from "react-redux";
 import { getEasyAssignUser } from "utils/utilities";
 import { LoaderWithinWrapper } from "components/global/loader";
 import CreateProblemModal from "components/createProblemModal";
-import { createProblem, createNewTag } from "redux/actions/problems";
+import {
+  createProblem,
+  createNewTag,
+  editProblem,
+} from "redux/actions/problems";
 import { bindActionCreators } from "redux";
 import createNotification from "components/global/createNotification";
 import { jsPDF } from "jspdf";
@@ -25,6 +29,7 @@ const Problems = ({
   isGetProblemsByTagsErrorMsg,
   createProblem,
   createNewTag,
+  editProblem,
 }) => {
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
     isOpen: false,
@@ -53,37 +58,71 @@ const Problems = ({
   };
 
   const createProblemHandler = ({ data, mode, newTag }) => {
+    console.log("data ===", data);
     if (mode === "Create") {
       if (newTag !== "") {
         let body = {
           label: newTag,
         };
-        createNewTag(body);
+        createNewTag(body).then((action) => {
+          console.log("action ====", action);
+          if (action.type === "CREATE_TAG_SUCCESS") {
+            let body = {
+              ...data,
+              image: data.image.split(",")[1],
+              tagIDs: [...data.tagIDs, action.payload[0].id],
+            };
+            createProblem(body).then((action) => {
+              if (action.type === "CREATE_PROBLEM_SUCCESS") {
+                setIsCreateProblemModal({ isOpen: false, mode: "" });
+                createNotification({
+                  type: "success",
+                  title: "Uploaded",
+                  msg: "Problem uploaded successfully.",
+                  // timeout: 6000,
+                });
+              } else {
+                createNotification({
+                  type: "danger",
+                  title: "Something went wrong!",
+                  msg: "Please try again.",
+                  timeout: 6000,
+                });
+              }
+            });
+          }
+        });
+      } else {
+        let body = {
+          ...data,
+          image: data.image.split(",")[1],
+        };
+        createProblem(body).then((action) => {
+          if (action.type === "CREATE_PROBLEM_SUCCESS") {
+            setIsCreateProblemModal({ isOpen: false, mode: "" });
+            createNotification({
+              type: "success",
+              title: "Uploaded",
+              msg: "Problem uploaded successfully.",
+              // timeout: 6000,
+            });
+          } else {
+            createNotification({
+              type: "danger",
+              title: "Something went wrong!",
+              msg: "Please try again.",
+              timeout: 6000,
+            });
+          }
+        });
       }
+    } else {
+      // alert("edit is in progress...");
       let body = {
         ...data,
-        image: data.image.split(",")[1],
+        // image: data.image.split(",")[1],
       };
-      createProblem(body).then((action) => {
-        if (action.type === "CREATE_PROBLEM_SUCCESS") {
-          setIsCreateProblemModal({ isOpen: false, mode: "" });
-          createNotification({
-            type: "success",
-            title: "Uploaded",
-            msg: "Problem uploaded successfully.",
-            // timeout: 6000,
-          });
-        } else {
-          createNotification({
-            type: "danger",
-            title: "Something went wrong!",
-            msg: "Please try again.",
-            timeout: 6000,
-          });
-        }
-      });
-    } else {
-      alert("edit is in progress...");
+      editProblem(body, data.id)
     }
   };
   const createNewTagHandler = (newTag) => {
@@ -241,7 +280,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatch = (dispatch) =>
-  bindActionCreators({ createProblem, createNewTag }, dispatch);
+  bindActionCreators({ createProblem, createNewTag, editProblem }, dispatch);
 
 export default connect(mapStateToProps, mapDispatch)(Problems);
 
