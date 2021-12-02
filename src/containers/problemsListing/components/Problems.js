@@ -95,7 +95,6 @@ const Problems = ({
 
   const downloadProblemsPdfHandler = () => {
     console.log("@downloadProblemsPdfHandler");
-    // const doc = new jsPDF();
     const doc = new jsPDF("p", "px", "a4");
     var width = doc.internal.pageSize.getWidth();
     var height = doc.internal.pageSize.getHeight();
@@ -104,33 +103,29 @@ const Problems = ({
     console.log("PDF width, height, aspect: ", { width, height, aspect });
     const pdfName = Date.now();
     let imgCounter = 0;
-    let pageCounter = 0;
     let cordX1 = 10;
     let cordY1 = 10;
 
     let cordX2 = 10;
     let cordY2 = 320;
+    const length = problems.length;
 
-    if (problems.length && problems.length === 1) {
+    if (length && length === 1) {
       // case 1: only 1 image
-      problems.map((prob, index) => {
-        doc.addImage(
-          prob.image_url,
-          "JPEG",
-          cordX1,
-          cordY1,
-          width - 20,
-          300,
-          "hey"
-        );
-        doc.save(pdfName);
-      });
+      doc.addImage(
+        problems[0].image_url,
+        "JPEG",
+        cordX1,
+        cordY1,
+        width - 20,
+        300,
+        `$prob_0`
+      );
+      doc.save(pdfName);
     } else {
       // case:2 more than 1 images
       problems.map((prob, index) => {
-        console.log("index===", index, "prob", prob);
         if (imgCounter === 0) {
-          console.log("CHECK 1 index===", index);
           doc.addImage(
             prob.image_url,
             "JPEG",
@@ -138,11 +133,10 @@ const Problems = ({
             cordY1,
             width - 20,
             300,
-            "hey"
+            `$prob_${index}`
           );
           imgCounter = imgCounter + 1;
         } else {
-          console.log("CHECK 2 index===", index);
           doc.addImage(
             prob.image_url,
             "JPEG",
@@ -150,18 +144,16 @@ const Problems = ({
             cordY2,
             width - 20,
             300,
-            "hey"
+            `$prob_${index}`
           );
           imgCounter = imgCounter + 1;
         }
 
-        if (imgCounter === 2) {
-          console.log("CHECK 3 index===", index);
+        if (imgCounter === 2 && length % 2 !== 0) {
           doc.addPage();
           imgCounter = 0;
         }
         if (index + 1 === problems.length) {
-          console.log("CHECK 4 index===", index);
           doc.save(pdfName);
         }
       });
