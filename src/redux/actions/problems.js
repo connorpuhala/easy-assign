@@ -69,6 +69,29 @@ export const createProblem = (body) => {
   };
 };
 
+export const editProblem = (body, id) => {
+  return async (dispatch) => {
+    dispatch({
+      type: types.EDIT_PROBLEM_REQUEST,
+    });
+    try {
+      const data = await API.editProblem(body, id);
+      console.log("data =====", data);
+      // await sleep(2000);
+      return dispatch({
+        type: types.EDIT_PROBLEM_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      console.log("errorrr getAllTags", error);
+      return dispatch({
+        type: types.EDIT_PROBLEM_ERROR,
+        payload: error.message,
+      });
+    }
+  };
+};
+
 export const createNewTag = (body) => {
   console.log("in action");
   return async (dispatch) => {

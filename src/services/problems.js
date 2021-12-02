@@ -32,6 +32,17 @@ export const createProblem = (body) =>
     },
   });
 
+export const editProblem = (body, id) =>
+  fetchService({
+    method: "PUT",
+    url: `problems/${id}`,
+    body: JSON.stringify(body),
+    isUrl: false,
+    myHeaders: {
+      "Content-Type": "application/json",
+    },
+  });
+
 export const createNewTag = (body) =>
   fetchService({
     method: "POST",

@@ -39,12 +39,16 @@ const CreateProblemModal = ({
   };
 
   useEffect(() => {
-    if(isCreateProblemModal.mode === "Edit"){
+    if (isCreateProblemModal.mode === "Edit") {
+      console.log("in useefftct", selectedProblem);
       setProblemData({
-        
-      })
+        image: selectedProblem.image_url,
+        tagIDs: [],
+        answer: selectedProblem.answer,
+        id: selectedProblem.id,
+      });
     }
-  }, [])
+  }, []);
   useEffect(() => {}, [inputRef]);
 
   const onChangeFileHandler = (e) => {
@@ -131,9 +135,7 @@ const CreateProblemModal = ({
       />
 
       <Modal.Content image>
-        <Card>
-          {/* <Card.Content header="About Amy" /> */}
-          {/* <Card.Content description={description} /> */}
+        {/* <Card>
           <Card.Content
             onClick={() => {
               if (inputRef && inputRef.current) {
@@ -146,8 +148,37 @@ const CreateProblemModal = ({
             <Icon name="upload" />
             Upload problem image
           </Card.Content>
-        </Card>
-        {isCreateProblemModal.mode === "Create" ? (
+        </Card> */}
+        {/* {isCreateProblemModal.mode} */}
+        {problemData.image ? (
+          <Image
+            size="large"
+            src={problemData.image}
+            wrapped
+            style={{ height: "300px", border: "1px solid blue" }}
+            onClick={() => {
+              if (inputRef && inputRef.current) {
+                inputRef.current.click();
+              }
+            }}
+          />
+        ) : (
+          <Card>
+            <Card.Content
+              onClick={() => {
+                if (inputRef && inputRef.current) {
+                  inputRef.current.click();
+                }
+              }}
+              extra
+              style={{ cursor: "pointer" }}
+            >
+              <Icon name="upload" />
+              Upload problem image
+            </Card.Content>
+          </Card>
+        )}
+        {/* {isCreateProblemModal.mode === "Create" ? (
           <>
             <Image
               size="large"
@@ -160,14 +191,6 @@ const CreateProblemModal = ({
                 }
               }}
             />
-            {/* {problemData.image ? (
-              <Image size="medium" src={problemData.image} wrapped />
-            ) : (
-              <Input
-                type="file"
-                onChange={(e, data) => onChangeFileHandler(e, data)}
-              />
-            )} */}
           </>
         ) : (
           <div style={{ position: "relative", border: "1px solid red" }}>
@@ -183,7 +206,7 @@ const CreateProblemModal = ({
               }}
             />
           </div>
-        )}
+        )} */}
         <Modal.Description>
           <Header>Tags</Header>
           <Tags mode="modal" getSelectedTags={getSelectedTags} />
