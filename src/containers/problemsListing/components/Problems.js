@@ -122,7 +122,7 @@ const Problems = ({
         ...data,
         // image: data.image.split(",")[1],
       };
-      editProblem(body, data.id)
+      editProblem(body, data.id);
     }
   };
   const createNewTagHandler = (newTag) => {
@@ -151,6 +151,7 @@ const Problems = ({
 
     if (length && length === 1) {
       // case 1: only 1 image
+      getImageHeightWidth(problems[0].image_url);
       doc.addImage(
         problems[0].image_url,
         "JPEG",
@@ -160,7 +161,7 @@ const Problems = ({
         300,
         `$prob_0`
       );
-      doc.save(pdfName);
+      // doc.save(pdfName);
     } else {
       // case:2 more than 1 images
       problems.map((prob, index) => {
@@ -297,12 +298,16 @@ export const ProblemItem = ({
   return (
     <Segment raised vertical padded color="olive" style={{ margin: "10px" }}>
       id: {problem.id}
+      <br />
+      answer: {problem.answer}
       {isLoading ? <LoaderWithinWrapper /> : null}
       <Image
         src={problem.image_url}
         size="large"
         centered
+        alt="problem_img"
         onLoad={() => setIsLoading(false)}
+        onError={() => setIsLoading(false)}
       />
       {user.userRole === "admin" ? (
         <Dropdown text="Edit">
@@ -335,4 +340,28 @@ export const ProblemItem = ({
       />
     </Segment>
   );
+};
+
+export const getImageHeightWidth = (url) => {
+  console.log("url ====", url);
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => {
+      console.log("in onload----");
+      const { naturalWidth, naturalHeight } = img;
+      // console.log("img ===width", img.width, "height", img.height);
+      console.log("nnnnnnnnnnnnnnnn", naturalWidth, naturalHeight);
+
+      // resolve({ width: img.width, height: img.height });
+    };
+    img.onerror = function (error) {
+      //display error
+      console.log("error ===", error);
+      // resolve({ width: 0, height: 0 });
+      // document.body.appendChild(
+      //     document.createTextNode('\nError loading as image: ' + this.src)
+      // );
+    };
+  });
 };

@@ -222,6 +222,7 @@ const CreateProblemModal = ({
             <Input
               type="text"
               placeholder="Answer"
+              value={problemData.answer}
               onChange={(e, data) => onChangeAnswerHandler(data)}
             />
           </Grid.Column>
