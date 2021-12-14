@@ -142,30 +142,40 @@ const Problems = ({
     console.log("PDF width, height, aspect: ", { width, height, aspect });
     const pdfName = Date.now();
     let imgCounter = 0;
+    let imgSectionWidth = 426;
+    let imgSectionHeight = 151;
+    let sectionRatio = imgSectionWidth / imgSectionHeight;
+    
+    
     let cordX1 = 10;
-    let cordY1 = 10;
+    let cordY1 = 2;
 
     let cordX2 = 10;
     let cordY2 = 320;
+
     const length = problems.length;
 
     if (length && length === 1) {
       // case 1: only 1 image
-      getImageHeightWidth(problems[0].image_url);
+      let { width, height } = getImageHeightWidth(problems[0].image_url);
+      let widthRatio = imgSectionWidth / width;
+      let heightRatio = imgSectionHeight / height;
+
+      let ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
       doc.addImage(
         problems[0].image_url,
         "JPEG",
         cordX1,
         cordY1,
-        width - 20,
-        300,
+        width * sectionRatio,
+        height * sectionRatio,
         `$prob_0`
       );
-      // doc.save(pdfName);
+      doc.save(pdfName);
     } else {
       // case:2 more than 1 images
       problems.map((prob, index) => {
-        if (imgCounter === 0) {
+        if (imgCounter === 0) {   
           doc.addImage(
             prob.image_url,
             "JPEG",
@@ -345,20 +355,24 @@ export const ProblemItem = ({
 export const getImageHeightWidth = (url) => {
   console.log("url ====", url);
   return new Promise((resolve, reject) => {
-    const img = new Image();
+    // let img = new Image();
+    // let img = new Image(200,200);
+    // img.crossOrigin = "anonymous";
+    const img = document.createElement("img");
+    // img.width = 200
+    // img.height =300
     img.src = url;
     img.onload = () => {
       console.log("in onload----");
       const { naturalWidth, naturalHeight } = img;
       // console.log("img ===width", img.width, "height", img.height);
       console.log("nnnnnnnnnnnnnnnn", naturalWidth, naturalHeight);
-
-      // resolve({ width: img.width, height: img.height });
+      resolve({ width: naturalWidth, height: naturalHeight });
     };
     img.onerror = function (error) {
       //display error
       console.log("error ===", error);
-      // resolve({ width: 0, height: 0 });
+      resolve({ width: 0, height: 0 });
       // document.body.appendChild(
       //     document.createTextNode('\nError loading as image: ' + this.src)
       // );
