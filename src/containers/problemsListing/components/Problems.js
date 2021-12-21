@@ -132,81 +132,198 @@ const Problems = ({
     createNewTag(body);
   };
 
-  const downloadProblemsPdfHandler = () => {
+  const downloadProblemsPdfHandler = async () => {
     console.log("@downloadProblemsPdfHandler");
-    const doc = new jsPDF("p", "px", "a4");
-    var width = doc.internal.pageSize.getWidth();
-    var height = doc.internal.pageSize.getHeight();
-    var aspect = height / width;
+    // const doc = new jsPDF("p", "px", "a4");
+    // var width = doc.internal.pageSize.getWidth();
+    // var height = doc.internal.pageSize.getHeight();
+    // var aspect = height / width;
 
-    console.log("PDF width, height, aspect: ", { width, height, aspect });
-    const pdfName = Date.now();
-    let imgCounter = 0;
-    let imgSectionWidth = 426;
-    let imgSectionHeight = 151;
-    let sectionRatio = imgSectionWidth / imgSectionHeight;
-    
-    
-    let cordX1 = 10;
-    let cordY1 = 2;
+    // console.log("PDF width, height, aspect: ", { width, height, aspect });
+    // const pdfName = Date.now();
+    // let imgCounter = 0;
+    // let imgSectionWidth = 426;
+    // let imgSectionHeight = 151;
+    // let sectionRatio = imgSectionWidth / imgSectionHeight;
+    // console.log(
+    //   "imgSectionWidth",
+    //   imgSectionWidth,
+    //   "imgSectionHeight",
+    //   imgSectionHeight,
+    //   "sectionRatio",
+    //   sectionRatio
+    // );
 
-    let cordX2 = 10;
-    let cordY2 = 320;
+    // let cordX1 = 10;
+    // let cordY1 = 2;
 
-    const length = problems.length;
+    // let cordX2 = 10;
+    // let cordY2 = 320;
 
-    if (length && length === 1) {
-      // case 1: only 1 image
-      let { width, height } = getImageHeightWidth(problems[0].image_url);
-      let widthRatio = imgSectionWidth / width;
-      let heightRatio = imgSectionHeight / height;
+    // const length = problems.length;
 
-      let ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
-      doc.addImage(
-        problems[0].image_url,
-        "JPEG",
-        cordX1,
-        cordY1,
-        width * sectionRatio,
-        height * sectionRatio,
-        `$prob_0`
-      );
-      doc.save(pdfName);
-    } else {
-      // case:2 more than 1 images
-      problems.map((prob, index) => {
-        if (imgCounter === 0) {   
-          doc.addImage(
-            prob.image_url,
-            "JPEG",
-            cordX1,
-            cordY1,
-            width - 20,
-            300,
-            `$prob_${index}`
-          );
-          imgCounter = imgCounter + 1;
+    // if (length && length === 1) {
+    //   // case 1: only 1 image
+    //   let { width, height } = await getImageHeightWidth(problems[0].image_url);
+    //   console.log("image width ===", width, "height ===", height);
+    //   let widthRatio = imgSectionWidth / width;
+    //   let heightRatio = imgSectionHeight / height;
+
+    //   let ratio = widthRatio > heightRatio ? heightRatio : widthRatio;
+    //   console.log("ratio ====", ratio);
+    //   let w= width * ratio
+    //   let h =  height * ratio
+    //   doc.addImage(
+    //     problems[0].image_url,
+    //     "JPEG",
+    //     w/2,
+    //     cordY1,
+    //     w,
+    //     h,
+    //     `$prob_0`
+    //   );
+    //   doc.save(pdfName);
+    // } else {
+    //   // case:2 more than 1 images
+    //   problems.map((prob, index) => {
+    //     if (imgCounter === 0) {
+    //       doc.addImage(
+    //         prob.image_url,
+    //         "JPEG",
+    //         cordX1,
+    //         cordY1,
+    //         width - 20,
+    //         300,
+    //         `$prob_${index}`
+    //       );
+    //       imgCounter = imgCounter + 1;
+    //     } else {
+    //       doc.addImage(
+    //         prob.image_url,
+    //         "JPEG",
+    //         cordX2,
+    //         cordY2,
+    //         width - 20,
+    //         300,
+    //         `$prob_${index}`
+    //       );
+    //       imgCounter = imgCounter + 1;
+    //     }
+
+    //     if (imgCounter === 2 && length % 2 !== 0) {
+    //       doc.addPage();
+    //       imgCounter = 0;
+    //     }
+    //     if (index + 1 === problems.length) {
+    //       doc.save(pdfName);
+    //     }
+    //   });
+    // }
+
+    let pdf = new jsPDF("l", "mm", "a4");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const pageRatio = pageWidth / pageHeight;
+    const sectionHeight = pageHeight / 4;
+    const sectionRatio = pageWidth / sectionHeight;
+    console.log(
+      "pageWidth ===",
+      pageWidth,
+      "pageHeight ===",
+      pageHeight,
+      "sectionHeight",
+      sectionHeight
+    );
+
+    for (let i = 0; i < problems.length; i++) {
+      // let img = new Image();
+      let img = document.createElement("img");
+      img.src = problems[i].image_url;
+      // eslint-disable-next-line no-loop-func
+      img.onload = function () {
+        const imgWidth = this.width;
+        const imgHeight = this.height;
+        const imgRatio = imgWidth / imgHeight;
+        if (i > 0) {
+          pdf.addPage();
+        }
+        pdf.setPage(i + 1);
+        if (imgRatio >= 1) {
+          console.log("CHECK 1");
+          const wc = imgWidth / pageWidth;
+          if (imgRatio >= pageRatio) {
+            pdf.addImage(
+              img,
+              "JPEG",
+              0,
+              (pageHeight - imgHeight / wc) / 2,
+              pageWidth,
+              imgHeight / wc,
+              null,
+              "NONE"
+            );
+          } else {
+            const pi = pageRatio / imgRatio;
+            pdf.addImage(
+              img,
+              "JPEG",
+              (pageWidth - pageWidth / pi) / 2,
+              0,
+              pageWidth / pi,
+              imgHeight / pi / wc,
+              null,
+              "NONE"
+            );
+          }
         } else {
-          doc.addImage(
-            prob.image_url,
-            "JPEG",
-            cordX2,
-            cordY2,
-            width - 20,
-            300,
-            `$prob_${index}`
-          );
-          imgCounter = imgCounter + 1;
+          console.log("CHECK 2");
+          const wc = imgWidth / pageHeight;
+          if (1 / imgRatio > pageRatio) {
+            console.log("@@@@ 2.1");
+            // const ip = 1 / imgRatio / pageRatio;
+            const ip = 1 / imgRatio / pageRatio;
+            const margin = (pageHeight - imgHeight / ip / wc) / 4;
+            pdf.addImage(
+              img,
+              "JPEG",
+              (pageWidth - imgHeight / ip / wc) / 2,
+              -(imgHeight / ip / wc + margin),
+              pageHeight / ip,
+              imgHeight / ip / wc,
+              null,
+              "NONE",
+              -90
+            );
+            // pdf.addImage(
+            //   img,
+            //   "JPEG",
+            //   (pageWidth - imgHeight / ip / wc) / 2,
+            //   -(imgHeight / ip / wc + margin),
+            //   pageHeight / ip,
+            //   imgHeight / ip / wc,
+            //   null,
+            //   "NONE",
+            //   -90
+            // );
+          } else {
+            console.log("@@@@ 2.2");
+            pdf.addImage(
+              img,
+              "JPEG",
+              (pageWidth - imgHeight / wc) / 2,
+              -(imgHeight / wc),
+              pageHeight,
+              imgHeight / wc,
+              null,
+              "NONE",
+              -90
+            );
+          }
         }
-
-        if (imgCounter === 2 && length % 2 !== 0) {
-          doc.addPage();
-          imgCounter = 0;
+        if (i === problems.length - 1) {
+          pdf.save("Photo.pdf");
         }
-        if (index + 1 === problems.length) {
-          doc.save(pdfName);
-        }
-      });
+      };
     }
   };
   return (
