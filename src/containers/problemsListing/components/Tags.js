@@ -29,7 +29,7 @@ const Tags = ({
       selectedTags.push(tagId);
       setSelectedTags([...selectedTags]);
       if (mode === "listing") {
-        getProblemsByTags({ tags: selectedTags });
+        getProblemsByTags({ tag_ids: selectedTags });
       } else {
         getSelectedTags(selectedTags);
       }
@@ -39,7 +39,7 @@ const Tags = ({
         selectedTags.splice(existingTagIndex, 1);
         setSelectedTags([...selectedTags]);
         if (mode === "listing") {
-          getProblemsByTags({ tags: selectedTags });
+          getProblemsByTags({ tag_ids: selectedTags });
         } else {
           getSelectedTags(selectedTags);
         }

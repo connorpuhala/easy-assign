@@ -13,7 +13,7 @@ export const getAllTags = () =>
 export const getProblemsByTags = (body) =>
   fetchService({
     method: "POST",
-    url: "problems-by-tag-ids",
+    url: "problems/tags",
     body: JSON.stringify(body),
     isUrl: false,
     myHeaders: {

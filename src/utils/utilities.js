@@ -1,4 +1,4 @@
-import { ALLOWED_FILE_TYPES } from "utils/constants"
+import { ALLOWED_FILE_TYPES } from "utils/constants";
 
 export const setEasyAssignUser = (data) => {
   localStorage.setItem("easy-assign-user", JSON.stringify(data));
@@ -25,4 +25,13 @@ export const checkMimetype = (files) => {
     p.push(promise);
   });
   return p;
+};
+
+export const getImageWidthHeight = ({ url }) => {
+  let str = url.substring(url.indexOf("height"), url.lastIndexOf("px") + 2);
+  str = str.split("-");
+  return {
+    imgWidth: +str[3].replace("px", ""),
+    imgHeight: +str[1].replace("px", ""),
+  };
 };

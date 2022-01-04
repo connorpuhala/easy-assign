@@ -8,7 +8,7 @@ import {
   Confirm,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { getEasyAssignUser } from "utils/utilities";
+import { getEasyAssignUser, getImageWidthHeight } from "utils/utilities";
 import { LoaderWithinWrapper } from "components/global/loader";
 import CreateProblemModal from "components/createProblemModal";
 import {
@@ -141,76 +141,57 @@ const Problems = ({
     const sectionHeight = Math.floor(pageHeight / 4);
     const pageRatio = pageWidth / pageHeight;
     const sectionRatio = sectionWidth / sectionHeight;
-    let counter = 0;
+    let imgCounter = 0;
+    const length = problems.length;
     let x1 = 0;
     let y1 = 0;
     console.log("pageWidth ====", pageWidth, "pageHeight", pageHeight);
     console.log("pageRatio ====", pageRatio, "sectionRatio", sectionRatio);
-    for (let i = 0; i < problems.length; i++) {
-      let img = document.createElement("img");
-      img.src = problems[i].image_url;
-      // eslint-disable-next-line no-loop-func
-      img.onload = function () {
-        const imgWidth = this.width;
-        const imgHeight = this.height;
-        const imgRatio = imgWidth / imgHeight;
-        console.log("imgRatio", imgRatio);
-        // if (imgRatio > 1) {
-        // img is landscape
-        console.log("landscape image");
-        const heightRatio = imgHeight / sectionHeight;
-        const widthRatio = imgWidth / sectionWidth;
-        // let y = counter * sectionHeight;
-
+    if (length === 1) {
+      let { imgWidth, imgHeight } = getImageWidthHeight({
+        url: problems[0].image_url,
+      });
+      let scale = Math.min(sectionWidth / imgWidth, sectionHeight / imgHeight);
+      let sw1 = imgWidth * scale;
+      let sh1 = imgHeight * scale;
+      let x = (sectionWidth - sw1) / 2;
+      let y = (sectionHeight - sh1) / 2;
+      pdf.addImage(problems[0].image_url, "JPEG", x, y, sw1, sh1, null, "NONE");
+      pdf.save("pdfName");
+    } else {
+      for (let i = 0; i < length; i++) {
+        let { imgWidth, imgHeight } = getImageWidthHeight({
+          url: problems[i].image_url,
+        });
         let scale = Math.min(
           sectionWidth / imgWidth,
           sectionHeight / imgHeight
         );
-        var sw1 = imgWidth * scale;
-        var sh1 = imgHeight * scale;
+        let sw1 = imgWidth * scale;
+        let sh1 = imgHeight * scale;
         let x = (sectionWidth - sw1) / 2;
-        let y = (sectionHeight - sh1) / 2;
-        console.log("for image ==", i, "x", x1, "y", y);
-
-        // var scale1 = Math.min(
-        //   canvas1.width / img1.width,
-        //   canvas1.height / img1.height
-        // );
-        // var sw1 = img1.width * scale1;
-        // var sh1 = img1.height * scale1;
-        // ctx1.drawImage(
-        //   img1,
-        //   (canvas1.width - sw1) / 2,
-        //   (canvas1.height - sh1) / 2,
-        //   sw1,
-        //   sh1
-        // );
-
-        // pdf.addImage(
-        //   img,
-        //   "JPEG",
-        //   x1,
-        //   y,
-        //   imgWidth / widthRatio,
-        //   imgHeight / heightRatio,
-        //   null,
-        //   "NONE"
-        // );
-        pdf.addImage(img, "JPEG", x, y, sw1, sh1, null, "NONE");
-        pdf.save("pdfName");
-        // } else {
-        //   // img portrait img or square
-        //   console.log("img portrait img or square");
-        // }
-
-        if (i > 0) {
+        let y = (sectionHeight - sh1) / 2 * imgCounter;
+        console.log("xxxxxx", x, "yyyyyyy", y);
+        // if(i === 0){}
+        pdf.addImage(
+          problems[i].image_url,
+          "JPEG",
+          x,
+          y,
+          sw1,
+          sh1,
+          null,
+          `$prob_${i}`
+        );
+        imgCounter = imgCounter + 1;
+        if (imgCounter === 3) {
           pdf.addPage();
+          imgCounter = 0;
         }
-
-        // if (i + 1 === problems.length) {
-        //   pdf.save("pdfName");
-        // }
-      };
+        if (i + 1 === problems.length) {
+          pdf.save("pdfName");
+        }
+      }
     }
   };
   return (

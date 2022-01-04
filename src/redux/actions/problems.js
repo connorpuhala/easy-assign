@@ -24,13 +24,13 @@ export const getAllTags = () => {
   };
 };
 
-export const getProblemsByTags = ({ tags }) => {
+export const getProblemsByTags = ({ tag_ids }) => {
   return async (dispatch) => {
     dispatch({
       type: types.GET_PROBLEMS_BY_TAGS_REQUEST,
     });
     try {
-      const { results, count } = await API.getProblemsByTags({ tagIDs: tags });
+      const { results, count } = await API.getProblemsByTags({ tag_ids });
 
       return dispatch({
         type: types.GET_PROBLEMS_BY_TAGS_SUCCESS,
