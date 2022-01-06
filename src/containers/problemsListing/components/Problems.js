@@ -70,7 +70,7 @@ const Problems = ({
             let body = {
               ...data,
               image: data.image.split(",")[1],
-              tagIDs: [...data.tagIDs, action.payload[0].id],
+              tag_ids: [...data.tag_ids, action.payload[0].id],
             };
             createProblem(body).then((action) => {
               if (action.type === "CREATE_PROBLEM_SUCCESS") {
@@ -133,20 +133,16 @@ const Problems = ({
   };
 
   const downloadProblemsPdfHandler = async () => {
-    console.log("@downloadProblemsPdfHandler");
     let pdf = new jsPDF("p", "mm", "a4");
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
     const sectionWidth = pageWidth;
     const sectionHeight = Math.floor(pageHeight / 4);
-    const pageRatio = pageWidth / pageHeight;
-    const sectionRatio = sectionWidth / sectionHeight;
     let imgCounter = 0;
     const length = problems.length;
-    let x1 = 0;
-    let y1 = 0;
-    console.log("pageWidth ====", pageWidth, "pageHeight", pageHeight);
-    console.log("pageRatio ====", pageRatio, "sectionRatio", sectionRatio);
+    const totalPages = Math.ceil(length / 4);
+    let pageCounter = 1;
+
     if (length === 1) {
       let { imgWidth, imgHeight } = getImageWidthHeight({
         url: problems[0].image_url,
@@ -157,7 +153,7 @@ const Problems = ({
       let x = (sectionWidth - sw1) / 2;
       let y = (sectionHeight - sh1) / 2;
       pdf.addImage(problems[0].image_url, "JPEG", x, y, sw1, sh1, null, "NONE");
-      pdf.save("pdfName");
+      pdf.save(Date.now());
     } else {
       for (let i = 0; i < length; i++) {
         let { imgWidth, imgHeight } = getImageWidthHeight({
@@ -170,9 +166,8 @@ const Problems = ({
         let sw1 = imgWidth * scale;
         let sh1 = imgHeight * scale;
         let x = (sectionWidth - sw1) / 2;
-        let y = (sectionHeight - sh1) / 2 * imgCounter;
-        console.log("xxxxxx", x, "yyyyyyy", y);
-        // if(i === 0){}
+        let y = (sectionHeight - sh1) / 2 + imgCounter * sh1;
+
         pdf.addImage(
           problems[i].image_url,
           "JPEG",
@@ -184,12 +179,13 @@ const Problems = ({
           `$prob_${i}`
         );
         imgCounter = imgCounter + 1;
-        if (imgCounter === 3) {
+        if (imgCounter === 4 && pageCounter < totalPages) {
           pdf.addPage();
           imgCounter = 0;
+          pageCounter = pageCounter + 1;
         }
-        if (i + 1 === problems.length) {
-          pdf.save("pdfName");
+        if (i + 1 === length) {
+          pdf.save(Date.now());
         }
       }
     }

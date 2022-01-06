@@ -26,7 +26,7 @@ const CreateProblemModal = ({
 }) => {
   const [problemData, setProblemData] = useState({
     image: null,
-    tagIDs: [],
+    tag_ids: [],
     answer: "",
   });
   const [newTag, setNewTag] = useState("");
@@ -34,7 +34,7 @@ const CreateProblemModal = ({
   const getSelectedTags = (tags) => {
     setProblemData({
       ...problemData,
-      tagIDs: tags,
+      tag_ids: tags,
     });
   };
 
@@ -43,7 +43,7 @@ const CreateProblemModal = ({
       console.log("in useefftct", selectedProblem);
       setProblemData({
         image: selectedProblem.image_url,
-        tagIDs: [],
+        tag_ids: [],
         answer: selectedProblem.answer,
         id: selectedProblem.id,
       });
@@ -77,7 +77,7 @@ const CreateProblemModal = ({
   };
 
   const createProblemHandler = () => {
-    // if (problemData.image === null && !problemData.tagIDs.length) {
+    // if (problemData.image === null && !problemData.tag_ids.length) {
     //   createNotification({
     //     type: "danger",
     //     title: "Problem description required!",
@@ -87,7 +87,7 @@ const CreateProblemModal = ({
     //   return;
     // }
 
-    // if (!problemData.tagIDs.length) {
+    // if (!problemData.tag_ids.length) {
     //   createNotification({
     //     type: "danger",
     //     title: "No tag selected",
