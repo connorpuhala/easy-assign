@@ -134,39 +134,64 @@ const Problems = ({
 
   const downloadProblemsPdfHandler = async () => {
     let pdf = new jsPDF("p", "mm", "a4");
-    const margin = 10;
-    const pageWidth = pdf.internal.pageSize.getWidth() ;
-    const pageHeight = pdf.internal.pageSize.getHeight() ;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const sectionWidth = pageWidth;
+    const margin =10
+    const sectionHeight = Math.floor(pageHeight / 4);
+    let imgCounter = 0;
     const length = problems.length;
-    for (let i = 0; i < length; i++) {
+    const totalPages = Math.ceil(length / 4);
+    let pageCounter = 1;
+
+    if (length === 1) {
       let { imgWidth, imgHeight } = getImageWidthHeight({
-        url: problems[i].image_url,
+        url: problems[0].image_url,
       });
-      let sectionWidth = (2 * pageWidth) / 3;
-      let sectionHeight = (2 * pageHeight) / 3;
       let scale = Math.min(sectionWidth / imgWidth, sectionHeight / imgHeight);
-
-      // let sw1 = 0 , sh1 = 0
-
       let sw1 = imgWidth * scale;
       let sh1 = imgHeight * scale;
-      let x = 10;
-      let y = 10;
+      let x = (sectionWidth - sw1) / 2;
+      let y = (sectionHeight - sh1) / 2;
+      pdf.addImage(problems[0].image_url, "JPEG", x, y, sw1, sh1, null, "NONE");
+      pdf.save(Date.now());
+    } else {
+      for (let i = 0; i < length; i++) {
+        let { imgWidth, imgHeight } = getImageWidthHeight({
+          url: problems[i].image_url,
+        });
+        // let scale = Math.min(
+        //   sectionWidth / imgWidth,
+        //   sectionHeight / imgHeight
+        // );
+        let scale = Math.min(
+          sectionWidth / imgWidth,
+          sectionHeight / imgHeight
+        );
+        let sw1 = imgWidth * scale;
+        let sh1 = imgHeight * scale;
+        let x = (sectionWidth - sw1) / 2;
+        let y = (sectionHeight - sh1) / 2 + imgCounter * sh1;
 
-      pdf.addImage(
-        problems[i].image_url,
-        "JPEG",
-        x,
-        y,
-        sw1,
-        sh1,
-        null,
-        `$prob_${i}`
-      );
-      if (i + 1 === length) {
-        pdf.save(Date.now());
-      } else {
-        pdf.addPage();
+        pdf.addImage(
+          problems[i].image_url,
+          "JPEG",
+          x,
+          y,
+          sw1,
+          sh1,
+          null,
+          `$prob_${i}`
+        );
+        imgCounter = imgCounter + 1;
+        if (imgCounter === 4 && pageCounter < totalPages) {
+          pdf.addPage();
+          imgCounter = 0;
+          pageCounter = pageCounter + 1;
+        }
+        if (i + 1 === length) {
+          pdf.save(Date.now());
+        }
       }
     }
   };
