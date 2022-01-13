@@ -1,27 +1,120 @@
-import { Grid, Button, Form } from "semantic-ui-react";
+import { Grid, Button, Form, Message } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
-const Signup = () => {
+import { Formik } from "formik";
+import { signupValidationSchema } from "utils/validations";
+import { signupUser } from "redux/actions/loginSignup";
+import { setEasyAssignUser } from "utils/utilities";
+import { LoaderWithinWrapper } from "components/global/loader";
+import { useDispatch, useSelector } from "react-redux";
+import { signupSelector } from "redux/selectors";
+
+const Signup = ({}) => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { signupStatus, signupErrorMsg } = useSelector(signupSelector);
+
+  const signupHandler = ({ values }) => {
+    dispatch(signupUser(values)).then((action) => {
+      console.log("action ====", action);
+    });
+  };
 
   return (
     <Grid centered columns={4} style={{ paddingTop: "20px" }}>
       <Grid.Column>
-        <Form>
-          <Form.Field>
-            <input placeholder="Email" type="text" />
-          </Form.Field>
-          <Form.Field>
-            <input placeholder="Password" type="password" />
-          </Form.Field>
-          <Button type="submit">Submit</Button>
-        </Form>
+        {signupStatus === "loading" && (
+          <LoaderWithinWrapper text="creating user..." />
+        )}
+        {signupStatus === "failed" && (
+          <Message error header="" content={signupErrorMsg} />
+        )}
+        <Formik
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+          }}
+          validationSchema={signupValidationSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            signupHandler({ values });
+          }}
+          validateOnChange={false}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            /* and other goodies */
+          }) => {
+            return (
+              <Form onSubmit={handleSubmit}>
+                <Form.Field>
+                  <Form.Input
+                    name="firstName"
+                    placeholder="First name"
+                    type="text"
+                    onChange={handleChange}
+                    error={errors.firstName !== undefined}
+                  />
+                  {errors.firstName !== undefined && (
+                    <span className="input-error-text">{errors.firstName}</span>
+                  )}
+                </Form.Field>
+                <Form.Field>
+                  <Form.Input
+                    name="lastName"
+                    placeholder="Last name"
+                    type="text"
+                    onChange={handleChange}
+                    error={errors.lastName !== undefined}
+                  />
+                  {errors.lastName !== undefined && (
+                    <span className="input-error-text">{errors.lastName}</span>
+                  )}
+                </Form.Field>
+                <Form.Field>
+                  <Form.Input
+                    name="email"
+                    placeholder="Email"
+                    type="text"
+                    onChange={handleChange}
+                    error={errors.email !== undefined}
+                  />
+                  {errors.email !== undefined && (
+                    <span className="input-error-text">{errors.email}</span>
+                  )}
+                </Form.Field>
+                <Form.Field>
+                  <Form.Input
+                    name="password"
+                    placeholder="Password"
+                    type="password"
+                    onChange={handleChange}
+                    error={errors.password !== undefined}
+                  />
+                  {errors.password !== undefined && (
+                    <span className="input-error-text">{errors.password}</span>
+                  )}
+                </Form.Field>
+                <Button primary type="submit">
+                  Submit
+                </Button>
+              </Form>
+            );
+          }}
+        </Formik>
         <span>
-          Already have account?{" "}
+          Already have an account?{" "}
           <a
-            href="/login"
+            href="/create-account"
             onClick={(e) => {
               e.preventDefault();
-              history.push("/");
+              history.push("/login");
             }}
           >
             Login

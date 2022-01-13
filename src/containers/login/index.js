@@ -17,7 +17,7 @@ const Login = ({
   const history = useHistory();
 
   const loginHandler = ({ values }) => {
-    loginUser({ values }).then((action) => {
+    loginUser(values).then((action) => {
       if (action.type === "USER_LOGIN_SUCCESS") {
         setEasyAssignUser(action.payload);
         history.push("/problems");
@@ -32,7 +32,7 @@ const Login = ({
       <Grid.Column>
         {isLogging && <LoaderWithinWrapper text="Logging in..." />}
         {isLoggingError && (
-          <Message error header="Error" content={isLoggingErrorMsg} />
+          <Message error header="" content={isLoggingErrorMsg} />
         )}
         <Formik
           initialValues={{ email: "", password: "" }}
@@ -40,6 +40,7 @@ const Login = ({
           onSubmit={(values, { setSubmitting }) => {
             loginHandler({ values });
           }}
+          validateOnChange={false}
         >
           {({
             values,

@@ -16,23 +16,16 @@ const Tags = ({
   getProblemsByTags,
   mode,
   getSelectedTags,
-  selectedTagIds,
+  selectedTagIds
 }) => {
-  console.log("selectedTagIds======", selectedTagIds);
+  console.log("selectedTagIds======", selectedTagIds)
   const [selectedTags, setSelectedTags] = useState([]);
-  console.log("selectedTags ==== @@@@@@", selectedTags);
+  console.log("selectedTags ==== @@@@@@", selectedTags)
   useEffect(() => {
     if (!tags.length) {
       getAllTags();
     }
   }, []);
-
-  useEffect(() => {
-    if (selectedTagIds && selectedTagIds.length) {
-      console.log("setsattae here ====");
-      setSelectedTags([...selectedTagIds]);
-    }
-  }, [selectedTagIds]);
 
   const selectTagOnChangeHandler = (checked, tagId) => {
     if (checked) {
@@ -64,7 +57,6 @@ const Tags = ({
             <TagItem
               key={tag.id}
               tag={tag}
-              selectedTags={selectedTags}
               selectTagOnChangeHandler={selectTagOnChangeHandler}
             />
           ))
@@ -95,13 +87,14 @@ const mapDispatch = (dispatch) =>
 
 export default connect(mapStateToProps, mapDispatch)(Tags);
 
-const TagItem = ({ tag, selectTagOnChangeHandler, selectedTags }) => {
+const TagItem = ({ tag, selectTagOnChangeHandler }) => {
+  // const [checked, setChecked] = useState(false);
   return (
     <Grid.Column>
       id: {tag.id}
       <Checkbox
         label={{ children: tag.label }}
-        checked={selectedTags.includes(tag.id)}
+        // checked={checked}
         onChange={(e, data) => {
           // setChecked(data.checked)
           selectTagOnChangeHandler(data.checked, tag.id);

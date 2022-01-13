@@ -41,9 +41,14 @@ const CreateProblemModal = ({
   useEffect(() => {
     if (isCreateProblemModal.mode === "Edit") {
       console.log("in useefftct", selectedProblem);
+      let tag_ids = [];
+      if (selectedProblem.tag && selectedProblem.tag.length) {
+        tag_ids = selectedProblem.tag.map((i) => i.id);
+        console.log("tags --- ======", tag_ids);
+      }
       setProblemData({
         image: selectedProblem.image_url,
-        tag_ids: [],
+        tag_ids: tag_ids,
         answer: selectedProblem.answer,
         id: selectedProblem.id,
       });
@@ -119,7 +124,7 @@ const CreateProblemModal = ({
       answer: data.value,
     });
   };
-
+  console.log("problemData===", problemData);
   return (
     <Modal
       onClose={() => onClose({ isOpen: false })}
@@ -209,7 +214,11 @@ const CreateProblemModal = ({
         )} */}
         <Modal.Description>
           <Header>Tags</Header>
-          <Tags mode="modal" getSelectedTags={getSelectedTags} />
+          <Tags
+            mode="modal"
+            getSelectedTags={getSelectedTags}
+            selectedTagIds={problemData.tag_ids}
+          />
         </Modal.Description>
       </Modal.Content>
       <Grid

@@ -117,7 +117,6 @@ const Problems = ({
         });
       }
     } else {
-      // alert("edit is in progress...");
       let body = {
         ...data,
         // image: data.image.split(",")[1],
@@ -135,8 +134,8 @@ const Problems = ({
   const downloadProblemsPdfHandler = async () => {
     let pdf = new jsPDF("p", "mm", "a4");
     const margin = 10;
-    const pageWidth = pdf.internal.pageSize.getWidth() ;
-    const pageHeight = pdf.internal.pageSize.getHeight() ;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
     const length = problems.length;
     for (let i = 0; i < length; i++) {
       let { imgWidth, imgHeight } = getImageWidthHeight({

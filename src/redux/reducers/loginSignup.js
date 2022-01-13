@@ -5,6 +5,9 @@ const initialState = {
   isLoggedIn: false,
   isLoggingError: false,
   isLoggingErrorMsg: "",
+
+  signupStatus: "idle",
+  signupErrorMsg: "",
 };
 
 const loginSignup = (state = initialState, action) => {
@@ -36,6 +39,28 @@ const loginSignup = (state = initialState, action) => {
         isLoggingError: true,
         isLoggingErrorMsg: action.payload,
         user: null,
+      };
+
+    //
+    // USER_SIGNUP
+    //
+    case types.USER_SIGNUP_REQUEST:
+      return {
+        ...state,
+        signupStatus: "loading",
+      };
+    case types.USER_SIGNUP_SUCCESS:
+      console.log("USER_SIGNUP_SUCCESS", action.payload)
+      return {
+        ...state,
+        signupStatus: "idle",
+      };
+
+    case types.USER_SIGNUP_ERROR:
+      return {
+        ...state,
+        signupStatus: "failed",
+        signupErrorMsg: action.payload,
       };
 
     default:

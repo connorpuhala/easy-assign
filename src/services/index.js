@@ -12,14 +12,12 @@ const fetchService = ({ method, url, body, myHeaders }) =>
   })
     .then((res) => res.json())
     .then((response) => {
-      // console.log("response----", response)
-      return response;
-      // if (response.meta && response.meta.status === 200) {
-      //   return response;
-      // }
-      // if (response.error === false) {
-      //   return response;
-      // }
+      console.log("response----", response);
+      // return response;
+      if (response.success) {
+        return response;
+      }
+      throw response;
     })
     .catch((error) => {
       console.log("@fetchService error =>", { url, error });
@@ -27,5 +25,5 @@ const fetchService = ({ method, url, body, myHeaders }) =>
     });
 
 export * from "./loginSignup";
-export * from "./problems"
+export * from "./problems";
 export default fetchService;
