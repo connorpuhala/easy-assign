@@ -9,12 +9,13 @@ export const loginUser = (values) => {
       type: types.USER_LOGIN_REQUEST,
     });
     try {
-      const { results, error } = await API.loginUser(values);
-      console.log("results ====", results)
+      // const { results, error } = await API.loginUser(values);
+      // console.log("results ====", results)
       // await sleep(2000);
       return dispatch({
         type: types.USER_LOGIN_SUCCESS,
-        payload: results[0],
+        // payload: results[0],
+        payload: loggedInUser
       });
     } catch (error) {
       console.log("errorrr loginUser", error);

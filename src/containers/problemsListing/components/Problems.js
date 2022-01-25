@@ -19,6 +19,7 @@ import {
 import { bindActionCreators } from "redux";
 import createNotification from "components/global/createNotification";
 import { jsPDF } from "jspdf";
+import { isValidHttpUrl } from "utils/utilities";
 
 const Problems = ({
   user,
@@ -38,7 +39,6 @@ const Problems = ({
   const [selectedProblem, setSelectedProblem] = useState(null);
 
   const createProblemModalHandler = (val) => {
-    console.log("setIsCreateProblemModal val", val);
     if (val.isOpen === false) {
       setSelectedProblem(null);
       setIsCreateProblemModal({ isOpen: false, mode: "" });
@@ -117,13 +117,43 @@ const Problems = ({
         });
       }
     } else {
-      let body = {
-        ...data,
-        // image: data.image.split(",")[1],
+      const id = data.id;
+      const cloneData = {
+        tag_ids: data.tag_ids,
+        image: data.image,
+        answer: data.answer,
       };
-      editProblem(body, data.id);
+
+      if (isValidHttpUrl(cloneData.image)) {
+        delete cloneData.image;
+      } else {
+        cloneData.image = cloneData.image.split(",")[1];
+      }
+      let body = {
+        ...cloneData,
+      };
+      editProblem(body, id).then((action) => {
+        console.log("action edit =====", action);
+        if (action.type === "EDIT_PROBLEM_SUCCESS") {
+          setIsCreateProblemModal({ isOpen: false, mode: "" });
+          createNotification({
+            type: "success",
+            title: "Updated",
+            msg: "Problem updated successfully.",
+            // timeout: 6000,
+          });
+        } else {
+          createNotification({
+            type: "danger",
+            title: "Something went wrong!",
+            msg: "Please try again.",
+            timeout: 6000,
+          });
+        }
+      });
     }
   };
+
   const createNewTagHandler = (newTag) => {
     let body = {
       label: newTag,

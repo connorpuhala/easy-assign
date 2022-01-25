@@ -18,9 +18,7 @@ const Tags = ({
   getSelectedTags,
   selectedTagIds,
 }) => {
-  console.log("selectedTagIds======", selectedTagIds);
   const [selectedTags, setSelectedTags] = useState([]);
-  console.log("selectedTags ==== @@@@@@", selectedTags);
   useEffect(() => {
     if (!tags.length) {
       getAllTags();
@@ -29,7 +27,6 @@ const Tags = ({
 
   useEffect(() => {
     if (selectedTagIds && selectedTagIds.length) {
-      console.log("setsattae here ====");
       setSelectedTags([...selectedTagIds]);
     }
   }, [selectedTagIds]);

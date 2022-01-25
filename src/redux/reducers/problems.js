@@ -13,6 +13,9 @@ const initialState = {
   problemsCount: 0,
   isGetProblemsByTagsError: false,
   isGetProblemsByTagsErrorMsg: "",
+
+  isEditProblem: false,
+  isEditProblemError: false,
 };
 
 const prolems = (state = initialState, action) => {
@@ -104,6 +107,25 @@ const prolems = (state = initialState, action) => {
         isCreateProblem: false,
         isCreateProblemError: true,
         isCreateProblemErrorMsg: action.payload,
+      };
+
+    // EDIT_PROBLEM
+    case types.EDIT_PROBLEM_REQUEST:
+      return {
+        ...state,
+        isEditProblem: true,
+      };
+    case types.EDIT_PROBLEM_SUCCESS:
+      return {
+        ...state,
+        isEditProblem: false,
+      };
+
+    case types.EDIT_PROBLEM_ERROR:
+      return {
+        ...state,
+        isEditProblem: false,
+        isEditProblemError: true,
       };
 
     // CREATE_TAG

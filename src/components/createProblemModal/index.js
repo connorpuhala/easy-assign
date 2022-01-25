@@ -23,6 +23,7 @@ const CreateProblemModal = ({
   createNewTag,
   isCreatingNewTag,
   isCreateProblem,
+  isEditProblem,
 }) => {
   const [problemData, setProblemData] = useState({
     image: null,
@@ -40,11 +41,9 @@ const CreateProblemModal = ({
 
   useEffect(() => {
     if (isCreateProblemModal.mode === "Edit") {
-      console.log("in useefftct", selectedProblem);
       let tag_ids = [];
       if (selectedProblem.tag && selectedProblem.tag.length) {
         tag_ids = selectedProblem.tag.map((i) => i.id);
-        console.log("tags --- ======", tag_ids);
       }
       setProblemData({
         image: selectedProblem.image_url,
@@ -57,7 +56,6 @@ const CreateProblemModal = ({
   useEffect(() => {}, [inputRef]);
 
   const onChangeFileHandler = (e) => {
-    console.log("onChangeFileHandler=====");
     let file = e.target.files && e.target.files[0];
     if (file) {
       if (file.type.split("/")[1] === "png") {
@@ -124,13 +122,16 @@ const CreateProblemModal = ({
       answer: data.value,
     });
   };
-  console.log("problemData===", problemData);
   return (
     <Modal
       onClose={() => onClose({ isOpen: false })}
       open={isCreateProblemModal.isOpen}
     >
-      {isCreateProblem ? <LoaderWithinWrapper text="Uploading..." /> : null}
+      {isCreateProblem || isEditProblem ? (
+        <LoaderWithinWrapper
+          text={isEditProblem ? "Updating..." : "Uploading..."}
+        />
+      ) : null}
       <Modal.Header>{isCreateProblemModal.mode} Problem</Modal.Header>
       <input
         type="file"
@@ -140,21 +141,6 @@ const CreateProblemModal = ({
       />
 
       <Modal.Content image>
-        {/* <Card>
-          <Card.Content
-            onClick={() => {
-              if (inputRef && inputRef.current) {
-                inputRef.current.click();
-              }
-            }}
-            extra
-            style={{ cursor: "pointer" }}
-          >
-            <Icon name="upload" />
-            Upload problem image
-          </Card.Content>
-        </Card> */}
-        {/* {isCreateProblemModal.mode} */}
         {problemData.image ? (
           <Image
             size="large"
@@ -183,35 +169,6 @@ const CreateProblemModal = ({
             </Card.Content>
           </Card>
         )}
-        {/* {isCreateProblemModal.mode === "Create" ? (
-          <>
-            <Image
-              size="large"
-              src={problemData.image}
-              wrapped
-              style={{ height: "300px", border: "1px solid blue" }}
-              onClick={() => {
-                if (inputRef && inputRef.current) {
-                  inputRef.current.click();
-                }
-              }}
-            />
-          </>
-        ) : (
-          <div style={{ position: "relative", border: "1px solid red" }}>
-            <Image
-              size="medium"
-              src={selectedProblem.image_url}
-              wrapped
-              style={{ border: "1px solid blue", cursor: "pointer" }}
-              onClick={() => {
-                if (inputRef && inputRef.current) {
-                  inputRef.current.click();
-                }
-              }}
-            />
-          </div>
-        )} */}
         <Modal.Description>
           <Header>Tags</Header>
           <Tags
@@ -273,10 +230,11 @@ const CreateProblemModal = ({
 };
 
 const mapStateToProps = (state) => {
-  let { isCreatingNewTag, isCreateProblem } = state.problems;
+  let { isCreatingNewTag, isCreateProblem, isEditProblem } = state.problems;
   return {
     isCreatingNewTag,
     isCreateProblem,
+    isEditProblem,
   };
 };
 

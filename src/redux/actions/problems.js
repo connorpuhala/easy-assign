@@ -1,7 +1,7 @@
 import types from "../types/prolems";
 import * as API from "../../services";
-import { sleep } from "utils/utilities";
-import { allTags, problemsByTagsData } from "mock_data";
+// import { sleep } from "utils/utilities";
+// import { allTags, problemsByTagsData } from "mock_data";
 
 export const getAllTags = () => {
   return async (dispatch) => {
@@ -60,7 +60,7 @@ export const createProblem = (body) => {
         payload: data,
       });
     } catch (error) {
-      console.log("errorrr getAllTags", error);
+      console.log("errorrr createProblem", error);
       return dispatch({
         type: types.CREATE_PROBLEM_ERROR,
         payload: error.message,
@@ -77,13 +77,12 @@ export const editProblem = (body, id) => {
     try {
       const data = await API.editProblem(body, id);
       console.log("data =====", data);
-      // await sleep(2000);
       return dispatch({
         type: types.EDIT_PROBLEM_SUCCESS,
         payload: data,
       });
     } catch (error) {
-      console.log("errorrr getAllTags", error);
+      console.log("errorrr editProblem", error);
       return dispatch({
         type: types.EDIT_PROBLEM_ERROR,
         payload: error.message,
@@ -93,22 +92,19 @@ export const editProblem = (body, id) => {
 };
 
 export const createNewTag = (body) => {
-  console.log("in action");
   return async (dispatch) => {
-    console.log("in action dispatch");
     dispatch({
       type: types.CREATE_TAG_REQUEST,
     });
     try {
       const { results } = await API.createNewTag(body);
       console.log("data =====", results);
-      // await sleep(2000);
       return dispatch({
         type: types.CREATE_TAG_SUCCESS,
         payload: results,
       });
     } catch (error) {
-      console.log("errorrr getAllTags", error);
+      console.log("errorrr createNewTag", error);
       return dispatch({
         type: types.CREATE_TAG_ERROR,
         payload: error.message,
