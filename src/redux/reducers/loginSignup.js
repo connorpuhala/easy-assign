@@ -50,7 +50,7 @@ const loginSignup = (state = initialState, action) => {
         signupStatus: "loading",
       };
     case types.USER_SIGNUP_SUCCESS:
-      console.log("USER_SIGNUP_SUCCESS", action.payload)
+      console.log("USER_SIGNUP_SUCCESS", action.payload);
       return {
         ...state,
         signupStatus: "idle",
@@ -63,6 +63,13 @@ const loginSignup = (state = initialState, action) => {
         signupErrorMsg: action.payload,
       };
 
+    // USER_LOGOUT
+    case types.USER_LOGOUT:
+      return {
+        ...state,
+        user: null,
+        isLoggedIn: false,
+      };
     default:
       return state;
   }

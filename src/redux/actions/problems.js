@@ -112,3 +112,11 @@ export const createNewTag = (body) => {
     }
   };
 };
+
+export const emptyStateAfterLogout = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: types.EMPTY_STATE_AFTER_LOGOUT,
+    });
+  };
+};

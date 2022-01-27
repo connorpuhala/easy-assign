@@ -146,6 +146,16 @@ const prolems = (state = initialState, action) => {
         isCreatingNewTag: false,
       };
 
+    // EMPTY_STATE_AFTER_LOGOUT
+    case types.EMPTY_STATE_AFTER_LOGOUT:
+      return {
+        ...state,
+        tags: [],
+        tagsCount: 0,
+        problems: [],
+        problemsCount: 0,
+      };
+
     default:
       return state;
   }

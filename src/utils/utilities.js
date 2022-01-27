@@ -10,6 +10,10 @@ export const getEasyAssignUser = () => {
   else return null;
 };
 
+export const removeEasyAssignUser = (data) => {
+  localStorage.removeItem("easy-assign-user");
+};
+
 export const sleep = (t) => new Promise((resolve) => setTimeout(resolve, t));
 
 export const checkMimetype = (files) => {

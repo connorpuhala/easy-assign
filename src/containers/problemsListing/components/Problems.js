@@ -15,11 +15,14 @@ import {
   createProblem,
   createNewTag,
   editProblem,
+  emptyStateAfterLogout
 } from "redux/actions/problems";
+import { logoutAction } from "redux/actions/loginSignup";
 import { bindActionCreators } from "redux";
 import createNotification from "components/global/createNotification";
 import { jsPDF } from "jspdf";
-import { isValidHttpUrl } from "utils/utilities";
+import { isValidHttpUrl, removeEasyAssignUser } from "utils/utilities";
+import { useHistory } from "react-router-dom";
 
 const Problems = ({
   user,
@@ -31,7 +34,10 @@ const Problems = ({
   createProblem,
   createNewTag,
   editProblem,
+  logoutAction,
+  emptyStateAfterLogout
 }) => {
+  const history = useHistory();
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
     isOpen: false,
     mode: "",
@@ -199,10 +205,18 @@ const Problems = ({
       }
     }
   };
+
+  const logoutHandler = () => {
+    console.log("@logoutHandler ===");
+    removeEasyAssignUser();
+    logoutAction();
+    emptyStateAfterLogout();
+    history.push("/");
+  };
   return (
     <>
       <Grid.Row columns={3}>
-        {user.userRole === "admin" ? (
+        {user && user.type === "admin" ? (
           <Button
             primary
             onClick={() =>
@@ -221,6 +235,14 @@ const Problems = ({
           onClick={() => downloadProblemsPdfHandler()}
         >
           Download
+        </Button>
+        <Button
+          // secondary
+          basic
+          color="red"
+          onClick={() => logoutHandler()}
+        >
+          Logout
         </Button>
       </Grid.Row>
       <Grid.Row columns={3}>
@@ -273,7 +295,16 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatch = (dispatch) =>
-  bindActionCreators({ createProblem, createNewTag, editProblem }, dispatch);
+  bindActionCreators(
+    {
+      createProblem,
+      createNewTag,
+      editProblem,
+      logoutAction,
+      emptyStateAfterLogout,
+    },
+    dispatch
+  );
 
 export default connect(mapStateToProps, mapDispatch)(Problems);
 
@@ -309,7 +340,7 @@ export const ProblemItem = ({
         onLoad={() => setIsLoading(false)}
         onError={() => setIsLoading(false)}
       />
-      {user.userRole === "admin" ? (
+      {user && user.type === "admin" ? (
         <Dropdown text="Edit">
           <Dropdown.Menu>
             <Dropdown.Item
