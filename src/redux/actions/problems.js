@@ -76,7 +76,7 @@ export const editProblem = (body, id) => {
     });
     try {
       const data = await API.editProblem(body, id);
-      console.log("data =====", data);
+      console.log("editProblem data =====", data);
       return dispatch({
         type: types.EDIT_PROBLEM_SUCCESS,
         payload: data,

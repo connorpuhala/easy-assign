@@ -15,7 +15,7 @@ import {
   createProblem,
   createNewTag,
   editProblem,
-  emptyStateAfterLogout
+  emptyStateAfterLogout,
 } from "redux/actions/problems";
 import { logoutAction } from "redux/actions/loginSignup";
 import { bindActionCreators } from "redux";
@@ -35,7 +35,7 @@ const Problems = ({
   createNewTag,
   editProblem,
   logoutAction,
-  emptyStateAfterLogout
+  emptyStateAfterLogout,
 }) => {
   const history = useHistory();
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
@@ -325,7 +325,7 @@ export const ProblemItem = ({
   const onConfirmBoxCancel = (v, d) => {
     setIsConfirmBox(false);
   };
-
+  console.log("problem ------", problem);
   return (
     <Segment raised vertical padded color="olive" style={{ margin: "10px" }}>
       id: {problem.id}
@@ -371,32 +371,4 @@ export const ProblemItem = ({
       />
     </Segment>
   );
-};
-
-export const getImageHeightWidth = (url) => {
-  console.log("url ====", url);
-  return new Promise((resolve, reject) => {
-    // let img = new Image();
-    // let img = new Image(200,200);
-    // img.crossOrigin = "anonymous";
-    const img = document.createElement("img");
-    // img.width = 200
-    // img.height =300
-    img.src = url;
-    img.onload = () => {
-      console.log("in onload----");
-      const { naturalWidth, naturalHeight } = img;
-      // console.log("img ===width", img.width, "height", img.height);
-      console.log("nnnnnnnnnnnnnnnn", naturalWidth, naturalHeight);
-      resolve({ width: naturalWidth, height: naturalHeight });
-    };
-    img.onerror = function (error) {
-      //display error
-      console.log("error ===", error);
-      resolve({ width: 0, height: 0 });
-      // document.body.appendChild(
-      //     document.createTextNode('\nError loading as image: ' + this.src)
-      // );
-    };
-  });
 };

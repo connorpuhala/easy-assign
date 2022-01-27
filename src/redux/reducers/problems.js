@@ -116,9 +116,19 @@ const prolems = (state = initialState, action) => {
         isEditProblem: true,
       };
     case types.EDIT_PROBLEM_SUCCESS:
+      console.log("EDIT_PROBLEM_SUCCESS ===", action.payload)
+      let oldProblems =  state.problems
+      // let index = oldProblems.findIndex(i => action.payload[0].id === i.id)
+      // if(index > -1){
+      //   console.log("replace here")
+      //   oldProblems.splice(index, 1, {})
+      // }
       return {
         ...state,
         isEditProblem: false,
+        // prolems: {
+        //   ...oldProblems
+        // }
       };
 
     case types.EDIT_PROBLEM_ERROR:
