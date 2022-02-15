@@ -17,8 +17,10 @@ const Tags = ({
   mode,
   getSelectedTags,
   selectedTagIds,
+  tagList,
 }) => {
   const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedTagsList, setSelectedTagsList] = useState([]);
   useEffect(() => {
     if (!tags.length) {
       getAllTags();
@@ -28,31 +30,39 @@ const Tags = ({
   useEffect(() => {
     if (selectedTagIds && selectedTagIds.length) {
       setSelectedTags([...selectedTagIds]);
+      setSelectedTagsList([...tagList]);
     }
   }, [selectedTagIds]);
 
-  const selectTagOnChangeHandler = (checked, tagId) => {
+  const selectTagOnChangeHandler = (checked, tag) => {
+    const tagId = tag.id;
     if (checked) {
       selectedTags.push(tagId);
+      selectedTagsList.push(tag);
       setSelectedTags([...selectedTags]);
+      setSelectedTagsList([...selectedTagsList]);
       if (mode === "listing") {
         getProblemsByTags({ tag_ids: selectedTags });
       } else {
-        getSelectedTags(selectedTags);
+        getSelectedTags({ selectedTags, selectedTagsList });
       }
     } else {
       let existingTagIndex = selectedTags.findIndex((i) => i === tagId);
       if (existingTagIndex > -1) {
         selectedTags.splice(existingTagIndex, 1);
+        selectedTagsList.splice(existingTagIndex, 1);
+        setSelectedTagsList([...selectedTagsList]);
         setSelectedTags([...selectedTags]);
         if (mode === "listing") {
           getProblemsByTags({ tag_ids: selectedTags });
         } else {
-          getSelectedTags(selectedTags);
+          getSelectedTags({ selectedTags, selectedTagsList });
         }
       }
     }
   };
+
+  console.log("@selectedTagsList at tags ===", selectedTagsList);
   return (
     <Grid.Row columns={mode === "modal" ? 2 : 3}>
       {isGetAllTags && <LoaderWithinWrapper />}
@@ -101,7 +111,7 @@ const TagItem = ({ tag, selectTagOnChangeHandler, selectedTags }) => {
         checked={selectedTags.includes(tag.id)}
         onChange={(e, data) => {
           // setChecked(data.checked)
-          selectTagOnChangeHandler(data.checked, tag.id);
+          selectTagOnChangeHandler(data.checked, tag);
         }}
       />
     </Grid.Column>

@@ -64,7 +64,8 @@ const Problems = ({
   };
 
   const createProblemHandler = ({ data, mode, newTag }) => {
-    console.log("data ===", data);
+    console.log("createProblemHandler ===", { data, mode, newTag });
+    debugger
     if (mode === "Create") {
       if (newTag !== "") {
         let body = {
@@ -76,7 +77,8 @@ const Problems = ({
             let body = {
               ...data,
               image: data.image.split(",")[1],
-              tag_ids: [...data.tag_ids, action.payload[0].id],
+              // tag_ids: [...data.tag_ids, action.payload[0].id],
+              tag: [...data.tag, action.payload[0]],
             };
             createProblem(body).then((action) => {
               if (action.type === "CREATE_PROBLEM_SUCCESS") {
@@ -102,6 +104,7 @@ const Problems = ({
         let body = {
           ...data,
           image: data.image.split(",")[1],
+          tag: data.tag,
         };
         createProblem(body).then((action) => {
           if (action.type === "CREATE_PROBLEM_SUCCESS") {
@@ -125,7 +128,8 @@ const Problems = ({
     } else {
       const id = data.id;
       const cloneData = {
-        tag_ids: data.tag_ids,
+        // tag_ids: data.tag_ids,
+        tag: data.tag,
         image: data.image,
         answer: data.answer,
       };
@@ -325,7 +329,7 @@ export const ProblemItem = ({
   const onConfirmBoxCancel = (v, d) => {
     setIsConfirmBox(false);
   };
-  console.log("problem ------", problem);
+  // console.log("problem ------", problem);
   return (
     <Segment raised vertical padded color="olive" style={{ margin: "10px" }}>
       id: {problem.id}

@@ -25,17 +25,24 @@ const CreateProblemModal = ({
   isCreateProblem,
   isEditProblem,
 }) => {
+  console.log("selectedProblem ====", selectedProblem);
   const [problemData, setProblemData] = useState({
     image: null,
     tag_ids: [],
     answer: "",
+    tag: [],
   });
   const [newTag, setNewTag] = useState("");
   let inputRef = useRef(null);
-  const getSelectedTags = (tags) => {
+  const getSelectedTags = ({ selectedTags, selectedTagsList }) => {
+    console.log("@getSelectedTags ==== tags", {
+      selectedTags,
+      selectedTagsList,
+    });
     setProblemData({
       ...problemData,
-      tag_ids: tags,
+      tag_ids: selectedTags,
+      tag: selectedTagsList,
     });
   };
 
@@ -50,10 +57,13 @@ const CreateProblemModal = ({
         tag_ids: tag_ids,
         answer: selectedProblem.answer,
         id: selectedProblem.id,
+        tag: selectedProblem.tag,
       });
     }
   }, []);
   useEffect(() => {}, [inputRef]);
+
+  console.log("problemData ====", problemData);
 
   const onChangeFileHandler = (e) => {
     let file = e.target.files && e.target.files[0];
@@ -175,6 +185,7 @@ const CreateProblemModal = ({
             mode="modal"
             getSelectedTags={getSelectedTags}
             selectedTagIds={problemData.tag_ids}
+            tagList={problemData.tag}
           />
         </Modal.Description>
       </Modal.Content>
