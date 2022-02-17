@@ -15,7 +15,10 @@ const Signup = ({}) => {
 
   const signupHandler = ({ values }) => {
     dispatch(signupUser(values)).then((action) => {
-      console.log("action ====", action);
+      if (action.type === "USER_SIGNUP_SUCCESS") {
+        setEasyAssignUser(action.payload);
+        history.push("/problems");
+      }
     });
   };
 
@@ -34,6 +37,7 @@ const Signup = ({}) => {
             lastName: "",
             email: "",
             password: "",
+            type: "student",
           }}
           validationSchema={signupValidationSchema}
           onSubmit={(values, { setSubmitting }) => {

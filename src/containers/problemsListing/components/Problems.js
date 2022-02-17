@@ -65,7 +65,10 @@ const Problems = ({
 
   const createProblemHandler = ({ data, mode, newTag }) => {
     console.log("createProblemHandler ===", { data, mode, newTag });
-    debugger
+    debugger;
+    if(data.tag_ids){
+      delete data.tag_ids
+    }
     if (mode === "Create") {
       if (newTag !== "") {
         let body = {
@@ -171,11 +174,12 @@ const Problems = ({
     createNewTag(body);
   };
 
-  const downloadProblemsPdfHandler = async () => {
+  const downloadProblemsPdfHandler = async (isAnswersLabel) => {
     let pdf = new jsPDF("p", "mm", "a4");
     const margin = 10;
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
+    pdf.setFontSize(8);
     const length = problems.length;
     for (let i = 0; i < length; i++) {
       let { imgWidth, imgHeight } = getImageWidthHeight({
@@ -189,9 +193,18 @@ const Problems = ({
 
       let sw1 = imgWidth * scale;
       let sh1 = imgHeight * scale;
-      let x = 10;
-      let y = 10;
+      let x = 20;
+      let y = 20;
+      if (isAnswersLabel) {
+        // pdf.text(10, 10, `Answer: ${problems[i].answer}`);
+        var splitTitle = pdf.splitTextToSize(
+          `Answer: If you’re benchmarking or experiencing performance problems in your React apps, make sure you’re testing with the minified production build.
 
+          By default, React includes many helpful warnings. These warnings are very useful in development. However, they make React larger and slower so you should make sure to use the production version when you deploy the app.`,
+          pageWidth - 10
+        );
+        pdf.text(10, 10, splitTitle);
+      }
       pdf.addImage(
         problems[i].image_url,
         "JPEG",
@@ -211,7 +224,6 @@ const Problems = ({
   };
 
   const logoutHandler = () => {
-    console.log("@logoutHandler ===");
     removeEasyAssignUser();
     logoutAction();
     emptyStateAfterLogout();
@@ -233,13 +245,31 @@ const Problems = ({
             Create Problem
           </Button>
         ) : null}
-        <Button
+        {/* <Button
           secondary
           disabled={!problems.length}
           onClick={() => downloadProblemsPdfHandler()}
         >
           Download
-        </Button>
+        </Button> */}
+        <Dropdown text="Download" color="#92ada5">
+          <Dropdown.Menu>
+            <Dropdown.Item
+              onClick={() => {
+                downloadProblemsPdfHandler(true);
+              }}
+            >
+              With answers
+            </Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                downloadProblemsPdfHandler(false);
+              }}
+            >
+              Without answers
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
         <Button
           // secondary
           basic

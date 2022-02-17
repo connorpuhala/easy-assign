@@ -10,9 +10,15 @@ export const getAllTags = () => {
     });
     try {
       const { results, count } = await API.getAllTags();
+      const updatedTags = results.map((i) => {
+        return {
+          id: i.id,
+          label: i.label,
+        };
+      });
       return dispatch({
         type: types.GET_ALL_TAGS_SUCCESS,
-        payload: { results, count },
+        payload: { results: updatedTags, count },
       });
     } catch (error) {
       console.log("errorrr getAllTags", error);
