@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { setEasyAssignUser } from "utils/utilities";
 import { LoaderWithinWrapper } from "components/global/loader";
+
 const Login = ({
   loginUser,
   isLogging,
@@ -86,7 +87,7 @@ const Login = ({
           }}
         </Formik>
         <span>
-          Don't have account?{" "}
+          Don't have account?
           <a
             href="/create-account"
             onClick={(e) => {

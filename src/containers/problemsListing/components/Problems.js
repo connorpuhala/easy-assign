@@ -65,106 +65,99 @@ const Problems = ({
 
   const createProblemHandler = ({ data, mode, newTag }) => {
     console.log("createProblemHandler ===", { data, mode, newTag });
-    debugger;
-    if(data.tag_ids){
-      delete data.tag_ids
+    if (data.tag_ids) {
+      delete data.tag_ids;
     }
-    if (mode === "Create") {
-      if (newTag !== "") {
-        let body = {
-          label: newTag,
-        };
-        createNewTag(body).then((action) => {
-          console.log("action ====", action);
-          if (action.type === "CREATE_TAG_SUCCESS") {
-            let body = {
+    if (newTag !== "") {
+      const newTagBody = {
+        label: newTag,
+      };
+      createNewTag(newTagBody).then((action) => {
+        console.log("action ====", action);
+        if (action.type === "CREATE_TAG_SUCCESS") {
+          if (mode === "Create") {
+            const newProblemBody = {
               ...data,
               image: data.image.split(",")[1],
               // tag_ids: [...data.tag_ids, action.payload[0].id],
               tag: [...data.tag, action.payload[0]],
             };
-            createProblem(body).then((action) => {
-              if (action.type === "CREATE_PROBLEM_SUCCESS") {
-                setIsCreateProblemModal({ isOpen: false, mode: "" });
-                createNotification({
-                  type: "success",
-                  title: "Uploaded",
-                  msg: "Problem uploaded successfully.",
-                  // timeout: 6000,
-                });
-              } else {
-                createNotification({
-                  type: "danger",
-                  title: "Something went wrong!",
-                  msg: "Please try again.",
-                  timeout: 6000,
-                });
-              }
-            });
+            createNewProblemCall(newProblemBody);
+          } else {
+            editProblemCall(data, action.payload[0]);
           }
-        });
-      } else {
-        let body = {
+        }
+      });
+    } else {
+      if (mode === "Create") {
+        const body = {
           ...data,
           image: data.image.split(",")[1],
           tag: data.tag,
         };
-        createProblem(body).then((action) => {
-          if (action.type === "CREATE_PROBLEM_SUCCESS") {
-            setIsCreateProblemModal({ isOpen: false, mode: "" });
-            createNotification({
-              type: "success",
-              title: "Uploaded",
-              msg: "Problem uploaded successfully.",
-              // timeout: 6000,
-            });
-          } else {
-            createNotification({
-              type: "danger",
-              title: "Something went wrong!",
-              msg: "Please try again.",
-              timeout: 6000,
-            });
-          }
+        createNewProblemCall(body);
+      } else {
+        editProblemCall(data);
+      }
+    }
+  };
+
+  const createNewProblemCall = (body) => {
+    createProblem(body).then((action) => {
+      if (action.type === "CREATE_PROBLEM_SUCCESS") {
+        setIsCreateProblemModal({ isOpen: false, mode: "" });
+        createNotification({
+          type: "success",
+          title: "Uploaded",
+          msg: "Problem uploaded successfully.",
+          // timeout: 6000,
+        });
+      } else {
+        createNotification({
+          type: "danger",
+          title: "Something went wrong!",
+          msg: "Please try again.",
+          timeout: 6000,
         });
       }
-    } else {
-      const id = data.id;
-      const cloneData = {
-        // tag_ids: data.tag_ids,
-        tag: data.tag,
-        image: data.image,
-        answer: data.answer,
-      };
+    });
+  };
 
-      if (isValidHttpUrl(cloneData.image)) {
-        delete cloneData.image;
-      } else {
-        cloneData.image = cloneData.image.split(",")[1];
-      }
-      let body = {
-        ...cloneData,
-      };
-      editProblem(body, id).then((action) => {
-        console.log("action edit =====", action);
-        if (action.type === "EDIT_PROBLEM_SUCCESS") {
-          setIsCreateProblemModal({ isOpen: false, mode: "" });
-          createNotification({
-            type: "success",
-            title: "Updated",
-            msg: "Problem updated successfully.",
-            // timeout: 6000,
-          });
-        } else {
-          createNotification({
-            type: "danger",
-            title: "Something went wrong!",
-            msg: "Please try again.",
-            timeout: 6000,
-          });
-        }
-      });
+  const editProblemCall = (data, newAddedTag) => {
+    const id = data.id;
+    const cloneData = {
+      tag: newAddedTag ? [...data.tag, newAddedTag] : data.tag,
+      image: data.image,
+      answer: data.answer,
+    };
+
+    if (isValidHttpUrl(cloneData.image)) {
+      delete cloneData.image;
+    } else {
+      cloneData.image = cloneData.image.split(",")[1];
     }
+    const body = {
+      ...cloneData,
+    };
+    editProblem(body, id).then((action) => {
+      console.log("action edit =====", action);
+      if (action.type === "EDIT_PROBLEM_SUCCESS") {
+        setIsCreateProblemModal({ isOpen: false, mode: "" });
+        createNotification({
+          type: "success",
+          title: "Updated",
+          msg: "Problem updated successfully.",
+          // timeout: 6000,
+        });
+      } else {
+        createNotification({
+          type: "danger",
+          title: "Something went wrong!",
+          msg: "Please try again.",
+          timeout: 6000,
+        });
+      }
+    });
   };
 
   const createNewTagHandler = (newTag) => {
@@ -245,13 +238,19 @@ const Problems = ({
             Create Problem
           </Button>
         ) : null}
-        {/* <Button
-          secondary
-          disabled={!problems.length}
-          onClick={() => downloadProblemsPdfHandler()}
-        >
-          Download
-        </Button> */}
+        {user && user.type === "admin" ? (
+          <Button
+            primary
+            onClick={() =>
+              createProblemModalHandler({
+                isOpen: true,
+                mode: "Create",
+              })
+            }
+          >
+            Create new Tag 
+          </Button>
+        ) : null}
         <Dropdown text="Download" color="#92ada5">
           <Dropdown.Menu>
             <Dropdown.Item
@@ -271,7 +270,6 @@ const Problems = ({
           </Dropdown.Menu>
         </Dropdown>
         <Button
-          // secondary
           basic
           color="red"
           onClick={() => logoutHandler()}

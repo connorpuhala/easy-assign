@@ -8,6 +8,8 @@ import Problems from "./components/Problems";
 const ProblemsListing = ({ user }) => {
   return (
     <Container>
+      <h1>Easy Asign</h1>
+      <h3>Problems at your fingertips - SAT/ACT</h3>
       <Grid divided="vertically">
         <Tags mode="listing" />
         <Problems />
