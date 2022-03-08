@@ -23,108 +23,106 @@ const Signup = ({}) => {
   };
 
   return (
-    <Grid centered columns={4} style={{ paddingTop: "20px" }}>
-      <Grid.Column>
-        {signupStatus === "loading" && (
-          <LoaderWithinWrapper text="creating user..." />
-        )}
-        {signupStatus === "failed" && (
-          <Message error header="" content={signupErrorMsg} />
-        )}
-        <Formik
-          initialValues={{
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
-            type: "student",
+    <Grid centered columns={4}>
+      {signupStatus === "loading" && (
+        <LoaderWithinWrapper text="creating user..." />
+      )}
+      {signupStatus === "failed" && (
+        <Message error header="" content={signupErrorMsg} />
+      )}
+      <Formik
+        initialValues={{
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          type: "student",
+        }}
+        validationSchema={signupValidationSchema}
+        onSubmit={(values, { setSubmitting }) => {
+          signupHandler({ values });
+        }}
+        validateOnChange={false}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          /* and other goodies */
+        }) => {
+          return (
+            <Form onSubmit={handleSubmit}>
+              <Form.Field>
+                <Form.Input
+                  name="firstName"
+                  placeholder="First name"
+                  type="text"
+                  onChange={handleChange}
+                  error={errors.firstName !== undefined}
+                />
+                {errors.firstName !== undefined && (
+                  <span className="input-error-text">{errors.firstName}</span>
+                )}
+              </Form.Field>
+              <Form.Field>
+                <Form.Input
+                  name="lastName"
+                  placeholder="Last name"
+                  type="text"
+                  onChange={handleChange}
+                  error={errors.lastName !== undefined}
+                />
+                {errors.lastName !== undefined && (
+                  <span className="input-error-text">{errors.lastName}</span>
+                )}
+              </Form.Field>
+              <Form.Field>
+                <Form.Input
+                  name="email"
+                  placeholder="Email"
+                  type="text"
+                  onChange={handleChange}
+                  error={errors.email !== undefined}
+                />
+                {errors.email !== undefined && (
+                  <span className="input-error-text">{errors.email}</span>
+                )}
+              </Form.Field>
+              <Form.Field>
+                <Form.Input
+                  name="password"
+                  placeholder="Password"
+                  type="password"
+                  onChange={handleChange}
+                  error={errors.password !== undefined}
+                />
+                {errors.password !== undefined && (
+                  <span className="input-error-text">{errors.password}</span>
+                )}
+              </Form.Field>
+              <Button primary type="submit">
+                Submit
+              </Button>
+            </Form>
+          );
+        }}
+      </Formik>
+      <span>
+        Already have an account?{" "}
+        <a
+          href="/create-account"
+          onClick={(e) => {
+            e.preventDefault();
+            history.push("/login");
           }}
-          validationSchema={signupValidationSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            signupHandler({ values });
-          }}
-          validateOnChange={false}
         >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-            /* and other goodies */
-          }) => {
-            return (
-              <Form onSubmit={handleSubmit}>
-                <Form.Field>
-                  <Form.Input
-                    name="firstName"
-                    placeholder="First name"
-                    type="text"
-                    onChange={handleChange}
-                    error={errors.firstName !== undefined}
-                  />
-                  {errors.firstName !== undefined && (
-                    <span className="input-error-text">{errors.firstName}</span>
-                  )}
-                </Form.Field>
-                <Form.Field>
-                  <Form.Input
-                    name="lastName"
-                    placeholder="Last name"
-                    type="text"
-                    onChange={handleChange}
-                    error={errors.lastName !== undefined}
-                  />
-                  {errors.lastName !== undefined && (
-                    <span className="input-error-text">{errors.lastName}</span>
-                  )}
-                </Form.Field>
-                <Form.Field>
-                  <Form.Input
-                    name="email"
-                    placeholder="Email"
-                    type="text"
-                    onChange={handleChange}
-                    error={errors.email !== undefined}
-                  />
-                  {errors.email !== undefined && (
-                    <span className="input-error-text">{errors.email}</span>
-                  )}
-                </Form.Field>
-                <Form.Field>
-                  <Form.Input
-                    name="password"
-                    placeholder="Password"
-                    type="password"
-                    onChange={handleChange}
-                    error={errors.password !== undefined}
-                  />
-                  {errors.password !== undefined && (
-                    <span className="input-error-text">{errors.password}</span>
-                  )}
-                </Form.Field>
-                <Button primary type="submit">
-                  Submit
-                </Button>
-              </Form>
-            );
-          }}
-        </Formik>
-        <span>
-          Already have an account?{" "}
-          <a
-            href="/create-account"
-            onClick={(e) => {
-              e.preventDefault();
-              history.push("/login");
-            }}
-          >
-            Login
-          </a>
-        </span>
-      </Grid.Column>
+          Login
+        </a>
+      </span>
     </Grid>
   );
 };

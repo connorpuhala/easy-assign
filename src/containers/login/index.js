@@ -7,7 +7,9 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { setEasyAssignUser } from "utils/utilities";
 import { LoaderWithinWrapper } from "components/global/loader";
-
+import LogoImg from "../../images/Logo.svg";
+import { ReactComponent as MailIconSvg } from "../../images/msg.svg";
+import { ReactComponent as PasswordIconSvg } from "../../images/password.svg";
 const Login = ({
   loginUser,
   isLogging,
@@ -29,8 +31,14 @@ const Login = ({
   };
 
   return (
-    <Grid centered columns={4} style={{ paddingTop: "20px" }}>
-      <Grid.Column>
+    <div className="login_container">
+      <div className="login_detail">
+        <div className="login_logo">
+          <img src={LogoImg} alt="logo" />
+        </div>
+        <div class="login_heading">
+          <h1>Login your account</h1>
+        </div>
         {isLogging && <LoaderWithinWrapper text="Logging in..." />}
         {isLoggingError && (
           <Message error header="" content={isLoggingErrorMsg} />
@@ -54,11 +62,15 @@ const Login = ({
             /* and other goodies */
           }) => {
             return (
-              <Form onSubmit={handleSubmit}>
-                <Form.Field>
-                  <Form.Input
+              <form onSubmit={handleSubmit}>
+                <div className="field_input">
+                  <label>Email</label>
+                  <span className="field_icon">
+                    <MailIconSvg />
+                  </span>
+                  <input
                     name="email"
-                    placeholder="Email"
+                    placeholder="Your email address"
                     type="text"
                     onChange={handleChange}
                     error={errors.email !== undefined}
@@ -66,9 +78,13 @@ const Login = ({
                   {errors.email !== undefined && (
                     <span className="input-error-text">{errors.email}</span>
                   )}
-                </Form.Field>
-                <Form.Field>
-                  <Form.Input
+                </div>
+                <div className="field_input mb-0">
+                  <label>Password</label>
+                  <span className="field_icon">
+                    <PasswordIconSvg />
+                  </span>
+                  <input
                     name="password"
                     placeholder="Password"
                     type="password"
@@ -78,15 +94,34 @@ const Login = ({
                   {errors.password !== undefined && (
                     <span className="input-error-text">{errors.password}</span>
                   )}
-                </Form.Field>
-                <Button primary type="submit">
-                  Submit
-                </Button>
-              </Form>
+                </div>
+                <div className="remeber_me_forgot">
+                  <div className="remeber_check">
+                    <div className="check_box login-check">
+                      <div className="geners_check">
+                        <input
+                          type="checkbox"
+                          id="check"
+                          className="custom-control-input"
+                        />
+                        <label for="check" className="geners_chek_label">
+                          Remember me
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="forgot">
+                    <a href="javascript:;">Forgot password?</a>
+                  </div>
+                </div>
+                <button primary type="submit" className="login_btn">
+                  Login
+                </button>
+              </form>
             );
           }}
         </Formik>
-        <span>
+        <span className="accont_info">
           Don't have account?
           <a
             href="/create-account"
@@ -98,8 +133,8 @@ const Login = ({
             Create Account
           </a>
         </span>
-      </Grid.Column>
-    </Grid>
+      </div>
+    </div>
   );
 };
 

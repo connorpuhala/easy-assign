@@ -1,3 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+body {
+    font-family: 'Rubik', sans-serif;
+}
+
 .input-error-text {
-  color: #9f3a38;
+    color: #c43936;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.splash_bg {
+    background-image: url(../images/splash_bg.png);
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.splash_enterapp {
+    display: flex;
+    flex-direction: column;
+}
+
+.splash_enterapp button {
+    width: 210px;
+    height: 48px;
+    border-radius: 5px;
+    margin-top: 20px;
+    background-color: #4088C4;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 300;
+    transition: 0.3s all;
+    box-shadow: 0px 4px 23px 0px rgba(64, 136, 196, .3);
+}
+
+button:hover {
+    background-color: #3B91D9;
+}
+
+.login_container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login_logo {
+    text-align: center;
+}
+
+.login_heading h1 {
+    font-size: 28px;
+    font-weight: 500;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.field_input {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.field_input label {
+    width: 100%;
+    color: #4B4B4B;
+    font-size: 15px;
+    font-weight: 300;
+    margin-bottom: 5px;
+}
+
+.field_input input {
+    width: 100%;
+    border: 1px solid #919191;
+    border-radius: 5px;
+    height: 50px;
+    padding-left: 50px;
+}
+
+.field_icon {
+    position: absolute;
+    left: 15px;
+    top: 40px;
+}
+
+.field_input input {
+    color: #000;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.login_detail {
+    width: 450px;
+}
+
+.login_heading {
+    text-align: center;
+}
+
+input:focus-visible {
+    outline: none;
+}
+
+.login_btn {
+    width: 100%;
+    height: 48px;
+    border-radius: 5px;
+    margin-top: 5px;
+    background-color: #4088C4;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 300;
+    transition: 0.3s all;
+    box-shadow: 0px 4px 23px 0px rgba(64, 136, 196, .3);
+}
+
+button:hover {
+    background-color: #3B91D9;
+}
+
+.accont_info {
+    text-align: center;
+    width: 100%;
+    display: inline-block;
+    margin-top: 18px;
+    color: #4B4B4B;
+    font-size: 15px;
+}
+
+.accont_info a {
+    color: #136F63;
+    text-decoration: none;
+}
+
+.geners_check {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.custom-control-input {
+    position: absolute;
+    left: 0;
+    z-index: -1;
+    width: 1rem;
+    height: 1.25rem;
+    opacity: 0;
+}
+
+.geners_chek_label {
+    margin-bottom: 0;
+    color: #4B4B4B;
+    font-size: 15px;
+    font-weight: 300;
+    padding-left: 30px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.geners_chek_label::after {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    display: block;
+    width: 19px;
+    height: 19px;
+    content: "";
+    border: 1px solid #C7C7C7;
+    border-radius: 3px;
+}
+
+.custom-control-input:checked~.geners_chek_label::before {
+    content: "";
+    background-image: url(../images/check_icon.svg);
+    position: absolute;
+    width: 12px;
+    height: 9px;
+    left: 4px;
+    top: 7px;
+    background-repeat: no-repeat;
+}
+
+.remeber_me_forgot {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.forgot a {
+    color: #BAC0C9;
+    font-size: 15px;
+    text-decoration: none;
+    font-weight: 300;
 }

@@ -1,11 +1,13 @@
 import { useHistory } from "react-router-dom";
-
+import LogoImg from "../../images/Logo.svg";
 const SplashScreen = () => {
   const history = useHistory();
   return (
-    <div>
-      <h1>Easy asign</h1>
-      <h3 onClick={() => history.push("/login")}>Enter app</h3>
+    <div className="splash_bg">
+      <div className="splash_enterapp">
+        <img src={LogoImg} alt="logo" />
+        <button onClick={() => history.push("/login")}>Enter app</button>
+      </div>
     </div>
   );
 };
