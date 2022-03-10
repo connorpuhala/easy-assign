@@ -1,4 +1,3 @@
-import { Grid, Button, Form, Message } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import { Formik } from "formik";
 import { loginValidationSchema } from "utils/validations";
@@ -10,6 +9,7 @@ import { LoaderWithinWrapper } from "components/global/loader";
 import LogoImg from "../../images/Logo.svg";
 import { ReactComponent as MailIconSvg } from "../../images/msg.svg";
 import { ReactComponent as PasswordIconSvg } from "../../images/password.svg";
+
 const Login = ({
   loginUser,
   isLogging,
@@ -40,9 +40,7 @@ const Login = ({
           <h1>Login your account</h1>
         </div>
         {isLogging && <LoaderWithinWrapper text="Logging in..." />}
-        {isLoggingError && (
-          <Message error header="" content={isLoggingErrorMsg} />
-        )}
+        {isLoggingError && <div>{isLoggingErrorMsg}</div>}
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={loginValidationSchema}
