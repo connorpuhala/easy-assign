@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="20px" viewBox="0 0 19 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>user(4)</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.143824 0 0 0 0 0.143824 0 0 0 0 0.143824 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="user(4)" transform="translate(-442.000000, -253.000000)" filter="url(#filter-1)">
+            <g transform="translate(443.900000, 254.000000)">
+                <path d="M15.84,17.82 L15.84,15.84 C15.84,13.6529524 14.0670476,11.88 11.88,11.88 L3.96,11.88 C1.77295239,11.88 0,13.6529524 0,15.84 L0,17.82" id="Path" stroke="#000000" stroke-width="1.98"></path>
+                <circle id="Oval" stroke="#000000" stroke-width="1.98" cx="7.92" cy="3.96" r="3.96"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

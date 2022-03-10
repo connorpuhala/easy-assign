@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Checkbox } from "semantic-ui-react";
+
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getEasyAssignUser } from "utils/utilities";
@@ -64,19 +64,21 @@ const Tags = ({
 
   console.log("@selectedTagsList at tags ===", selectedTagsList);
   return (
-    <Grid.Row columns={mode === "modal" ? 2 : 3}>
-      {isGetAllTags && <LoaderWithinWrapper />}
-      {tags.length
-        ? tags.map((tag, index) => (
-            <TagItem
-              key={tag.id}
-              tag={tag}
-              selectedTags={selectedTags}
-              selectTagOnChangeHandler={selectTagOnChangeHandler}
-            />
-          ))
-        : "No tags found"}
-    </Grid.Row>
+    <div className="tag_bg" columns={mode === "modal" ? 2 : 3}>
+      <ul>
+        {isGetAllTags && <LoaderWithinWrapper />}
+        {tags.length
+          ? tags.map((tag, index) => (
+              <TagItem
+                key={tag.id}
+                tag={tag}
+                selectedTags={selectedTags}
+                selectTagOnChangeHandler={selectTagOnChangeHandler}
+              />
+            ))
+          : "No tags found"}
+      </ul>
+    </div>
   );
 };
 
@@ -104,16 +106,18 @@ export default connect(mapStateToProps, mapDispatch)(Tags);
 
 const TagItem = ({ tag, selectTagOnChangeHandler, selectedTags }) => {
   return (
-    <Grid.Column>
-      id: {tag.id}
-      <Checkbox
-        label={{ children: tag.label }}
-        checked={selectedTags.includes(tag.id)}
-        onChange={(e, data) => {
-          // setChecked(data.checked)
-          selectTagOnChangeHandler(data.checked, tag);
-        }}
-      />
-    </Grid.Column>
+    <>
+      <li>{tag.label}</li>
+
+      {/* <input
+          type="checkbox"
+          label={{ children: tag.label }}
+          checked={selectedTags.includes(tag.id)}
+          onChange={(e, data) => {
+            // setChecked(data.checked)
+            selectTagOnChangeHandler(data.checked, tag);
+          }}
+        /> */}
+    </>
   );
 };

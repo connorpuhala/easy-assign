@@ -199,3 +199,101 @@ button:hover {
     text-decoration: none;
     font-weight: 300;
 }
+
+.top_logo {
+    margin-top: 45px;
+    text-align: center;
+}
+
+.problem_heading h3 {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 17px;
+    font-weight: 400;
+}
+
+.top_buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.create_prob {
+    width: 153px;
+    height: 43px;
+    background-color: #032B43;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 300;
+    transition: 0.3s all;
+    margin-right: 15px;
+}
+
+.create_prob:hover {
+    background-color: #044F80;
+}
+
+.create_new_tag {
+    background-color: #FFBA09;
+    width: 153px;
+    height: 43px;
+    border: none;
+    border-radius: 5px;
+    color: #FFF;
+    font-size: 15px;
+    font-weight: 300;
+    transition: 0.3s all;
+}
+
+.create_new_tag:hover {
+    background-color: #FFC83B;
+}
+
+.logout_btn {
+    width: 153px;
+    height: 43px;
+    background-color: #D00001;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: 300;
+    transition: 0.3s all;
+}
+
+.logout_btn:hover {
+    background-color: #EE0708;
+}
+
+.tag_bg {
+    background-color: #F7F7F7;
+    padding: 15px 15px 0 15px;
+}
+
+.tag_bg ul {
+    margin: 0;
+    padding: 00;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tag_bg ul li {
+    list-style: none;
+    margin-right: 10px;
+    background-color: #E5E5E5;
+    color: #464646;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s all;
+    margin-bottom: 10px;
+}
+
+.tag_bg ul li:hover {
+    background-color: #4088C4;
+    color: #fff;
+}

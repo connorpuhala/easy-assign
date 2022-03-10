@@ -7,6 +7,8 @@ import { LoaderWithinWrapper } from "components/global/loader";
 import { useDispatch, useSelector } from "react-redux";
 import { signupSelector } from "redux/selectors";
 import { ReactComponent as MailIconSvg } from "../../images/msg.svg";
+import { ReactComponent as UserIconSvg } from "../../images/user-check.svg";
+import LogoImg from "../../images/Logo.svg";
 import { ReactComponent as PasswordIconSvg } from "../../images/password.svg";
 
 const Signup = ({}) => {
@@ -26,6 +28,9 @@ const Signup = ({}) => {
   return (
     <div className="login_container">
       <div className="login_detail">
+        <div className="login_logo">
+          <img src={LogoImg} alt="logo" />
+        </div>
         {signupStatus === "loading" && (
           <LoaderWithinWrapper text="creating user..." />
         )}
@@ -57,6 +62,10 @@ const Signup = ({}) => {
             return (
               <form onSubmit={handleSubmit}>
                 <div className="field_input">
+                  <label>First Name</label>
+                  <span className="field_icon">
+                    <UserIconSvg />
+                  </span>
                   <input
                     name="firstName"
                     placeholder="First name"
@@ -69,6 +78,10 @@ const Signup = ({}) => {
                   )}
                 </div>
                 <div className="field_input">
+                  <label>Last Name</label>
+                  <span className="field_icon">
+                    <UserIconSvg />
+                  </span>
                   <input
                     name="lastName"
                     placeholder="Last name"
@@ -112,12 +125,14 @@ const Signup = ({}) => {
                     <span className="input-error-text">{errors.password}</span>
                   )}
                 </div>
-                <button type="submit">Submit</button>
+                <button type="submit" className="login_btn">
+                  Submit
+                </button>
               </form>
             );
           }}
         </Formik>
-        <span>
+        <span className="accont_info">
           Already have an account?{" "}
           <a
             href="/create-account"
