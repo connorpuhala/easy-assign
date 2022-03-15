@@ -8,7 +8,7 @@ import { useRef } from "react";
 const ProblemsListing = ({ user }) => {
   const createProblemBtnRef = useRef(null);
   const createNewTagBtnRef = useRef(null);
-
+  const logoutBtnRef = useRef(null);
   return (
     <div className="container">
       <div className="row">
@@ -22,21 +22,45 @@ const ProblemsListing = ({ user }) => {
         </div>
         <div className="top_buttons">
           <div className="prob_tag">
-            <button className="create_prob" ref={createProblemBtnRef}>
+            <button
+              className="create_prob"
+              onClick={() => {
+                if (createProblemBtnRef?.current) {
+                  createProblemBtnRef.current.click();
+                }
+              }}
+            >
               Create Problem
             </button>
-            <button className="create_new_tag" ref={createNewTagBtnRef}>
+            <button
+              className="create_new_tag"
+              onClick={() => {
+                if (createNewTagBtnRef?.current) {
+                  createNewTagBtnRef.current.click();
+                }
+              }}
+            >
               Create new Tag
             </button>
           </div>
           <div className="logout">
-            <button className="logout_btn">Logout</button>
+            <button
+              className="logout_btn"
+              onClick={() => {
+                if (logoutBtnRef?.current) {
+                  logoutBtnRef.current.click();
+                }
+              }}
+            >
+              Logout
+            </button>
           </div>
         </div>
         <Tags mode="listing" />
         <Problems
           createProblemBtnRef={createProblemBtnRef}
           createNewTagBtnRef={createNewTagBtnRef}
+          logoutBtnRef={logoutBtnRef}
         />
       </div>
     </div>

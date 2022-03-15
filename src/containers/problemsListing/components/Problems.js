@@ -39,6 +39,7 @@ const Problems = ({
   emptyStateAfterLogout,
   createProblemBtnRef,
   createNewTagBtnRef,
+  logoutBtnRef,
 }) => {
   const history = useHistory();
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
@@ -230,10 +231,10 @@ const Problems = ({
 
   const createNewTagModalHandler = (val) => {
     // createNewTagBtnRef
-    console.log("createNewTagBtnRef==", createNewTagBtnRef)
+    console.log("createNewTagBtnRef==", createNewTagBtnRef);
     // if(createNewTagBtnRef?.current){
-      // createNewTagBtnRef.current.click()
-      setIsCreateTagModal(val);
+    // createNewTagBtnRef.current.click()
+    setIsCreateTagModal(val);
     // }
   };
 
@@ -242,7 +243,8 @@ const Problems = ({
       <Grid.Row columns={3}>
         {user && user.type === "admin" ? (
           <button
-            // className="d-none"
+            className="d-none"
+            ref={createProblemBtnRef}
             onClick={() =>
               createProblemModalHandler({
                 isOpen: true,
@@ -254,7 +256,11 @@ const Problems = ({
           </button>
         ) : null}
         {user && user.type === "admin" ? (
-          <button onClick={() => createNewTagModalHandler(true)}>
+          <button
+            className="d-none"
+            onClick={() => createNewTagModalHandler(true)}
+            ref={createNewTagBtnRef}
+          >
             Create new Tag
           </button>
         ) : null}
@@ -276,9 +282,13 @@ const Problems = ({
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <Button basic color="red" onClick={() => logoutHandler()}>
+        <button
+          className="d-none"
+          ref={logoutBtnRef}
+          onClick={() => logoutHandler()}
+        >
           Logout
-        </Button>
+        </button>
       </Grid.Row>
       <Grid.Row columns={3}>
         {isGetProblemsByTags ? <LoaderWithinWrapper /> : null}
