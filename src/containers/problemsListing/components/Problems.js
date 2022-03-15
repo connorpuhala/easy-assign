@@ -240,7 +240,7 @@ const Problems = ({
 
   return (
     <>
-      <Grid.Row columns={3}>
+      <div columns={3}>
         {user && user.type === "admin" ? (
           <button
             className="d-none"
@@ -264,24 +264,24 @@ const Problems = ({
             Create new Tag
           </button>
         ) : null}
-        <Dropdown text="Download" color="#92ada5">
-          <Dropdown.Menu>
-            <Dropdown.Item
+        <div text="Download" color="#92ada5">
+          <div>
+            <div
               onClick={() => {
                 downloadProblemsPdfHandler(true);
               }}
             >
               With answers
-            </Dropdown.Item>
-            <Dropdown.Item
+            </div>
+            <div
               onClick={() => {
                 downloadProblemsPdfHandler(false);
               }}
             >
               Without answers
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+            </div>
+          </div>
+        </div>
         <button
           className="d-none"
           ref={logoutBtnRef}
@@ -289,8 +289,8 @@ const Problems = ({
         >
           Logout
         </button>
-      </Grid.Row>
-      <Grid.Row columns={3}>
+      </div>
+      <div columns={3}>
         {isGetProblemsByTags ? <LoaderWithinWrapper /> : null}
         <div>
           {problems.length
@@ -320,7 +320,7 @@ const Problems = ({
           isOpen={isCreateTagModal}
           toggle={createNewTagModalHandler}
         />
-      </Grid.Row>
+      </div>
     </>
   );
 };
@@ -376,7 +376,14 @@ export const ProblemItem = ({
   };
   // console.log("problem ------", problem);
   return (
-    <Segment raised vertical padded color="olive" style={{ margin: "10px" }}>
+    <div
+      className="class"
+      raised
+      vertical
+      padded
+      color="olive"
+      style={{ margin: "10px" }}
+    >
       id: {problem.id}
       <br />
       answer: {problem.answer}
@@ -390,9 +397,9 @@ export const ProblemItem = ({
         onError={() => setIsLoading(false)}
       />
       {user && user.type === "admin" ? (
-        <Dropdown text="Edit">
-          <Dropdown.Menu>
-            <Dropdown.Item
+        <div text="Edit">
+          <div>
+            <div
               onClick={() => {
                 createProblemModalHandler({
                   isOpen: true,
@@ -402,22 +409,22 @@ export const ProblemItem = ({
               }}
             >
               Edit
-            </Dropdown.Item>
-            <Dropdown.Item
+            </div>
+            <div
               onClick={() => {
                 setIsConfirmBox(true);
               }}
             >
               Delete
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+            </div>
+          </div>
+        </div>
       ) : null}
       <Confirm
         open={isConfirmBox}
         onCancel={onConfirmBoxCancel}
         onConfirm={() => onConfirmBoxDelete(problem.id)}
       />
-    </Segment>
+    </div>
   );
 };
