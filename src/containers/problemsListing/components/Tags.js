@@ -34,8 +34,9 @@ const Tags = ({
     }
   }, [selectedTagIds]);
 
-  const selectTagOnChangeHandler = (checked, tag) => {
+  const selectTagOnChangeHandler = (tag) => {
     const tagId = tag.id;
+    const checked = !selectedTags.includes(tag.id)
     if (checked) {
       selectedTags.push(tagId);
       selectedTagsList.push(tag);
@@ -62,7 +63,7 @@ const Tags = ({
     }
   };
 
-  console.log("@selectedTagsList at tags ===", selectedTagsList);
+  // console.log("@selectedTagsList at tags ===", selectedTagsList);
   return (
     <div className="tag_bg" columns={mode === "modal" ? 2 : 3}>
       <ul>
@@ -107,7 +108,14 @@ export default connect(mapStateToProps, mapDispatch)(Tags);
 const TagItem = ({ tag, selectTagOnChangeHandler, selectedTags }) => {
   return (
     <>
-      <li>{tag.label}</li>
+      <li
+        onClick={() => {
+          selectTagOnChangeHandler(tag);
+        }}
+        className={selectedTags.includes(tag.id) ? "selected-tag" : ""}
+      >
+        {tag.label}
+      </li>
 
       {/* <input
           type="checkbox"

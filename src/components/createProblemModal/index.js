@@ -4,7 +4,7 @@ import {
   Button,
   Header,
   Image,
-  Modal,
+  // Modal,
   Input,
   Icon,
   Grid,
@@ -15,6 +15,8 @@ import { connect } from "react-redux";
 import createNotification from "components/global/createNotification";
 import { LoaderWithinWrapper } from "components/global/loader";
 import { useEffect } from "react";
+import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
+
 const CreateProblemModal = ({
   isCreateProblemModal,
   onClose,
@@ -134,15 +136,15 @@ const CreateProblemModal = ({
   };
   return (
     <Modal
-      onClose={() => onClose({ isOpen: false })}
-      open={isCreateProblemModal.isOpen}
+      toggle={() => onClose({ isOpen: false })}
+      isOpen={isCreateProblemModal.isOpen}
     >
       {isCreateProblem || isEditProblem ? (
         <LoaderWithinWrapper
           text={isEditProblem ? "Updating..." : "Uploading..."}
         />
       ) : null}
-      <Modal.Header>{isCreateProblemModal.mode} Problem</Modal.Header>
+      <ModalHeader>{isCreateProblemModal.mode} Problem</ModalHeader>
       <input
         type="file"
         ref={inputRef}
@@ -150,7 +152,7 @@ const CreateProblemModal = ({
         style={{ display: "none" }}
       />
 
-      <Modal.Content image>
+      <ModalBody image>
         {problemData.image ? (
           <Image
             size="large"
@@ -179,7 +181,7 @@ const CreateProblemModal = ({
             </Card.Content>
           </Card>
         )}
-        <Modal.Description>
+        <div>
           <Header>Tags</Header>
           <Tags
             mode="modal"
@@ -187,8 +189,8 @@ const CreateProblemModal = ({
             selectedTagIds={problemData.tag_ids}
             tagList={problemData.tag}
           />
-        </Modal.Description>
-      </Modal.Content>
+        </div>
+      </ModalBody>
       <Grid
         divided="vertically"
         style={{ marginLeft: "unset", marginRight: "unset" }}
@@ -224,7 +226,7 @@ const CreateProblemModal = ({
           </Grid.Column>
         </Grid.Row>
       </Grid>
-      <Modal.Actions>
+      <ModalFooter>
         <Button color="black" onClick={() => onClose({ isOpen: false })}>
           cancel
         </Button>
@@ -235,7 +237,7 @@ const CreateProblemModal = ({
           onClick={() => createProblemHandler()}
           positive
         />
-      </Modal.Actions>
+      </ModalFooter>
     </Modal>
   );
 };

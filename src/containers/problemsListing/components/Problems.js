@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { getEasyAssignUser, getImageWidthHeight } from "utils/utilities";
 import { LoaderWithinWrapper } from "components/global/loader";
 import CreateProblemModal from "components/createProblemModal";
+import CreateNewTagModal from "components/createNewTagModal";
 import {
   createProblem,
   createNewTag,
@@ -36,15 +37,19 @@ const Problems = ({
   editProblem,
   logoutAction,
   emptyStateAfterLogout,
+  createProblemBtnRef,
+  createNewTagBtnRef,
 }) => {
   const history = useHistory();
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
     isOpen: false,
     mode: "",
   });
+  const [isCreateTagModal, setIsCreateTagModal] = useState(false);
   const [selectedProblem, setSelectedProblem] = useState(null);
 
   const createProblemModalHandler = (val) => {
+    console.log("createProblemModalHandler=====", val);
     if (val.isOpen === false) {
       setSelectedProblem(null);
       setIsCreateProblemModal({ isOpen: false, mode: "" });
@@ -222,12 +227,22 @@ const Problems = ({
     emptyStateAfterLogout();
     history.push("/");
   };
+
+  const createNewTagModalHandler = (val) => {
+    // createNewTagBtnRef
+    console.log("createNewTagBtnRef==", createNewTagBtnRef)
+    // if(createNewTagBtnRef?.current){
+      // createNewTagBtnRef.current.click()
+      setIsCreateTagModal(val);
+    // }
+  };
+
   return (
     <>
       <Grid.Row columns={3}>
         {user && user.type === "admin" ? (
-          <Button
-            primary
+          <button
+            // className="d-none"
             onClick={() =>
               createProblemModalHandler({
                 isOpen: true,
@@ -236,20 +251,12 @@ const Problems = ({
             }
           >
             Create Problem
-          </Button>
+          </button>
         ) : null}
         {user && user.type === "admin" ? (
-          <Button
-            primary
-            onClick={() =>
-              createProblemModalHandler({
-                isOpen: true,
-                mode: "Create",
-              })
-            }
-          >
-            Create new Tag 
-          </Button>
+          <button onClick={() => createNewTagModalHandler(true)}>
+            Create new Tag
+          </button>
         ) : null}
         <Dropdown text="Download" color="#92ada5">
           <Dropdown.Menu>
@@ -269,11 +276,7 @@ const Problems = ({
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <Button
-          basic
-          color="red"
-          onClick={() => logoutHandler()}
-        >
+        <Button basic color="red" onClick={() => logoutHandler()}>
           Logout
         </Button>
       </Grid.Row>
@@ -294,15 +297,19 @@ const Problems = ({
               })
             : "No problems found. select different tags"}
         </div>
-        {isCreateProblemModal.isOpen ? (
-          <CreateProblemModal
-            isCreateProblemModal={isCreateProblemModal}
-            onClose={setIsCreateProblemModal}
-            selectedProblem={selectedProblem}
-            createProblem={createProblemHandler}
-            createNewTag={createNewTagHandler}
-          />
-        ) : null}
+        {/* {isCreateProblemModal.isOpen ? ( */}
+        <CreateProblemModal
+          isCreateProblemModal={isCreateProblemModal}
+          onClose={setIsCreateProblemModal}
+          selectedProblem={selectedProblem}
+          createProblem={createProblemHandler}
+          createNewTag={createNewTagHandler}
+        />
+        {/* ) : null} */}
+        <CreateNewTagModal
+          isOpen={isCreateTagModal}
+          toggle={createNewTagModalHandler}
+        />
       </Grid.Row>
     </>
   );

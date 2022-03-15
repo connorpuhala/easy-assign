@@ -4,7 +4,7 @@ import {
   Button,
   Header,
   Image,
-  Modal,
+  // Modal,
   Input,
   Icon,
   Grid,
@@ -15,66 +15,51 @@ import { connect } from "react-redux";
 import createNotification from "components/global/createNotification";
 import { LoaderWithinWrapper } from "components/global/loader";
 import { useEffect } from "react";
-const CreateProblemModal = ({
-  isCreateProblemModal,
-  onClose,
-  createProblem,
-  selectedProblem,
-  createNewTag,
-  isCreatingNewTag,
-  isCreateProblem,
-  isEditProblem,
-}) => {
-  console.log("selectedProblem ====", selectedProblem);
-  const [problemData, setProblemData] = useState({
-    image: null,
-    tag_ids: [],
-    answer: "",
-    tag: [],
-  });
+import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
+
+const CreateProblemModal = ({ isOpen, toggle, createNewTag }) => {
+  // console.log("selectedProblem ====", selectedProblem);
+  // const [problemData, setProblemData] = useState({
+  //   image: null,
+  //   tag_ids: [],
+  //   answer: "",
+  //   tag: [],
+  // });
   const [newTag, setNewTag] = useState("");
 
   return (
-    <Modal
-      onClose={() => onClose({ isOpen: false })}
-      open={isCreateProblemModal.isOpen}
-    >
-      {isCreateProblem || isEditProblem ? (
-        <LoaderWithinWrapper
-          text={isEditProblem ? "Updating..." : "Uploading..."}
-        />
-      ) : null}
-      <Modal.Header>New Tag</Modal.Header>
-
-      <Modal.Content></Modal.Content>
-      <Grid
-        divided="vertically"
-        style={{ marginLeft: "unset", marginRight: "unset" }}
-      >
-        <Grid.Row columns={1} padded="true">
-          <Grid.Column>
-            <h5>Create new tag</h5>
-            <Input
-              type="text"
-              value={newTag}
-              placeholder="new tag"
-              onChange={(e, data) => setNewTag(data.value)}
-            />
-            <Icon
-              onClick={() => {
-                createNewTag(newTag);
-                setNewTag("");
-              }}
-              name={isCreatingNewTag ? "spinner" : "plus circle"}
-              size="big"
-              disabled={newTag === ""}
-              loading={isCreatingNewTag}
-            />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-      <Modal.Actions>
-        <Button color="black" onClick={() => onClose({ isOpen: false })}>
+    <Modal toggle={() => toggle(false)} isOpen={isOpen}>
+      <ModalHeader>New Tag</ModalHeader>
+      <ModalBody>
+        <Grid
+          divided="vertically"
+          style={{ marginLeft: "unset", marginRight: "unset" }}
+        >
+          <Grid.Row columns={1} padded="true">
+            <Grid.Column>
+              <h5>Create new tag</h5>
+              <Input
+                type="text"
+                value={newTag}
+                placeholder="new tag"
+                onChange={(e, data) => setNewTag(data.value)}
+              />
+              <Icon
+                onClick={() => {
+                  createNewTag(newTag);
+                  setNewTag("");
+                }}
+                name={"plus circle"}
+                size="big"
+                disabled={newTag === ""}
+                loading={false}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </ModalBody>
+      <ModalFooter>
+        <Button color="black" onClick={() => toggle(false)}>
           cancel
         </Button>
         <Button
@@ -84,7 +69,7 @@ const CreateProblemModal = ({
           onClick={() => createNewTag()}
           positive
         />
-      </Modal.Actions>
+      </ModalFooter>
     </Modal>
   );
 };

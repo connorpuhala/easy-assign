@@ -4,8 +4,11 @@ import { getEasyAssignUser } from "utils/utilities";
 import Tags from "./components/Tags";
 import Problems from "./components/Problems";
 import LogoImg from "../../images/Logo.svg";
-
+import { useRef } from "react";
 const ProblemsListing = ({ user }) => {
+  const createProblemBtnRef = useRef(null);
+  const createNewTagBtnRef = useRef(null);
+
   return (
     <div className="container">
       <div className="row">
@@ -19,15 +22,22 @@ const ProblemsListing = ({ user }) => {
         </div>
         <div className="top_buttons">
           <div className="prob_tag">
-            <button className="create_prob">Create Problem</button>
-            <button className="create_new_tag">Create new Tag</button>
+            <button className="create_prob" ref={createProblemBtnRef}>
+              Create Problem
+            </button>
+            <button className="create_new_tag" ref={createNewTagBtnRef}>
+              Create new Tag
+            </button>
           </div>
           <div className="logout">
             <button className="logout_btn">Logout</button>
           </div>
         </div>
         <Tags mode="listing" />
-        <Problems />
+        <Problems
+          createProblemBtnRef={createProblemBtnRef}
+          createNewTagBtnRef={createNewTagBtnRef}
+        />
       </div>
     </div>
   );
