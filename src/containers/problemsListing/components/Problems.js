@@ -376,50 +376,50 @@ export const ProblemItem = ({
   };
   // console.log("problem ------", problem);
   return (
-    <div
-      className="class"
-      raised
-      vertical
-      padded
-      color="olive"
-      style={{ margin: "10px" }}
-    >
-      id: {problem.id}
-      <br />
-      answer: {problem.answer}
-      {isLoading ? <LoaderWithinWrapper /> : null}
-      <Image
-        src={problem.image_url}
-        size="large"
-        centered
-        alt="problem_img"
-        onLoad={() => setIsLoading(false)}
-        onError={() => setIsLoading(false)}
-      />
-      {user && user.type === "admin" ? (
-        <div text="Edit">
-          <div>
-            <div
-              onClick={() => {
-                createProblemModalHandler({
-                  isOpen: true,
-                  mode: "Edit",
-                  problem,
-                });
-              }}
-            >
-              Edit
-            </div>
-            <div
-              onClick={() => {
-                setIsConfirmBox(true);
-              }}
-            >
-              Delete
+    <div className="problem_answer" raised vertical padded>
+      <div className="prob_heading">
+        {user && user.type === "admin" ? (
+          <div text="Edit">
+            <div className="edit_action">
+              <div
+                className="edit"
+                onClick={() => {
+                  createProblemModalHandler({
+                    isOpen: true,
+                    mode: "Edit",
+                    problem,
+                  });
+                }}
+              >
+                Edit
+              </div>
+              <div
+                className="delete"
+                onClick={() => {
+                  setIsConfirmBox(true);
+                }}
+              >
+                Delete
+              </div>
             </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
+
+      <div className="prob_img">
+        <Image
+          src={problem.image_url}
+          size="large"
+          centered
+          alt="problem_img"
+          onLoad={() => setIsLoading(false)}
+          onError={() => setIsLoading(false)}
+        />
+      </div>
+      <div className="answer">
+        <h1>Answer:</h1> <p>{problem.answer}</p>
+        {isLoading ? <LoaderWithinWrapper /> : null}
+      </div>
       <Confirm
         open={isConfirmBox}
         onCancel={onConfirmBoxCancel}

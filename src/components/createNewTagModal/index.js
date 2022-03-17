@@ -16,6 +16,9 @@ import createNotification from "components/global/createNotification";
 import { LoaderWithinWrapper } from "components/global/loader";
 import { useEffect } from "react";
 import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
+import { ReactComponent as PlusIcon } from "images/plus.svg";
+import { ReactComponent as SepratorIcon } from "images/seprator.svg";
+import { ReactComponent as CrossIcon } from "images/cross-circled.svg";
 
 const CreateProblemModal = ({ isOpen, toggle, createNewTag }) => {
   // console.log("selectedProblem ====", selectedProblem);
@@ -29,47 +32,55 @@ const CreateProblemModal = ({ isOpen, toggle, createNewTag }) => {
 
   return (
     <Modal toggle={() => toggle(false)} isOpen={isOpen}>
-      <ModalHeader>New Tag</ModalHeader>
       <ModalBody>
-        <Grid
+        <div className="model_headings">
+          <div className="tag_heading">
+            Create Tags
+            <span>
+              <SepratorIcon />
+            </span>
+            <div className="cross" color="black" onClick={() => toggle(false)}>
+              <CrossIcon />
+            </div>
+          </div>
+        </div>
+        <div
+          className="model_content"
           divided="vertically"
           style={{ marginLeft: "unset", marginRight: "unset" }}
         >
-          <Grid.Row columns={1} padded="true">
-            <Grid.Column>
-              <h5>Create new tag</h5>
-              <Input
+          <div columns={1} padded="true">
+            <div className="tag_input">
+              <h5 className="subheading">Create new tag</h5>
+
+              <input
                 type="text"
                 value={newTag}
                 placeholder="new tag"
                 onChange={(e, data) => setNewTag(data.value)}
               />
-              <Icon
+              <PlusIcon
                 onClick={() => {
                   createNewTag(newTag);
                   setNewTag("");
                 }}
-                name={"plus circle"}
-                size="big"
                 disabled={newTag === ""}
-                loading={false}
               />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+            </div>
+          </div>
+
+          <div className="popup_submit_btn">
+            <Button
+              className="submit_btn"
+              content="Submit"
+              labelPosition="right"
+              icon="checkmark"
+              onClick={() => createNewTag()}
+              positive
+            />
+          </div>
+        </div>
       </ModalBody>
-      <ModalFooter>
-        <Button color="black" onClick={() => toggle(false)}>
-          cancel
-        </Button>
-        <Button
-          content="Submit"
-          labelPosition="right"
-          icon="checkmark"
-          onClick={() => createNewTag()}
-          positive
-        />
-      </ModalFooter>
     </Modal>
   );
 };

@@ -1,4 +1,8 @@
 import React from "react";
+import { ReactComponent as SepratorIcon } from "images/seprator.svg";
+import { ReactComponent as CrossIcon } from "images/cross-circled.svg";
+import { ReactComponent as UploadIcon } from "images/upload-alt.svg";
+import { ReactComponent as PlusIcon } from "images/plus.svg";
 import { useState, useRef } from "react";
 import {
   Button,
@@ -144,7 +148,7 @@ const CreateProblemModal = ({
           text={isEditProblem ? "Updating..." : "Uploading..."}
         />
       ) : null}
-      <ModalHeader>{isCreateProblemModal.mode} Problem</ModalHeader>
+
       <input
         type="file"
         ref={inputRef}
@@ -152,92 +156,114 @@ const CreateProblemModal = ({
         style={{ display: "none" }}
       />
 
-      <ModalBody image>
-        {problemData.image ? (
-          <Image
-            size="large"
-            src={problemData.image}
-            wrapped
-            style={{ height: "300px", border: "1px solid blue" }}
-            onClick={() => {
-              if (inputRef && inputRef.current) {
-                inputRef.current.click();
-              }
-            }}
-          />
-        ) : (
-          <Card>
-            <Card.Content
+      <ModalBody>
+        <div className="model_headings">
+          <div className="tag_heading">
+            Create Problem
+            <span>
+              <SepratorIcon />
+            </span>
+            <div
+              className="cross"
+              color="black"
+              onClick={() => onClose({ isOpen: false })}
+            >
+              <CrossIcon />
+            </div>
+          </div>
+        </div>
+        <div className="model_content">
+          {problemData.image ? (
+            <Image
+              size="large"
+              src={problemData.image}
+              wrapped
+              style={{ height: "300px", border: "1px solid blue" }}
               onClick={() => {
                 if (inputRef && inputRef.current) {
                   inputRef.current.click();
                 }
               }}
-              extra
-              style={{ cursor: "pointer" }}
-            >
-              <Icon name="upload" />
-              Upload problem image
-            </Card.Content>
-          </Card>
-        )}
-        <div>
-          <Header>Tags</Header>
-          <Tags
-            mode="modal"
-            getSelectedTags={getSelectedTags}
-            selectedTagIds={problemData.tag_ids}
-            tagList={problemData.tag}
-          />
+            />
+          ) : (
+            <div className="upload_icon">
+              <div
+                className="inner_section"
+                onClick={() => {
+                  if (inputRef && inputRef.current) {
+                    inputRef.current.click();
+                  }
+                }}
+                extra
+                style={{ cursor: "pointer" }}
+              >
+                <div className="upload_image">
+                  <UploadIcon />
+                  <Icon name="upload" />
+                  <span>Upload problem image</span>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="tags_sections">
+            <div className="tags_heading">Tags</div>
+            <div className="model_tag">
+              <Tags
+                mode="modal"
+                getSelectedTags={getSelectedTags}
+                selectedTagIds={problemData.tag_ids}
+                tagList={problemData.tag}
+              />
+            </div>
+          </div>
+          <div
+            divided="vertically"
+            style={{ marginLeft: "unset", marginRight: "unset" }}
+          >
+            <div className="tags_ans">
+              <div className="tags_section">
+                <h5 className="tags_heading mt-2">Create new tag</h5>
+                <div className="tag_input">
+                  <input
+                    type="text"
+                    value={newTag}
+                    placeholder="new tag"
+                    onChange={(e, data) => setNewTag(data.value)}
+                  />
+                  <PlusIcon
+                    onClick={() => {
+                      createNewTag(newTag);
+                      setNewTag("");
+                    }}
+                    name={isCreatingNewTag ? "spinner" : "plus circle"}
+                    size="big"
+                    disabled={newTag === ""}
+                    loading={isCreatingNewTag}
+                  />
+                </div>
+              </div>
+              <div className="answwer_section">
+                <h5 className="tags_heading mt-2">Answer</h5>
+                <Input
+                  type="text"
+                  placeholder="Answer"
+                  value={problemData.answer}
+                  onChange={(e, data) => onChangeAnswerHandler(data)}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="popup_submit_btn">
+            <Button
+              content="Submit"
+              labelPosition="right"
+              icon="checkmark"
+              onClick={() => createProblemHandler()}
+              positive
+            />
+          </div>
         </div>
       </ModalBody>
-      <Grid
-        divided="vertically"
-        style={{ marginLeft: "unset", marginRight: "unset" }}
-      >
-        <Grid.Row columns={2} padded="true">
-          <Grid.Column>
-            <h5>Answer</h5>
-            <Input
-              type="text"
-              placeholder="Answer"
-              value={problemData.answer}
-              onChange={(e, data) => onChangeAnswerHandler(data)}
-            />
-          </Grid.Column>
-          <Grid.Column>
-            <h5>Create new tag</h5>
-            <Input
-              type="text"
-              value={newTag}
-              placeholder="new tag"
-              onChange={(e, data) => setNewTag(data.value)}
-            />
-            <Icon
-              onClick={() => {
-                createNewTag(newTag);
-                setNewTag("");
-              }}
-              name={isCreatingNewTag ? "spinner" : "plus circle"}
-              size="big"
-              disabled={newTag === ""}
-              loading={isCreatingNewTag}
-            />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-      <ModalFooter>
-        <Button color="black" onClick={() => onClose({ isOpen: false })}>
-          cancel
-        </Button>
-        <Button
-          content="Submit"
-          labelPosition="right"
-          icon="checkmark"
-          onClick={() => createProblemHandler()}
-          positive
-        />
-      </ModalFooter>
     </Modal>
   );
 };

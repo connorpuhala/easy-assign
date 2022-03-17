@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="27px" viewBox="0 0 40 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>fa-solid:cloud-upload-alt</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.778334 0 0 0 0 0.778334 0 0 0 0 0.778334 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="create_problem" transform="translate(-663.000000, -274.000000)">
+            <g id="fa-solid:cloud-upload-alt" transform="translate(609.500000, 274.000000)" filter="url(#filter-1)">
+                <g transform="translate(54.000000, 0.000000)">
+                    <path d="M32.256,11.676 C32.502,11.034 32.64,10.332 32.64,9.6 C32.64,6.42 30.06,3.84 26.88,3.84 C25.698,3.84 24.594,4.2 23.682,4.812 C22.02,1.932 18.918,0 15.36,0 C10.056,0 5.76,4.296 5.76,9.6 C5.76,9.762 5.766,9.924 5.772,10.086 C2.412,11.268 0,14.472 0,18.24 C0,23.01 3.87,26.88 8.64,26.88 L30.72,26.88 C34.962,26.88 38.4,23.442 38.4,19.2 C38.4,15.486 35.76,12.384 32.256,11.676 Z M23.604,15.36 L19.68,15.36 L19.68,22.08 C19.68,22.608 19.248,23.04 18.72,23.04 L15.84,23.04 C15.312,23.04 14.88,22.608 14.88,22.08 L14.88,15.36 L10.956,15.36 C10.098,15.36 9.672,14.328 10.278,13.722 L16.602,7.398 C16.974,7.026 17.586,7.026 17.958,7.398 L24.282,13.722 C24.888,14.328 24.456,15.36 23.604,15.36 L23.604,15.36 Z" id="Shape" fill="#000000" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
