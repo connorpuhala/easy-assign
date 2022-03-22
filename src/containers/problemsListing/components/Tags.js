@@ -36,7 +36,7 @@ const Tags = ({
 
   const selectTagOnChangeHandler = (tag) => {
     const tagId = tag.id;
-    const checked = !selectedTags.includes(tag.id)
+    const checked = !selectedTags.includes(tag.id);
     if (checked) {
       selectedTags.push(tagId);
       selectedTagsList.push(tag);
@@ -63,22 +63,24 @@ const Tags = ({
     }
   };
 
-  // console.log("@selectedTagsList at tags ===", selectedTagsList);
   return (
-    <div className="tag_bg" columns={mode === "modal" ? 2 : 3}>
-      <ul>
-        {isGetAllTags && <LoaderWithinWrapper />}
-        {tags.length
-          ? tags.map((tag, index) => (
-              <TagItem
-                key={tag.id}
-                tag={tag}
-                selectedTags={selectedTags}
-                selectTagOnChangeHandler={selectTagOnChangeHandler}
-              />
-            ))
-          : "No tags found"}
-      </ul>
+    <div className="tag_bg postion-relative" columns={mode === "modal" ? 2 : 3}>
+      {isGetAllTags ? (
+        <LoaderWithinWrapper />
+      ) : tags.length ? (
+        <ul>
+          {tags.map((tag, index) => (
+            <TagItem
+              key={tag.id}
+              tag={tag}
+              selectedTags={selectedTags}
+              selectTagOnChangeHandler={selectTagOnChangeHandler}
+            />
+          ))}
+        </ul>
+      ) : (
+        "No tags found"
+      )}
     </div>
   );
 };

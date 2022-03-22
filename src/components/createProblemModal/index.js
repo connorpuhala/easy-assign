@@ -4,22 +4,12 @@ import { ReactComponent as CrossIcon } from "images/cross-circled.svg";
 import { ReactComponent as UploadIcon } from "images/upload-alt.svg";
 import { ReactComponent as PlusIcon } from "images/plus.svg";
 import { useState, useRef } from "react";
-import {
-  Button,
-  Header,
-  Image,
-  // Modal,
-  Input,
-  Icon,
-  Grid,
-  Card,
-} from "semantic-ui-react";
 import Tags from "containers/problemsListing/components/Tags";
 import { connect } from "react-redux";
 import createNotification from "components/global/createNotification";
 import { LoaderWithinWrapper } from "components/global/loader";
 import { useEffect } from "react";
-import { Modal, ModalBody, ModalHeader, ModalFooter } from "reactstrap";
+import { Modal, ModalBody } from "reactstrap";
 
 const CreateProblemModal = ({
   isCreateProblemModal,
@@ -132,16 +122,17 @@ const CreateProblemModal = ({
     });
   };
 
-  const onChangeAnswerHandler = (data) => {
+  const onChangeAnswerHandler = (value) => {
     setProblemData({
       ...problemData,
-      answer: data.value,
+      answer: value,
     });
   };
   return (
     <Modal
       toggle={() => onClose({ isOpen: false })}
       isOpen={isCreateProblemModal.isOpen}
+      className="position-relative"
     >
       {isCreateProblem || isEditProblem ? (
         <LoaderWithinWrapper
@@ -159,7 +150,7 @@ const CreateProblemModal = ({
       <ModalBody>
         <div className="model_headings">
           <div className="tag_heading">
-            Create Problem
+            {isCreateProblemModal.mode} Problem
             <span>
               <SepratorIcon />
             </span>
@@ -174,17 +165,19 @@ const CreateProblemModal = ({
         </div>
         <div className="model_content">
           {problemData.image ? (
-            <Image
-              size="large"
-              src={problemData.image}
-              wrapped
-              style={{ height: "300px", border: "1px solid blue" }}
-              onClick={() => {
-                if (inputRef && inputRef.current) {
-                  inputRef.current.click();
-                }
-              }}
-            />
+            <div  className="large">
+              <img
+                alt="problem"
+                src={problemData.image}
+                wrapped
+                // style={{ height: "300px", border: "1px solid blue" }}
+                onClick={() => {
+                  if (inputRef && inputRef.current) {
+                    inputRef.current.click();
+                  }
+                }}
+              />
+            </div>
           ) : (
             <div className="upload_icon">
               <div
@@ -199,7 +192,7 @@ const CreateProblemModal = ({
               >
                 <div className="upload_image">
                   <UploadIcon />
-                  <Icon name="upload" />
+                  {/* <Icon name="upload" /> */}
                   <span>Upload problem image</span>
                 </div>
               </div>
@@ -228,7 +221,7 @@ const CreateProblemModal = ({
                     type="text"
                     value={newTag}
                     placeholder="new tag"
-                    onChange={(e, data) => setNewTag(data.value)}
+                    onChange={(e) => setNewTag(e.target.value)}
                   />
                   <PlusIcon
                     onClick={() => {
@@ -244,23 +237,17 @@ const CreateProblemModal = ({
               </div>
               <div className="answwer_section">
                 <h5 className="tags_heading mt-2">Answer</h5>
-                <Input
+                <input
                   type="text"
                   placeholder="Answer"
                   value={problemData.answer}
-                  onChange={(e, data) => onChangeAnswerHandler(data)}
+                  onChange={(e) => onChangeAnswerHandler(e.target.value)}
                 />
               </div>
             </div>
           </div>
           <div className="popup_submit_btn">
-            <Button
-              content="Submit"
-              labelPosition="right"
-              icon="checkmark"
-              onClick={() => createProblemHandler()}
-              positive
-            />
+            <button onClick={() => createProblemHandler()}>Submit</button>
           </div>
         </div>
       </ModalBody>

@@ -4,7 +4,7 @@ import {
   Image,
   Segment,
   Button,
-  Dropdown,
+  // Dropdown,
   Confirm,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
@@ -24,6 +24,12 @@ import createNotification from "components/global/createNotification";
 import { jsPDF } from "jspdf";
 import { isValidHttpUrl, removeEasyAssignUser } from "utils/utilities";
 import { useHistory } from "react-router-dom";
+import {
+  Dropdown,
+  DropdownMenu,
+  DropdownToggle,
+  DropdownItem,
+} from "reactstrap";
 
 const Problems = ({
   user,
@@ -48,6 +54,7 @@ const Problems = ({
   });
   const [isCreateTagModal, setIsCreateTagModal] = useState(false);
   const [selectedProblem, setSelectedProblem] = useState(null);
+  const [downloadToggle, setDownloadToggle] = useState(false);
 
   const createProblemModalHandler = (val) => {
     console.log("createProblemModalHandler=====", val);
@@ -238,6 +245,11 @@ const Problems = ({
     // }
   };
 
+  const toggleDownloadDropdown = () => {
+    console.log("@toggleDownloadDropdown");
+    setDownloadToggle(!downloadToggle);
+  };
+
   return (
     <>
       <div columns={3}>
@@ -264,24 +276,30 @@ const Problems = ({
             Create new Tag
           </button>
         ) : null}
-        <div text="Download" color="#92ada5">
-          <div>
-            <div
+
+        <Dropdown isOpen={downloadToggle} toggle={toggleDownloadDropdown}>
+          <DropdownToggle caret>Download PDF</DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem
+              disabled={!problems.length}
               onClick={() => {
                 downloadProblemsPdfHandler(true);
+                setDownloadToggle(!downloadToggle);
               }}
             >
               With answers
-            </div>
-            <div
+            </DropdownItem>
+            <DropdownItem
+              disabled={!problems.length}
               onClick={() => {
                 downloadProblemsPdfHandler(false);
+                setDownloadToggle(!downloadToggle);
               }}
             >
               Without answers
-            </div>
-          </div>
-        </div>
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
         <button
           className="d-none"
           ref={logoutBtnRef}
@@ -290,32 +308,34 @@ const Problems = ({
           Logout
         </button>
       </div>
-      <div columns={3}>
-        {isGetProblemsByTags ? <LoaderWithinWrapper /> : null}
-        <div>
-          {problems.length
-            ? problems.map((problem, index) => {
-                return (
-                  <ProblemItem
-                    key={problem.id}
-                    problem={problem}
-                    user={user}
-                    createProblemModalHandler={createProblemModalHandler}
-                    deleteProblem={deleteProblem}
-                  />
-                );
-              })
-            : "No problems found. select different tags"}
-        </div>
-        {/* {isCreateProblemModal.isOpen ? ( */}
-        <CreateProblemModal
-          isCreateProblemModal={isCreateProblemModal}
-          onClose={setIsCreateProblemModal}
-          selectedProblem={selectedProblem}
-          createProblem={createProblemHandler}
-          createNewTag={createNewTagHandler}
-        />
-        {/* ) : null} */}
+      <div columns={3} className="position-relative">
+        {isGetProblemsByTags ? (
+          <LoaderWithinWrapper className="full-page-loader" noSvg={problems.length} />
+        ) : null}
+        {problems.length
+          ? problems.map((problem, index) => {
+              return (
+                <ProblemItem
+                  key={problem.id}
+                  problem={problem}
+                  user={user}
+                  createProblemModalHandler={createProblemModalHandler}
+                  deleteProblem={deleteProblem}
+                />
+              );
+            })
+          : !isGetProblemsByTags
+          ? "No problems found. select different tags"
+          : null}
+        {isCreateProblemModal.isOpen ? (
+          <CreateProblemModal
+            isCreateProblemModal={isCreateProblemModal}
+            onClose={setIsCreateProblemModal}
+            selectedProblem={selectedProblem}
+            createProblem={createProblemHandler}
+            createNewTag={createNewTagHandler}
+          />
+        ) : null}
         <CreateNewTagModal
           isOpen={isCreateTagModal}
           toggle={createNewTagModalHandler}
@@ -407,9 +427,9 @@ export const ProblemItem = ({
       </div>
 
       <div className="prob_img">
-        <Image
+        <img
           src={problem.image_url}
-          size="large"
+          // size="large"
           centered
           alt="problem_img"
           onLoad={() => setIsLoading(false)}
