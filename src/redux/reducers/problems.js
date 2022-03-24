@@ -109,6 +109,19 @@ const prolems = (state = initialState, action) => {
         isCreateProblemErrorMsg: action.payload,
       };
 
+    case types.DELETE_PROBLEM_REQUEST: {
+      const oldProblems = state.problems;
+      const existingProblemIndex = oldProblems.findIndex(
+        (el) => el.id === action.payload
+      );
+      if (existingProblemIndex !== -1) {
+        oldProblems.splice(existingProblemIndex, 1);
+      }
+      return {
+        ...state,
+        problems: oldProblems,
+      };
+    }
     // EDIT_PROBLEM
     case types.EDIT_PROBLEM_REQUEST:
       return {
@@ -116,13 +129,11 @@ const prolems = (state = initialState, action) => {
         isEditProblem: true,
       };
     case types.EDIT_PROBLEM_SUCCESS:
-      console.log("EDIT_PROBLEM_SUCCESS ===", action.payload);
       let oldProblems = state.problems;
       let index = oldProblems.findIndex(
         (i) => action.payload.results[0].id === i.id
       );
       if (index > -1) {
-        console.log("replace here");
         oldProblems.splice(index, 1, action.payload.results[0]);
       }
       return {

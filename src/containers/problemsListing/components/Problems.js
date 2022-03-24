@@ -17,6 +17,7 @@ import {
   createNewTag,
   editProblem,
   emptyStateAfterLogout,
+  deleteProblem,
 } from "redux/actions/problems";
 import { logoutAction } from "redux/actions/loginSignup";
 import { bindActionCreators } from "redux";
@@ -30,6 +31,7 @@ import {
   DropdownToggle,
   DropdownItem,
 } from "reactstrap";
+import ConfirmDeleteModal from "./confirmDeleteModal";
 
 const Problems = ({
   user,
@@ -46,6 +48,7 @@ const Problems = ({
   createProblemBtnRef,
   createNewTagBtnRef,
   logoutBtnRef,
+  deleteProblem,
 }) => {
   const history = useHistory();
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
@@ -72,8 +75,9 @@ const Problems = ({
     }
   };
 
-  const deleteProblem = () => {
-    console.log("deleteProblem");
+  const deleteProblemHandler = (id) => {
+    console.log("deleteProblem", id);
+    deleteProblem(id);
   };
 
   const createProblemHandler = ({ data, mode, newTag }) => {
@@ -278,7 +282,9 @@ const Problems = ({
         ) : null}
 
         <Dropdown isOpen={downloadToggle} toggle={toggleDownloadDropdown}>
-          <DropdownToggle caret>Download PDF</DropdownToggle>
+          <DropdownToggle caret className="drop">
+            Download PDF
+          </DropdownToggle>
           <DropdownMenu>
             <DropdownItem
               disabled={!problems.length}
@@ -310,7 +316,10 @@ const Problems = ({
       </div>
       <div columns={3} className="position-relative">
         {isGetProblemsByTags ? (
-          <LoaderWithinWrapper className="full-page-loader" noSvg={problems.length} />
+          <LoaderWithinWrapper
+            className="full-page-loader"
+            noSvg={problems.length}
+          />
         ) : null}
         {problems.length
           ? problems.map((problem, index) => {
@@ -320,7 +329,7 @@ const Problems = ({
                   problem={problem}
                   user={user}
                   createProblemModalHandler={createProblemModalHandler}
-                  deleteProblem={deleteProblem}
+                  deleteProblem={deleteProblemHandler}
                 />
               );
             })
@@ -339,6 +348,7 @@ const Problems = ({
         <CreateNewTagModal
           isOpen={isCreateTagModal}
           toggle={createNewTagModalHandler}
+          createNewTag={createNewTagHandler}
         />
       </div>
     </>
@@ -371,6 +381,7 @@ const mapDispatch = (dispatch) =>
       editProblem,
       logoutAction,
       emptyStateAfterLogout,
+      deleteProblem,
     },
     dispatch
   );
@@ -386,15 +397,14 @@ export const ProblemItem = ({
   const [isLoading, setIsLoading] = useState(true);
   const [isConfirmBox, setIsConfirmBox] = useState(false);
 
-  const onConfirmBoxDelete = (v) => {
-    deleteProblem();
+  const onConfirmBoxDelete = (id) => {
+    deleteProblem(id);
     setIsConfirmBox(false);
+  };
+  const toggleConfirmBox = () => {
+    setIsConfirmBox(!isConfirmBox);
   };
 
-  const onConfirmBoxCancel = (v, d) => {
-    setIsConfirmBox(false);
-  };
-  // console.log("problem ------", problem);
   return (
     <div className="problem_answer" raised vertical padded>
       <div className="prob_heading">
@@ -440,10 +450,12 @@ export const ProblemItem = ({
         <h1>Answer:</h1> <p>{problem.answer}</p>
         {isLoading ? <LoaderWithinWrapper /> : null}
       </div>
-      <Confirm
-        open={isConfirmBox}
-        onCancel={onConfirmBoxCancel}
-        onConfirm={() => onConfirmBoxDelete(problem.id)}
+      <ConfirmDeleteModal
+        isOpen={isConfirmBox}
+        toggle={toggleConfirmBox}
+        onConfirm={() => {
+          onConfirmBoxDelete(problem.id);
+        }}
       />
     </div>
   );

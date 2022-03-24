@@ -75,6 +75,7 @@ const Tags = ({
               tag={tag}
               selectedTags={selectedTags}
               selectTagOnChangeHandler={selectTagOnChangeHandler}
+              mode={mode}
             />
           ))}
         </ul>
@@ -107,27 +108,23 @@ const mapDispatch = (dispatch) =>
 
 export default connect(mapStateToProps, mapDispatch)(Tags);
 
-const TagItem = ({ tag, selectTagOnChangeHandler, selectedTags }) => {
+const TagItem = ({ tag, selectTagOnChangeHandler, selectedTags, mode }) => {
   return (
     <>
       <li
         onClick={() => {
-          selectTagOnChangeHandler(tag);
+          if (mode !== "listing-readonly") selectTagOnChangeHandler(tag);
         }}
-        className={selectedTags.includes(tag.id) ? "selected-tag" : ""}
+        className={
+          mode !== "listing-readonly"
+            ? selectedTags.includes(tag.id)
+              ? "selected-tag"
+              : ""
+            : ""
+        }
       >
         {tag.label}
       </li>
-
-      {/* <input
-          type="checkbox"
-          label={{ children: tag.label }}
-          checked={selectedTags.includes(tag.id)}
-          onChange={(e, data) => {
-            // setChecked(data.checked)
-            selectTagOnChangeHandler(data.checked, tag);
-          }}
-        /> */}
     </>
   );
 };

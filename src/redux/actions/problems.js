@@ -96,7 +96,14 @@ export const editProblem = (body, id) => {
     }
   };
 };
-
+export const deleteProblem = (id) => {
+  return async (dispatch) => {
+    dispatch({
+      type: types.DELETE_PROBLEM_REQUEST,
+      payload: id,
+    });
+  };
+};
 export const createNewTag = (body) => {
   return async (dispatch) => {
     dispatch({
