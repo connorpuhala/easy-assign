@@ -102,6 +102,19 @@ export const deleteProblem = (id) => {
       type: types.DELETE_PROBLEM_REQUEST,
       payload: id,
     });
+    try {
+      const res = await API.deleteProblem(id);
+      console.log("resres=", res);
+      return dispatch({
+        type: types.DELETE_PROBLEM_SUCCESS,
+        payload: id,
+      });
+    } catch (err) {
+      return dispatch({
+        type: types.DELETE_PROBLEM_ERROR,
+        payload: error.message,
+      });
+    }
   };
 };
 export const createNewTag = (body) => {
@@ -111,7 +124,6 @@ export const createNewTag = (body) => {
     });
     try {
       const { results } = await API.createNewTag(body);
-      console.log("data =====", results);
       return dispatch({
         type: types.CREATE_TAG_SUCCESS,
         payload: results,

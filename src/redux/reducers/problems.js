@@ -108,8 +108,14 @@ const prolems = (state = initialState, action) => {
         isCreateProblemError: true,
         isCreateProblemErrorMsg: action.payload,
       };
-
+    // delete problem
     case types.DELETE_PROBLEM_REQUEST: {
+      return {
+        ...state,
+      };
+    }
+
+    case types.DELETE_PROBLEM_SUCCESS: {
       const oldProblems = state.problems;
       const existingProblemIndex = oldProblems.findIndex(
         (el) => el.id === action.payload
@@ -122,6 +128,13 @@ const prolems = (state = initialState, action) => {
         problems: oldProblems,
       };
     }
+
+    case types.DELETE_PROBLEM_ERROR: {
+      return {
+        ...state,
+      };
+    }
+
     // EDIT_PROBLEM
     case types.EDIT_PROBLEM_REQUEST:
       return {

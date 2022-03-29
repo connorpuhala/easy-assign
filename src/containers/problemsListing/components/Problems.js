@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   Image,
@@ -32,6 +32,7 @@ import {
   DropdownItem,
 } from "reactstrap";
 import ConfirmDeleteModal from "./confirmDeleteModal";
+import SwitchToggler from "components/common/SwitchToggler";
 
 const Problems = ({
   user,
@@ -49,6 +50,7 @@ const Problems = ({
   createNewTagBtnRef,
   logoutBtnRef,
   deleteProblem,
+  isShowAllAnswers,
 }) => {
   const history = useHistory();
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
@@ -76,7 +78,6 @@ const Problems = ({
   };
 
   const deleteProblemHandler = (id) => {
-    console.log("deleteProblem", id);
     deleteProblem(id);
   };
 
@@ -330,6 +331,7 @@ const Problems = ({
                   user={user}
                   createProblemModalHandler={createProblemModalHandler}
                   deleteProblem={deleteProblemHandler}
+                  isShowAllAnswers={isShowAllAnswers}
                 />
               );
             })
@@ -393,9 +395,11 @@ export const ProblemItem = ({
   user,
   createProblemModalHandler,
   deleteProblem,
+  isShowAllAnswers,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isConfirmBox, setIsConfirmBox] = useState(false);
+  const [isShowAnswer, setShowAnswer] = useState(false);
 
   const onConfirmBoxDelete = (id) => {
     deleteProblem(id);
@@ -404,7 +408,9 @@ export const ProblemItem = ({
   const toggleConfirmBox = () => {
     setIsConfirmBox(!isConfirmBox);
   };
-
+  useEffect(() => {
+    setShowAnswer(isShowAllAnswers);
+  }, [isShowAllAnswers]);
   return (
     <div className="problem_answer" raised vertical padded>
       <div className="prob_heading">
@@ -446,10 +452,20 @@ export const ProblemItem = ({
           onError={() => setIsLoading(false)}
         />
       </div>
-      <div className="answer">
-        <h1>Answer:</h1> <p>{problem.answer}</p>
-        {isLoading ? <LoaderWithinWrapper /> : null}
-      </div>
+      <SwitchToggler
+        id={problem.id}
+        text="Show Answer"
+        checked={isShowAnswer}
+        onChange={() => {
+          setShowAnswer(!isShowAnswer);
+        }}
+      />
+      {isShowAllAnswers || isShowAnswer ? (
+        <div className="answer">
+          <h1>Answer:</h1> <p>{problem.answer}</p>
+          {isLoading ? <LoaderWithinWrapper /> : null}
+        </div>
+      ) : null}
       <ConfirmDeleteModal
         isOpen={isConfirmBox}
         toggle={toggleConfirmBox}

@@ -43,6 +43,16 @@ export const editProblem = (body, id) =>
     },
   });
 
+export const deleteProblem = (id) =>
+  fetchService({
+    method: "DELETE",
+    url: `problems/${id}`,
+    isUrl: false,
+    myHeaders: {
+      "Content-Type": "application/json",
+    },
+  });
+
 export const createNewTag = (body) =>
   fetchService({
     method: "POST",
