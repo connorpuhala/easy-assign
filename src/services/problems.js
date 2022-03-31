@@ -63,3 +63,13 @@ export const createNewTag = (body) =>
       "Content-Type": "application/json",
     },
   });
+
+export const deleteTag = (id) =>
+  fetchService({
+    method: "DELETE",
+    url: `tags/${id}`,
+    isUrl: false,
+    myHeaders: {
+      "Content-Type": "application/json",
+    },
+  });

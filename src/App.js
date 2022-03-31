@@ -4,12 +4,18 @@ import Signup from "containers/signup";
 import ProblemsListing from "containers/problemsListing";
 import { getEasyAssignUser } from "utils/utilities";
 import SplashScreen from "containers/splashScreen";
+import ForgotPassword from "containers/forgotPassword";
 const App = () => {
   return (
     <Switch>
       <ProtectedRoute exact path="/" component={SplashScreen} />
       <ProtectedRoute exact path="/login" component={Login} />
       <ProtectedRoute exact path="/create-account" component={Signup} />
+      <ProtectedRoute
+        exact
+        path="/forgot-password"
+        component={ForgotPassword}
+      />
       <PrivateRoute exact path="/problems" component={ProblemsListing} />
       <Redirect from="*" to="/" />
     </Switch>

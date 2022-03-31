@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { ReactComponent as CrossIcon } from "images/charm_cross.svg";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getEasyAssignUser } from "utils/utilities";
-import { getAllTags, getProblemsByTags } from "redux/actions/problems";
+import {
+  getAllTags,
+  getProblemsByTags,
+  deleteTag,
+} from "redux/actions/problems";
 import { LoaderWithinWrapper } from "components/global/loader";
 
 const Tags = ({
@@ -18,6 +23,7 @@ const Tags = ({
   getSelectedTags,
   selectedTagIds,
   tagList,
+  deleteTag,
 }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedTagsList, setSelectedTagsList] = useState([]);
@@ -63,6 +69,10 @@ const Tags = ({
     }
   };
 
+  const deleteTagHandler = (id) => {
+    deleteTag(id);
+  };
+
   return (
     <div className="tag_bg postion-relative" columns={mode === "modal" ? 2 : 3}>
       {isGetAllTags ? (
@@ -76,6 +86,7 @@ const Tags = ({
               selectedTags={selectedTags}
               selectTagOnChangeHandler={selectTagOnChangeHandler}
               mode={mode}
+              deleteTag={deleteTagHandler}
             />
           ))}
         </ul>
@@ -104,15 +115,22 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatch = (dispatch) =>
-  bindActionCreators({ getAllTags, getProblemsByTags }, dispatch);
+  bindActionCreators({ getAllTags, getProblemsByTags, deleteTag }, dispatch);
 
 export default connect(mapStateToProps, mapDispatch)(Tags);
 
-const TagItem = ({ tag, selectTagOnChangeHandler, selectedTags, mode }) => {
+const TagItem = ({
+  tag,
+  selectTagOnChangeHandler,
+  selectedTags,
+  mode,
+  deleteTag,
+}) => {
   return (
     <>
       <li
-        onClick={() => {
+        onClick={(event) => {
+          event.stopPropagation();
           if (mode !== "listing-readonly") selectTagOnChangeHandler(tag);
         }}
         className={
@@ -123,7 +141,19 @@ const TagItem = ({ tag, selectTagOnChangeHandler, selectedTags, mode }) => {
             : ""
         }
       >
-        {tag.label}
+        <p>
+          {tag.label}
+          {mode === "listing" && (
+            <span>
+              <CrossIcon
+                onClick={(event) => {
+                  event.stopPropagation();
+                  deleteTag(tag.id);
+                }}
+              />
+            </span>
+          )}
+        </p>
       </li>
     </>
   );

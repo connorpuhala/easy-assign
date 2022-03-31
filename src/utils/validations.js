@@ -8,6 +8,10 @@ export const loginValidationSchema = Yup.object().shape({
     .required("Password Required"),
 });
 
+export const forgetPasswordValidationSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email Required"),
+});
+
 export const signupValidationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name required"),
   lastName: Yup.string().required("Last name required"),

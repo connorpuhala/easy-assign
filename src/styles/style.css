@@ -825,3 +825,11 @@ button:hover {
   font-size: 14px;
   margin-left: 10px;
 }
+.tag_bg ul li p span {
+  margin-left: 14px;
+  position: relative;
+  top: -2px;
+}
+.tag_bg ul li p {
+  margin-bottom: 0px;
+}

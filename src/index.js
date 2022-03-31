@@ -6,12 +6,12 @@ import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import { BrowserRouter } from "react-router-dom";
 // import "semantic-ui-css/semantic.min.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/style.css";
 import rootReducer from "./redux/reducers";
 import thunk from "redux-thunk";
-import "react-notifications-component/dist/theme.css";
 import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 const middleware = [thunk];
 const store = createStore(rootReducer, applyMiddleware(...middleware));

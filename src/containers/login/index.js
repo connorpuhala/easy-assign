@@ -36,7 +36,7 @@ const Login = ({
         <div className="login_logo">
           <img src={LogoImg} alt="logo" />
         </div>
-        <div class="login_heading">
+        <div className="login_heading">
           <h1>Login your account</h1>
         </div>
         {isLogging && <LoaderWithinWrapper text="Logging in..." />}
@@ -109,7 +109,13 @@ const Login = ({
                     </div>
                   </div>
                   <div className="forgot">
-                    <a href="javascript:;">Forgot password?</a>
+                    <a
+                      onClick={() => {
+                        history.push("/forgot-password");
+                      }}
+                    >
+                      Forgot password?
+                    </a>
                   </div>
                 </div>
                 <button primary type="submit" className="login_btn">

@@ -109,7 +109,7 @@ export const deleteProblem = (id) => {
         type: types.DELETE_PROBLEM_SUCCESS,
         payload: id,
       });
-    } catch (err) {
+    } catch (error) {
       return dispatch({
         type: types.DELETE_PROBLEM_ERROR,
         payload: error.message,
@@ -132,6 +132,27 @@ export const createNewTag = (body) => {
       console.log("errorrr createNewTag", error);
       return dispatch({
         type: types.CREATE_TAG_ERROR,
+        payload: error.message,
+      });
+    }
+  };
+};
+
+export const deleteTag = (id) => {
+  return async (dispatch) => {
+    dispatch({
+      type: types.DELETE_TAG_REQUEST,
+    });
+    try {
+      const { results } = await API.deleteTag(id);
+      return dispatch({
+        type: types.DELETE_TAG_SUCCESS,
+        payload: id,
+      });
+    } catch (error) {
+      console.log("errorrr delete tag", error);
+      return dispatch({
+        type: types.DELETE_TAG_ERROR,
         payload: error.message,
       });
     }

@@ -51,6 +51,7 @@ const prolems = (state = initialState, action) => {
         isGetAllTagsError: true,
         isGetAllTagsErrorMsg: action.payload,
       };
+
     //
     // GET_PROBLEMS_BY_TAGS
     //
@@ -178,6 +179,35 @@ const prolems = (state = initialState, action) => {
       return {
         ...state,
         isCreatingNewTag: false,
+      };
+
+    //
+    // DELETE TAG
+    //
+
+    case types.DELETE_TAG_REQUEST:
+      return {
+        ...state,
+        isDeletingTag: true,
+      };
+    case types.DELETE_TAG_SUCCESS:
+      const oldTags = state.tags;
+      const existingTagIndex = oldTags.findIndex(
+        (el) => el.id === action.payload
+      );
+      if (existingTagIndex !== -1) {
+        oldTags.splice(existingTagIndex, 1);
+      }
+
+      return {
+        ...state,
+        isDeletingTag: false,
+        tags: oldTags,
+      };
+    case types.DELETE_TAG_ERROR:
+      return {
+        ...state,
+        isDeletingTag: false,
       };
 
     // EMPTY_STATE_AFTER_LOGOUT
