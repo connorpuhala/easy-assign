@@ -6,11 +6,13 @@ import Problems from "./components/Problems";
 import LogoImg from "../../images/Logo.svg";
 import { useRef, useState } from "react";
 import SwitchToggler from "components/common/SwitchToggler";
+import { Button } from "reactstrap";
 const ProblemsListing = ({ user }) => {
   const createProblemBtnRef = useRef(null);
   const createNewTagBtnRef = useRef(null);
   const logoutBtnRef = useRef(null);
   const [isShowAllAnswers, setShowAllAnswers] = useState(false);
+  const [isEditTags, setEditTags] = useState(false);
   return (
     <div className="container">
       <div className="row">
@@ -46,9 +48,18 @@ const ProblemsListing = ({ user }) => {
                 >
                   Create new Tag
                 </button>
+                <button
+                  className="create_edit_tag"
+                  onClick={() => {
+                    setEditTags(!isEditTags);
+                  }}
+                >
+                  Edit Tags{" "}
+                </button>
               </div>
             ) : null}
           </div>
+
           <div className="logout">
             <button
               className="logout_btn"
@@ -62,7 +73,7 @@ const ProblemsListing = ({ user }) => {
             </button>
           </div>
         </div>
-        <Tags mode="listing" />
+        <Tags mode="listing" isEditTags={isEditTags} />
         <SwitchToggler
           id="all"
           text="Show All Answers"

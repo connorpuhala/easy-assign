@@ -21,7 +21,6 @@ const CreateProblemModal = ({
   isCreateProblem,
   isEditProblem,
 }) => {
-  console.log("selectedProblem ====", selectedProblem);
   const [problemData, setProblemData] = useState({
     image: null,
     tag_ids: [],
@@ -165,7 +164,7 @@ const CreateProblemModal = ({
         </div>
         <div className="model_content">
           {problemData.image ? (
-            <div  className="large">
+            <div className="large">
               <img
                 alt="problem"
                 src={problemData.image}

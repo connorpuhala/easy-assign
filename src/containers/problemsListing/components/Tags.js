@@ -10,6 +10,7 @@ import {
   deleteTag,
 } from "redux/actions/problems";
 import { LoaderWithinWrapper } from "components/global/loader";
+import { Input } from "reactstrap";
 
 const Tags = ({
   isGetAllTags,
@@ -24,14 +25,22 @@ const Tags = ({
   selectedTagIds,
   tagList,
   deleteTag,
+  isEditTags,
 }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedTagsList, setSelectedTagsList] = useState([]);
+  const [filteredTags, setFilteredTags] = useState(tags);
   useEffect(() => {
     if (!tags.length) {
       getAllTags();
     }
   }, []);
+
+  useEffect(() => {
+    if (tags.length > 0) {
+      setFilteredTags(tags);
+    }
+  }, [tags]);
 
   useEffect(() => {
     if (selectedTagIds && selectedTagIds.length) {
@@ -41,6 +50,12 @@ const Tags = ({
   }, [selectedTagIds]);
 
   const selectTagOnChangeHandler = (tag) => {
+    console.log(
+      "selectedTagsselectedTags=",
+      selectedTags,
+      tag,
+      selectedTags.includes(tag.id)
+    );
     const tagId = tag.id;
     const checked = !selectedTags.includes(tag.id);
     if (checked) {
@@ -73,23 +88,74 @@ const Tags = ({
     deleteTag(id);
   };
 
+  const onSearchTags = (event) => {
+    event.preventDefault();
+    const data = tags.filter((el) => {
+      return el.label.includes(event.target.value);
+    });
+    setFilteredTags(data);
+  };
+
+  const onSelectAllTags = () => {
+    // selectedTags.push(...tags.map((el) => el.id));
+    // selectedTagsList.push([...tags]);
+    const tagsSelected = tags.map((el) => el.id);
+    setSelectedTags(tagsSelected);
+    setSelectedTagsList(tags);
+    if (mode === "listing") {
+      getProblemsByTags({ tag_ids: tagsSelected });
+    } else {
+      getSelectedTags({ selectedTags: tagsSelected, selectedTagsList: tags });
+    }
+  };
+
+  const onDeselectAll = () => {
+    // selectedTags.splice(existingTagIndex, 1);
+    // selectedTagsList.splice(existingTagIndex, 1);
+    setSelectedTagsList([]);
+    setSelectedTags([]);
+    if (mode === "listing") {
+      getProblemsByTags({ tag_ids: [] });
+    } else {
+      getSelectedTags({ selectedTags: [], selectedTagsList: [] });
+    }
+  };
+
+  const tagsToShow = mode === "listing" ? filteredTags : tags;
+
+  console.log("selectedTags=", selectedTags);
+
   return (
     <div className="tag_bg postion-relative" columns={mode === "modal" ? 2 : 3}>
       {isGetAllTags ? (
         <LoaderWithinWrapper />
       ) : tags.length ? (
-        <ul>
-          {tags.map((tag, index) => (
-            <TagItem
-              key={tag.id}
-              tag={tag}
-              selectedTags={selectedTags}
-              selectTagOnChangeHandler={selectTagOnChangeHandler}
-              mode={mode}
-              deleteTag={deleteTagHandler}
-            />
-          ))}
-        </ul>
+        <>
+          {mode === "listing" && (
+            <div className="tags_filters">
+              <Input placeholder="search tags" onChange={onSearchTags} />
+              <button className="select_All" onClick={onSelectAllTags}>
+                Select All
+              </button>
+              <button className="deSelect_All" onClick={onDeselectAll}>
+                Select None
+              </button>
+            </div>
+          )}
+          <ul>
+            {tagsToShow.map((tag, index) => (
+              <TagItem
+                key={tag.id}
+                tag={tag}
+                selectedTags={selectedTags}
+                selectTagOnChangeHandler={selectTagOnChangeHandler}
+                mode={mode}
+                deleteTag={deleteTagHandler}
+                isEditTags={isEditTags}
+              />
+            ))}
+          </ul>
+        </>
       ) : (
         "No tags found"
       )}
@@ -125,6 +191,7 @@ const TagItem = ({
   selectedTags,
   mode,
   deleteTag,
+  isEditTags,
 }) => {
   return (
     <>
@@ -143,7 +210,7 @@ const TagItem = ({
       >
         <p>
           {tag.label}
-          {mode === "listing" && (
+          {mode === "listing" && isEditTags && (
             <span>
               <CrossIcon
                 onClick={(event) => {
