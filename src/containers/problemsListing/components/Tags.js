@@ -50,14 +50,9 @@ const Tags = ({
   }, [selectedTagIds]);
 
   const selectTagOnChangeHandler = (tag) => {
-    console.log(
-      "selectedTagsselectedTags=",
-      selectedTags,
-      tag,
-      selectedTags.includes(tag.id)
-    );
     const tagId = tag.id;
     const checked = !selectedTags.includes(tag.id);
+    console.log("checkedchecked=", tag, tag.id, selectedTags, selectedTagsList);
     if (checked) {
       selectedTags.push(tagId);
       selectedTagsList.push(tag);
@@ -70,6 +65,7 @@ const Tags = ({
       }
     } else {
       let existingTagIndex = selectedTags.findIndex((i) => i === tagId);
+      console.log("existingTagIndex=", existingTagIndex, selectedTags);
       if (existingTagIndex > -1) {
         selectedTags.splice(existingTagIndex, 1);
         selectedTagsList.splice(existingTagIndex, 1);
@@ -102,11 +98,11 @@ const Tags = ({
     const tagsSelected = tags.map((el) => el.id);
     setSelectedTags(tagsSelected);
     setSelectedTagsList(tags);
-    if (mode === "listing") {
-      getProblemsByTags({ tag_ids: tagsSelected });
-    } else {
-      getSelectedTags({ selectedTags: tagsSelected, selectedTagsList: tags });
-    }
+    getProblemsByTags({ tag_ids: tagsSelected });
+    // if (mode === "listing") {
+    // } else {
+    //   getSelectedTags({ selectedTags: tagsSelected, selectedTagsList: tags });
+    // }
   };
 
   const onDeselectAll = () => {
@@ -114,16 +110,14 @@ const Tags = ({
     // selectedTagsList.splice(existingTagIndex, 1);
     setSelectedTagsList([]);
     setSelectedTags([]);
-    if (mode === "listing") {
-      getProblemsByTags({ tag_ids: [] });
-    } else {
-      getSelectedTags({ selectedTags: [], selectedTagsList: [] });
-    }
+    getProblemsByTags({ tag_ids: [] });
+    // if (mode === "listing") {
+    // } else {
+    //   getSelectedTags({ selectedTags: [], selectedTagsList: [] });
+    // }
   };
 
   const tagsToShow = mode === "listing" ? filteredTags : tags;
-
-  console.log("selectedTags=", selectedTags);
 
   return (
     <div className="tag_bg postion-relative" columns={mode === "modal" ? 2 : 3}>

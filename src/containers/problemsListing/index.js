@@ -12,6 +12,7 @@ const ProblemsListing = ({ user }) => {
   const createNewTagBtnRef = useRef(null);
   const logoutBtnRef = useRef(null);
   const [isShowAllAnswers, setShowAllAnswers] = useState(false);
+  const [isShowAllTags, setShowAllTags] = useState(false);
   const [isEditTags, setEditTags] = useState(false);
   return (
     <div className="container">
@@ -74,19 +75,30 @@ const ProblemsListing = ({ user }) => {
           </div>
         </div>
         <Tags mode="listing" isEditTags={isEditTags} />
-        <SwitchToggler
-          id="all"
-          text="Show All Answers"
-          checked={isShowAllAnswers}
-          onChange={() => {
-            setShowAllAnswers(!isShowAllAnswers);
-          }}
-        />
+        <div className="tags_answer_switch">
+          <SwitchToggler
+            id="all"
+            text="Show All Answers"
+            checked={isShowAllAnswers}
+            onChange={() => {
+              setShowAllAnswers(!isShowAllAnswers);
+            }}
+          />
+          <SwitchToggler
+            id="all_tags"
+            text="Show All Tags"
+            checked={isShowAllTags}
+            onChange={() => {
+              setShowAllTags(!isShowAllTags);
+            }}
+          />
+        </div>
         <Problems
           createProblemBtnRef={createProblemBtnRef}
           createNewTagBtnRef={createNewTagBtnRef}
           logoutBtnRef={logoutBtnRef}
           isShowAllAnswers={isShowAllAnswers}
+          isShowAllTags={isShowAllTags}
         />
       </div>
     </div>

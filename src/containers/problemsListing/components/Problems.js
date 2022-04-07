@@ -51,6 +51,7 @@ const Problems = ({
   logoutBtnRef,
   deleteProblem,
   isShowAllAnswers,
+  isShowAllTags,
 }) => {
   const history = useHistory();
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
@@ -332,6 +333,7 @@ const Problems = ({
                   createProblemModalHandler={createProblemModalHandler}
                   deleteProblem={deleteProblemHandler}
                   isShowAllAnswers={isShowAllAnswers}
+                  isShowAllTags={isShowAllTags}
                 />
               );
             })
@@ -396,10 +398,12 @@ export const ProblemItem = ({
   createProblemModalHandler,
   deleteProblem,
   isShowAllAnswers,
+  isShowAllTags,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isConfirmBox, setIsConfirmBox] = useState(false);
   const [isShowAnswer, setShowAnswer] = useState(false);
+  const [isShowTag, setShowTag] = useState(false);
 
   const onConfirmBoxDelete = (id) => {
     deleteProblem(id);
@@ -411,6 +415,11 @@ export const ProblemItem = ({
   useEffect(() => {
     setShowAnswer(isShowAllAnswers);
   }, [isShowAllAnswers]);
+
+  useEffect(() => {
+    setShowTag(isShowAllTags);
+  }, [isShowAllTags]);
+
   return (
     <div className="problem_answer" raised vertical padded>
       <div className="prob_heading">
@@ -452,17 +461,33 @@ export const ProblemItem = ({
           onError={() => setIsLoading(false)}
         />
       </div>
-      <SwitchToggler
-        id={problem.id}
-        text="Show Answer"
-        checked={isShowAnswer}
-        onChange={() => {
-          setShowAnswer(!isShowAnswer);
-        }}
-      />
+      <div className="tags_answer_switch">
+        <SwitchToggler
+          id={problem.id}
+          text="Show Answer"
+          checked={isShowAnswer}
+          onChange={() => {
+            setShowAnswer(!isShowAnswer);
+          }}
+        />
+        <SwitchToggler
+          id={`tag_${problem.id}`}
+          text="Show Tags"
+          checked={isShowTag}
+          onChange={() => {
+            setShowTag(!isShowTag);
+          }}
+        />
+      </div>
       {isShowAllAnswers || isShowAnswer ? (
         <div className="answer">
           <h1>Answer:</h1> <p>{problem.answer}</p>
+          {isLoading ? <LoaderWithinWrapper /> : null}
+        </div>
+      ) : null}
+      {isShowAllTags || isShowTag ? (
+        <div className="answer">
+          <h1>Tags:</h1> <p>{problem?.tag?.map((el) => el.label).join(" ")}</p>
           {isLoading ? <LoaderWithinWrapper /> : null}
         </div>
       ) : null}

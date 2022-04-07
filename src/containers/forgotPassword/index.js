@@ -1,10 +1,12 @@
 import { Formik } from "formik";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { forgetPasswordValidationSchema } from "utils/validations";
 import LogoImg from "../../images/Logo.svg";
 import { ReactComponent as MailIconSvg } from "../../images/msg.svg";
 
 const ForgotPassword = () => {
+  const history = useHistory();
   const senRequestHandler = ({ values }) => {
     console.log("call forget password api here");
   };
@@ -53,6 +55,18 @@ const ForgotPassword = () => {
             );
           }}
         </Formik>
+        <span className="accont_info">
+          Go back to
+          <a
+            href="/create-account"
+            onClick={(e) => {
+              e.preventDefault();
+              history.push("/login");
+            }}
+          >
+            Login
+          </a>
+        </span>
       </div>
     </div>
   );
