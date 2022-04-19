@@ -4,12 +4,15 @@ import { getEasyAssignUser } from "utils/utilities";
 import Tags from "./components/Tags";
 import Problems from "./components/Problems";
 import LogoImg from "../../images/Logo.svg";
+import UserIcon from "../../images/user-icon.svg";
 import { useRef, useState } from "react";
 import SwitchToggler from "components/common/SwitchToggler";
-import { Button } from "reactstrap";
+import { useHistory } from "react-router-dom";
+
 const ProblemsListing = ({ user }) => {
   const createProblemBtnRef = useRef(null);
   const createNewTagBtnRef = useRef(null);
+  const history = useHistory();
   const logoutBtnRef = useRef(null);
   const [isShowAllAnswers, setShowAllAnswers] = useState(false);
   const [isShowAllTags, setShowAllTags] = useState(false);
@@ -20,6 +23,19 @@ const ProblemsListing = ({ user }) => {
         <div className="col-12">
           <div className="top_logo">
             <img src={LogoImg} alt="logo" />
+          </div>
+          <div className="user_email">
+            <span> {user.email}</span>
+            <button className="user_icon">
+              <img
+                src={UserIcon}
+                alt="user-icon"
+                onClick={(e) => {
+                  e.preventDefault();
+                  history.push("/subscriptions");
+                }}
+              />
+            </button>
           </div>
         </div>
         <div className="problem_heading">
@@ -50,7 +66,9 @@ const ProblemsListing = ({ user }) => {
                   Create new Tag
                 </button>
                 <button
-                  className="create_edit_tag"
+                  className={`create_edit_tag ${
+                    isEditTags ? "create_edit_tag_active" : ""
+                  }`}
                   onClick={() => {
                     setEditTags(!isEditTags);
                   }}
@@ -61,7 +79,7 @@ const ProblemsListing = ({ user }) => {
             ) : null}
           </div>
 
-          <div className="logout">
+          {/* <div className="logout">
             <button
               className="logout_btn"
               onClick={() => {
@@ -72,7 +90,7 @@ const ProblemsListing = ({ user }) => {
             >
               Logout
             </button>
-          </div>
+          </div> */}
         </div>
         <Tags mode="listing" isEditTags={isEditTags} />
         <div className="tags_answer_switch">

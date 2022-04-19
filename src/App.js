@@ -5,6 +5,7 @@ import ProblemsListing from "containers/problemsListing";
 import { getEasyAssignUser } from "utils/utilities";
 import SplashScreen from "containers/splashScreen";
 import ForgotPassword from "containers/forgotPassword";
+import Subscriptions from "containers/subscriptions";
 const App = () => {
   return (
     <Switch>
@@ -17,6 +18,7 @@ const App = () => {
         component={ForgotPassword}
       />
       <PrivateRoute exact path="/problems" component={ProblemsListing} />
+      <PrivateRoute exact path="/subscriptions" component={Subscriptions} />
       <Redirect from="*" to="/" />
     </Switch>
   );

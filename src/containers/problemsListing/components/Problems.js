@@ -308,13 +308,13 @@ const Problems = ({
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
-        <button
+        {/* <button
           className="d-none"
           ref={logoutBtnRef}
           onClick={() => logoutHandler()}
         >
           Logout
-        </button>
+        </button> */}
       </div>
       <div columns={3} className="position-relative">
         {isGetProblemsByTags ? (
