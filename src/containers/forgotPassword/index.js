@@ -1,14 +1,28 @@
 import { Formik } from "formik";
 import React from "react";
+import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { forgetPasswordValidationSchema } from "utils/validations";
 import LogoImg from "../../images/Logo.svg";
 import { ReactComponent as MailIconSvg } from "../../images/msg.svg";
-
-const ForgotPassword = () => {
+import { sendResetPasswordLink } from "redux/actions/resetPassword";
+import { bindActionCreators } from "redux";
+import createNotification from "components/global/createNotification";
+const ForgotPassword = ({
+  sendResetPasswordLink,
+  resetPasswordLinkStatus,
+  resetPasswordLinkErrorMsg,
+}) => {
   const history = useHistory();
   const senRequestHandler = ({ values }) => {
-    console.log("call forget password api here");
+    console.log("call forget password api here", values);
+    sendResetPasswordLink(values).then((action) => {
+      if (action.type === "RESET_PASSWORD_LINK_SUCCESS") {
+        createNotification();
+      } else {
+        console.log("login error----", action);
+      }
+    });
   };
 
   return (
@@ -72,4 +86,17 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+const mapStateToProps = (state) => {
+  let { resetPasswordLinkStatus, resetPasswordLinkErrorMsg } =
+    state.resetPassword;
+  return { resetPasswordLinkStatus, resetPasswordLinkErrorMsg };
+};
+const mapDispatch = (dispatch) =>
+  bindActionCreators(
+    {
+      sendResetPasswordLink,
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatch)(ForgotPassword);

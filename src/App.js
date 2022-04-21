@@ -6,6 +6,7 @@ import { getEasyAssignUser } from "utils/utilities";
 import SplashScreen from "containers/splashScreen";
 import ForgotPassword from "containers/forgotPassword";
 import Subscriptions from "containers/subscriptions";
+import ResetPassword from "containers/resetpassword";
 const App = () => {
   return (
     <Switch>
@@ -17,6 +18,7 @@ const App = () => {
         path="/forgot-password"
         component={ForgotPassword}
       />
+      <NoLoggedInRoute path="/reset/:id" component={ResetPassword} />
       <PrivateRoute exact path="/problems" component={ProblemsListing} />
       <PrivateRoute exact path="/subscriptions" component={Subscriptions} />
       <Redirect from="*" to="/" />
@@ -43,11 +45,7 @@ export const NoLoggedInRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={(props) => {
-      return getEasyAssignUser() && getEasyAssignUser().id ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/problems" />
-      );
+      return <Component {...props} />;
     }}
   />
 );

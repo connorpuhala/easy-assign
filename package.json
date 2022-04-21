@@ -26,7 +26,7 @@
   },
   "scripts": {
     "dev": "REACT_APP_URL=dev react-scripts start",
-    "start": "REACT_APP_URL=production react-scripts start",
+    "start": "PORT=3001 REACT_APP_URL=production react-scripts start ",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -26,4 +26,5 @@ const fetchService = ({ method, url, body, myHeaders }) =>
 
 export * from "./loginSignup";
 export * from "./problems";
+export * from "./resetPassword";
 export default fetchService;

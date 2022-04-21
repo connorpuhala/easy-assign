@@ -117,7 +117,8 @@ const Tags = ({
     // }
   };
 
-  const tagsToShow = mode === "listing" ? filteredTags : tags;
+  const tagsToShow =
+    mode === "listing" || mode === "modal" ? filteredTags : tags;
 
   return (
     <div className="tag_bg postion-relative" columns={mode === "modal" ? 2 : 3}>
@@ -134,6 +135,11 @@ const Tags = ({
               <button className="deSelect_All" onClick={onDeselectAll}>
                 Select None
               </button>
+            </div>
+          )}
+          {mode === "modal" && (
+            <div className="tags_filters">
+              <Input placeholder="search tags" onChange={onSearchTags} />
             </div>
           )}
           <ul>

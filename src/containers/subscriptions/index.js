@@ -1,5 +1,6 @@
 import React from "react";
 import LogoImg from "../../images/Logo.svg";
+import BackImg from "../../images/back_arrow.png";
 import { useHistory } from "react-router-dom";
 import UserIcon from "../../images/user-icon.svg";
 import { getEasyAssignUser, removeEasyAssignUser } from "utils/utilities";
@@ -30,12 +31,12 @@ const Subscriptions = ({ user }) => {
         <div className="top_buttons">
           <div className="logout">
             <button
-              className="create_prob"
+              className="back_btn"
               onClick={() => {
                 history.goBack();
               }}
             >
-              Go Back{" "}
+              <img src={BackImg} alt="back" />
             </button>
           </div>
           <div className="logout">

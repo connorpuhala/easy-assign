@@ -58,8 +58,6 @@ const CreateProblemModal = ({
   }, []);
   useEffect(() => {}, [inputRef]);
 
-  console.log("problemData ====", problemData);
-
   const onChangeFileHandler = (e) => {
     let file = e.target.files && e.target.files[0];
     if (file) {

@@ -479,15 +479,16 @@ export const ProblemItem = ({
           }}
         />
       </div>
-      {isShowAllAnswers || isShowAnswer ? (
+      {isShowAnswer ? (
         <div className="answer">
           <h1>Answer:</h1> <p>{problem.answer}</p>
           {isLoading ? <LoaderWithinWrapper /> : null}
         </div>
       ) : null}
-      {isShowAllTags || isShowTag ? (
+      {isShowTag ? (
         <div className="answer">
-          <h1>Tags:</h1> <p>{problem?.tag?.map((el) => el.label).join(" ")}</p>
+          <h1>Tags:</h1>{" "}
+          <p>{problem?.tag?.map((el) => el.label).join(" // ")}</p>
           {isLoading ? <LoaderWithinWrapper /> : null}
         </div>
       ) : null}

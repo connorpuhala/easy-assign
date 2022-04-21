@@ -24,17 +24,16 @@ const ProblemsListing = ({ user }) => {
           <div className="top_logo">
             <img src={LogoImg} alt="logo" />
           </div>
-          <div className="user_email">
+          <div
+            className="user_email"
+            onClick={(e) => {
+              e.preventDefault();
+              history.push("/subscriptions");
+            }}
+          >
             <span> {user.email}</span>
             <button className="user_icon">
-              <img
-                src={UserIcon}
-                alt="user-icon"
-                onClick={(e) => {
-                  e.preventDefault();
-                  history.push("/subscriptions");
-                }}
-              />
+              <img src={UserIcon} alt="user-icon" />
             </button>
           </div>
         </div>

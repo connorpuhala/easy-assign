@@ -298,14 +298,7 @@ button.user_icon_sub {
 .user_email_sub {
   margin-bottom: 20px;
 }
-.subscription {
-  border: 1px solid #cdcdcd;
-  padding: 15px;
-  border-radius: 5px;
-  height: 280px;
-  display: flex;
-  flex-direction: column;
-}
+
 .subscription h3 {
   text-align: center;
   border-bottom: 1px solid #ececec;
@@ -927,7 +920,20 @@ button.user_icon {
   border: none;
   background-color: transparent;
 }
-.active_subs {
+
+.subscription {
+  border: 2px solid #cdcdcd;
+  padding: 15px;
+  border-radius: 5px;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+.subscription:hover {
   background-color: #f5f5f5;
   border: 2px solid #0053d0;
+}
+.back_btn {
+  background-color: transparent;
+  border: none;
 }
