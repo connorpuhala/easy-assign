@@ -22,3 +22,25 @@ export const sendResetPasswordLink = (values) => {
     }
   };
 };
+
+export const resetPassword = (values) => {
+  return async (dispatch) => {
+    dispatch({
+      type: types.RESET_PASSWORD_REQUEST,
+    });
+    try {
+      const results = await API.resetPassword(values);
+      console.log("results ====", results);
+      return dispatch({
+        type: types.RESET_PASSWORD_SUCCESS,
+        payload: results,
+      });
+    } catch (error) {
+      console.log("errorrr sendResetPasswordLink", error);
+      return dispatch({
+        type: types.RESET_PASSWORD_ERROR,
+        payload: error.message,
+      });
+    }
+  };
+};

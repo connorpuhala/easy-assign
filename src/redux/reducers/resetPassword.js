@@ -2,6 +2,9 @@ import types from "redux/types/resetPassword";
 const initialState = {
   resetPasswordLinkStatus: "idle",
   resetPasswordLinkErrorMsg: "",
+
+  resetPasswordStatus: "idle",
+  resetPasswordErrorMsg: "",
 };
 const resetPassword = (state = initialState, action) => {
   switch (action.type) {
@@ -21,6 +24,24 @@ const resetPassword = (state = initialState, action) => {
         resetPasswordLinkStatus: "failed",
         resetPasswordLinkErrorMsg: action.payload,
       };
+    /// reset password
+    case types.RESET_PASSWORD_REQUEST:
+      return {
+        ...state,
+        resetPasswordStatus: "loading",
+      };
+    case types.RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        resetPasswordStatus: "idle",
+      };
+    case types.RESET_PASSWORD_ERROR:
+      return {
+        ...state,
+        resetPasswordStatus: "failed",
+        resetPasswordErrorMsg: action.payload,
+      };
+
     default:
       return state;
   }

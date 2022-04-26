@@ -51,6 +51,7 @@ const Subscriptions = ({ user }) => {
             <img src={UserIcon} alt="user-icon" />
           </button>
         </div>
+        <p>Coming Soon with Paid Subscriptions</p>
         <div className="row">
           <div className="col">
             <div className="subscription active_subs">
@@ -65,7 +66,7 @@ const Subscriptions = ({ user }) => {
             </div>
           </div>
           <div className="col">
-            <div className="subscription ">
+            <div className="subscription inactive_subs">
               <h3>Single User</h3>
               <ul>
                 <li>
@@ -82,7 +83,7 @@ const Subscriptions = ({ user }) => {
             </div>
           </div>
           <div className="col">
-            <div className="subscription ">
+            <div className="subscription  inactive_subs">
               <h3>Organization</h3>
               <ul>
                 <li>

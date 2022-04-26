@@ -8,6 +8,7 @@ import { ReactComponent as MailIconSvg } from "../../images/msg.svg";
 import { sendResetPasswordLink } from "redux/actions/resetPassword";
 import { bindActionCreators } from "redux";
 import createNotification from "components/global/createNotification";
+import { LoaderWithinWrapper } from "components/global/loader";
 const ForgotPassword = ({
   sendResetPasswordLink,
   resetPasswordLinkStatus,
@@ -35,6 +36,8 @@ const ForgotPassword = ({
           <h1>Forgot Your Password ?</h1>
           <p>No Worries! Enter your email and we will send you reset link </p>
         </div>
+        {resetPasswordLinkStatus === "loading" && <LoaderWithinWrapper />}
+        {resetPasswordLinkErrorMsg && <div>{resetPasswordLinkErrorMsg}</div>}
         <Formik
           initialValues={{ email: "" }}
           validationSchema={forgetPasswordValidationSchema}

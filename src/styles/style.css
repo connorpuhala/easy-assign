@@ -929,10 +929,21 @@ button.user_icon {
   display: flex;
   flex-direction: column;
 }
-.subscription:hover {
+
+.active_subs {
   background-color: #f5f5f5;
   border: 2px solid #0053d0;
 }
+
+.inactive_subs {
+  background-color: #8f8a8a;
+  border: 2px solid #989ea7;
+}
+
+/* .subscription:hover {
+  background-color: #f5f5f5;
+  border: 2px solid #0053d0;
+} */
 .back_btn {
   background-color: transparent;
   border: none;
