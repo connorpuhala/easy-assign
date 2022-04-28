@@ -35,13 +35,14 @@ const resetPassword = (state = initialState, action) => {
         ...state,
         resetPasswordStatus: "idle",
       };
-    case types.RESET_PASSWORD_ERROR:
+    case types.RESET_PASSWORD_ERROR:{
+      console.log("actionegdfhfg  ")
       return {
         ...state,
         resetPasswordStatus: "failed",
         resetPasswordErrorMsg: action.payload,
       };
-
+}
     default:
       return state;
   }

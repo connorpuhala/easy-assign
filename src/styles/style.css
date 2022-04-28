@@ -948,3 +948,11 @@ button.user_icon {
   background-color: transparent;
   border: none;
 }
+.modal-dialog.modal-wrap {
+  max-width: 800px;
+  width: 100%;
+}
+.modal-width img {
+  max-width: 100%;
+  height: auto;
+}

@@ -28,10 +28,15 @@ const ResetPassword = ({
         });
         history.push("/login");
       } else {
-        console.log("login error----", action);
+        createNotification({
+          type: "danger",
+          msg: action.payload,
+          timeout: 2000,
+        });
       }
     });
   };
+
 
   return (
     <div className="login_container">

@@ -33,6 +33,7 @@ import {
 } from "reactstrap";
 import ConfirmDeleteModal from "./confirmDeleteModal";
 import SwitchToggler from "components/common/SwitchToggler";
+import ProblemZoomIn from "./ProblemZoomIn";
 
 const Problems = ({
   user,
@@ -61,6 +62,12 @@ const Problems = ({
   const [isCreateTagModal, setIsCreateTagModal] = useState(false);
   const [selectedProblem, setSelectedProblem] = useState(null);
   const [downloadToggle, setDownloadToggle] = useState(false);
+  const [isProblemClicked, SetProblemClicked] = useState(false);
+  const [probleImage, setProblemImage] = useState()
+
+  const toggleProbloemZoomIn = ()=>{
+    SetProblemClicked(!isProblemClicked)
+  }
 
   const createProblemModalHandler = (val) => {
     console.log("createProblemModalHandler=====", val);
@@ -207,16 +214,15 @@ const Problems = ({
       let sh1 = imgHeight * scale;
       let x = 20;
       let y = 20;
-      if (isAnswersLabel) {
-        // pdf.text(10, 10, `Answer: ${problems[i].answer}`);
-        var splitTitle = pdf.splitTextToSize(
-          `Answer: If you’re benchmarking or experiencing performance problems in your React apps, make sure you’re testing with the minified production build.
+      // if (isAnswersLabel) {
+      //   var splitTitle = pdf.splitTextToSize(
+      //     `Answer: If you’re benchmarking or experiencing performance problems in your React apps, make sure you’re testing with the minified production build.
 
-          By default, React includes many helpful warnings. These warnings are very useful in development. However, they make React larger and slower so you should make sure to use the production version when you deploy the app.`,
-          pageWidth - 10
-        );
-        pdf.text(10, 10, splitTitle);
-      }
+      //     By default, React includes many helpful warnings. These warnings are very useful in development. However, they make React larger and slower so you should make sure to use the production version when you deploy the app.`,
+      //     pageWidth - 10
+      //   );
+      //   pdf.text(10, 10, splitTitle);
+      // }
       pdf.addImage(
         problems[i].image_url,
         "JPEG",
@@ -227,11 +233,18 @@ const Problems = ({
         null,
         `$prob_${i}`
       );
+      if (isAnswersLabel) {
+        pdf.text(`Answer: ${problems[i].answer}`, 40, 250, 'center');
+      }
       if (i + 1 === length) {
-        pdf.save(Date.now());
+        const pdfName = `Assignment_${new Date().toLocaleString()}_${
+          isAnswersLabel ? "With_Answers" : "Without_Answers"
+        }`;
+        pdf.save(pdfName);
       } else {
         pdf.addPage();
       }
+      
     }
   };
 
@@ -334,6 +347,8 @@ const Problems = ({
                   deleteProblem={deleteProblemHandler}
                   isShowAllAnswers={isShowAllAnswers}
                   isShowAllTags={isShowAllTags}
+                  toggleProbloemZoomIn = {toggleProbloemZoomIn}
+                  setProblemImage = {setProblemImage}
                 />
               );
             })
@@ -354,6 +369,7 @@ const Problems = ({
           toggle={createNewTagModalHandler}
           createNewTag={createNewTagHandler}
         />
+        <ProblemZoomIn isOpen = {isProblemClicked}  toggleProbloemZoomIn = {toggleProbloemZoomIn} probleImage= {probleImage}/>
       </div>
     </>
   );
@@ -399,6 +415,8 @@ export const ProblemItem = ({
   deleteProblem,
   isShowAllAnswers,
   isShowAllTags,
+  toggleProbloemZoomIn,
+  setProblemImage,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isConfirmBox, setIsConfirmBox] = useState(false);
@@ -451,7 +469,9 @@ export const ProblemItem = ({
         ) : null}
       </div>
 
-      <div className="prob_img">
+      <div className="prob_img" onClick={()=>{
+        setProblemImage(problem.image_url)
+        toggleProbloemZoomIn();}}>
         <img
           src={problem.image_url}
           // size="large"

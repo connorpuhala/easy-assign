@@ -12,9 +12,9 @@ export const sendResetPasswordLink = (values) => {
       console.log("results ====", results);
       return dispatch({
         type: types.RESET_PASSWORD_LINK_SUCCESS,
+        payload : results.message,
       });
     } catch (error) {
-      console.log("errorrr sendResetPasswordLink", error);
       return dispatch({
         type: types.RESET_PASSWORD_LINK_ERROR,
         payload: error.message,
@@ -30,13 +30,11 @@ export const resetPassword = (values) => {
     });
     try {
       const results = await API.resetPassword(values);
-      console.log("results ====", results);
       return dispatch({
         type: types.RESET_PASSWORD_SUCCESS,
         payload: results,
       });
     } catch (error) {
-      console.log("errorrr sendResetPasswordLink", error);
       return dispatch({
         type: types.RESET_PASSWORD_ERROR,
         payload: error.message,

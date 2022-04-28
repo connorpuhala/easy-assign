@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { forgetPasswordValidationSchema } from "utils/validations";
@@ -15,11 +15,17 @@ const ForgotPassword = ({
   resetPasswordLinkErrorMsg,
 }) => {
   const history = useHistory();
+  const [isRequestDisable, setRequestDisable] = useState(false);
+
   const senRequestHandler = ({ values }) => {
-    console.log("call forget password api here", values);
+    setRequestDisable(!isRequestDisable)
     sendResetPasswordLink(values).then((action) => {
       if (action.type === "RESET_PASSWORD_LINK_SUCCESS") {
-        createNotification();
+        createNotification({
+          type: "success",
+          msg: action.payload,
+          timeout: 6000,
+        });
       } else {
         console.log("login error----", action);
       }
@@ -65,7 +71,7 @@ const ForgotPassword = ({
                     <span className="input-error-text">{errors.email}</span>
                   )}
                 </div>
-                <button primary type="submit" className="login_btn">
+                <button disabled = {isRequestDisable} primary type="submit" className="login_btn">
                   Send Request
                 </button>
               </form>
