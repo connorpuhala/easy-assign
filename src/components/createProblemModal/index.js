@@ -30,10 +30,6 @@ const CreateProblemModal = ({
   const [newTag, setNewTag] = useState("");
   let inputRef = useRef(null);
   const getSelectedTags = ({ selectedTags, selectedTagsList }) => {
-    console.log("@getSelectedTags ==== tags", {
-      selectedTags,
-      selectedTagsList,
-    });
     setProblemData({
       ...problemData,
       tag_ids: selectedTags,

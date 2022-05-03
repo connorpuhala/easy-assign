@@ -1,5 +1,5 @@
 import { Formik } from "formik";
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import LogoImg from "../../images/Logo.svg";
@@ -36,7 +36,6 @@ const ResetPassword = ({
       }
     });
   };
-
 
   return (
     <div className="login_container">

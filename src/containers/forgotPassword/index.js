@@ -18,7 +18,7 @@ const ForgotPassword = ({
   const [isRequestDisable, setRequestDisable] = useState(false);
 
   const senRequestHandler = ({ values }) => {
-    setRequestDisable(!isRequestDisable)
+    setRequestDisable(!isRequestDisable);
     sendResetPasswordLink(values).then((action) => {
       if (action.type === "RESET_PASSWORD_LINK_SUCCESS") {
         createNotification({
@@ -27,7 +27,7 @@ const ForgotPassword = ({
           timeout: 6000,
         });
       } else {
-        console.log("login error----", action);
+        console.log("reset password link error----", action);
       }
     });
   };
@@ -71,7 +71,12 @@ const ForgotPassword = ({
                     <span className="input-error-text">{errors.email}</span>
                   )}
                 </div>
-                <button disabled = {isRequestDisable} primary type="submit" className="login_btn">
+                <button
+                  disabled={isRequestDisable}
+                  primary
+                  type="submit"
+                  className="login_btn"
+                >
                   Send Request
                 </button>
               </form>

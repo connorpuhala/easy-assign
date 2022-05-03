@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { logoutAction } from "redux/actions/loginSignup";
 import { bindActionCreators } from "redux";
 import { emptyStateAfterLogout } from "redux/actions/problems";
-const Subscriptions = ({ user }) => {
+const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
   const history = useHistory();
   const logoutHandler = () => {
     removeEasyAssignUser();
@@ -51,9 +51,8 @@ const Subscriptions = ({ user }) => {
             <img src={UserIcon} alt="user-icon" />
           </button>
         </div>
-        <p>Coming Soon with Paid Subscriptions</p>
         <div className="row">
-          <div className="col">
+          <div className="col position-relative">
             <div className="subscription active_subs">
               <h3>Free</h3>
               <ul>
@@ -65,7 +64,8 @@ const Subscriptions = ({ user }) => {
               <h1>$0/Month</h1>
             </div>
           </div>
-          <div className="col">
+          <div className="col position-relative">
+            <p className="coming_soon_text">Coming Soon </p>
             <div className="subscription inactive_subs">
               <h3>Single User</h3>
               <ul>
@@ -82,7 +82,8 @@ const Subscriptions = ({ user }) => {
               <h1>$3/Month</h1>
             </div>
           </div>
-          <div className="col">
+          <div className="col position-relative">
+            <p className="coming_soon_text">Coming Soon </p>
             <div className="subscription  inactive_subs">
               <h3>Organization</h3>
               <ul>

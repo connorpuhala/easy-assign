@@ -1,12 +1,4 @@
 import React, { useEffect, useState } from "react";
-import {
-  Grid,
-  Image,
-  Segment,
-  Button,
-  // Dropdown,
-  Confirm,
-} from "semantic-ui-react";
 import { connect } from "react-redux";
 import { getEasyAssignUser, getImageWidthHeight } from "utils/utilities";
 import { LoaderWithinWrapper } from "components/global/loader";
@@ -63,14 +55,13 @@ const Problems = ({
   const [selectedProblem, setSelectedProblem] = useState(null);
   const [downloadToggle, setDownloadToggle] = useState(false);
   const [isProblemClicked, SetProblemClicked] = useState(false);
-  const [probleImage, setProblemImage] = useState()
+  const [probleImage, setProblemImage] = useState();
 
-  const toggleProbloemZoomIn = ()=>{
-    SetProblemClicked(!isProblemClicked)
-  }
+  const toggleProbloemZoomIn = () => {
+    SetProblemClicked(!isProblemClicked);
+  };
 
   const createProblemModalHandler = (val) => {
-    console.log("createProblemModalHandler=====", val);
     if (val.isOpen === false) {
       setSelectedProblem(null);
       setIsCreateProblemModal({ isOpen: false, mode: "" });
@@ -90,7 +81,6 @@ const Problems = ({
   };
 
   const createProblemHandler = ({ data, mode, newTag }) => {
-    console.log("createProblemHandler ===", { data, mode, newTag });
     if (data.tag_ids) {
       delete data.tag_ids;
     }
@@ -166,7 +156,6 @@ const Problems = ({
       ...cloneData,
     };
     editProblem(body, id).then((action) => {
-      console.log("action edit =====", action);
       if (action.type === "EDIT_PROBLEM_SUCCESS") {
         setIsCreateProblemModal({ isOpen: false, mode: "" });
         createNotification({
@@ -234,7 +223,7 @@ const Problems = ({
         `$prob_${i}`
       );
       if (isAnswersLabel) {
-        pdf.text(`Answer: ${problems[i].answer}`, 40, 250, 'center');
+        pdf.text(`Answer: ${problems[i].answer}`, 40, 250, "center");
       }
       if (i + 1 === length) {
         const pdfName = `Assignment_${new Date().toLocaleString()}_${
@@ -244,7 +233,6 @@ const Problems = ({
       } else {
         pdf.addPage();
       }
-      
     }
   };
 
@@ -257,7 +245,6 @@ const Problems = ({
 
   const createNewTagModalHandler = (val) => {
     // createNewTagBtnRef
-    console.log("createNewTagBtnRef==", createNewTagBtnRef);
     // if(createNewTagBtnRef?.current){
     // createNewTagBtnRef.current.click()
     setIsCreateTagModal(val);
@@ -265,9 +252,10 @@ const Problems = ({
   };
 
   const toggleDownloadDropdown = () => {
-    console.log("@toggleDownloadDropdown");
     setDownloadToggle(!downloadToggle);
   };
+
+  console.log("problemsproblems=", problems);
 
   return (
     <>
@@ -347,8 +335,8 @@ const Problems = ({
                   deleteProblem={deleteProblemHandler}
                   isShowAllAnswers={isShowAllAnswers}
                   isShowAllTags={isShowAllTags}
-                  toggleProbloemZoomIn = {toggleProbloemZoomIn}
-                  setProblemImage = {setProblemImage}
+                  toggleProbloemZoomIn={toggleProbloemZoomIn}
+                  setProblemImage={setProblemImage}
                 />
               );
             })
@@ -369,7 +357,11 @@ const Problems = ({
           toggle={createNewTagModalHandler}
           createNewTag={createNewTagHandler}
         />
-        <ProblemZoomIn isOpen = {isProblemClicked}  toggleProbloemZoomIn = {toggleProbloemZoomIn} probleImage= {probleImage}/>
+        <ProblemZoomIn
+          isOpen={isProblemClicked}
+          toggleProbloemZoomIn={toggleProbloemZoomIn}
+          probleImage={probleImage}
+        />
       </div>
     </>
   );
@@ -469,9 +461,13 @@ export const ProblemItem = ({
         ) : null}
       </div>
 
-      <div className="prob_img" onClick={()=>{
-        setProblemImage(problem.image_url)
-        toggleProbloemZoomIn();}}>
+      <div
+        className="prob_img"
+        onClick={() => {
+          setProblemImage(problem.image_url);
+          toggleProbloemZoomIn();
+        }}
+      >
         <img
           src={problem.image_url}
           // size="large"

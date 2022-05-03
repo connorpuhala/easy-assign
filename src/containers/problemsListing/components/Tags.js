@@ -52,7 +52,6 @@ const Tags = ({
   const selectTagOnChangeHandler = (tag) => {
     const tagId = tag.id;
     const checked = !selectedTags.includes(tag.id);
-    console.log("checkedchecked=", tag, tag.id, selectedTags, selectedTagsList);
     if (checked) {
       selectedTags.push(tagId);
       selectedTagsList.push(tag);
@@ -65,7 +64,6 @@ const Tags = ({
       }
     } else {
       let existingTagIndex = selectedTags.findIndex((i) => i === tagId);
-      console.log("existingTagIndex=", existingTagIndex, selectedTags);
       if (existingTagIndex > -1) {
         selectedTags.splice(existingTagIndex, 1);
         selectedTagsList.splice(existingTagIndex, 1);
@@ -93,28 +91,16 @@ const Tags = ({
   };
 
   const onSelectAllTags = () => {
-    // selectedTags.push(...tags.map((el) => el.id));
-    // selectedTagsList.push([...tags]);
     const tagsSelected = tags.map((el) => el.id);
     setSelectedTags(tagsSelected);
     setSelectedTagsList(tags);
     getProblemsByTags({ tag_ids: tagsSelected });
-    // if (mode === "listing") {
-    // } else {
-    //   getSelectedTags({ selectedTags: tagsSelected, selectedTagsList: tags });
-    // }
   };
 
   const onDeselectAll = () => {
-    // selectedTags.splice(existingTagIndex, 1);
-    // selectedTagsList.splice(existingTagIndex, 1);
     setSelectedTagsList([]);
     setSelectedTags([]);
     getProblemsByTags({ tag_ids: [] });
-    // if (mode === "listing") {
-    // } else {
-    //   getSelectedTags({ selectedTags: [], selectedTagsList: [] });
-    // }
   };
 
   const tagsToShow =
