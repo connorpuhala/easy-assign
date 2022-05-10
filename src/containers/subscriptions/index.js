@@ -45,7 +45,7 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
             </button>
           </div>
         </div>
-        <div className="user_email_sub">
+        <div className="user_email_sub ">
           <span> {user.email}</span>
           <button className="user_icon_sub">
             <img src={UserIcon} alt="user-icon" />
@@ -101,6 +101,10 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="footer_content">
+        {" "}
+        <p> EasyAssignEducation@gmail.com</p>
       </div>
     </div>
   );

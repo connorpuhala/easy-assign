@@ -959,3 +959,84 @@ button.user_icon {
   position: absolute;
   top: -39px;
 }
+.input_search svg {
+  position: absolute;
+  right: 25px;
+  top: 13px;
+}
+.bounce_effect:hover {
+  animation: bounce-in 1s ease;
+  animation-iteration-count: 1;
+}
+@keyframes bounce-in {
+  0% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.back_btn:hover {
+  animation: back-bounce 1s ease;
+  animation-iteration-count: 1;
+}
+@keyframes back-bounce {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.09);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.select_All:hover {
+  animation: button-bounce 1s ease;
+  animation-iteration-count: 1;
+}
+.deSelect_All:hover {
+  animation: button-bounce 1s ease;
+  animation-iteration-count: 1;
+}
+@keyframes button-bounce {
+  0% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.footer_content {
+  display: flex;
+  flex-direction: column;
+  height: 221px;
+  text-align: center;
+}
+.footer_content p {
+  margin-top: auto;
+}
+.input_search {
+  position: relative;
+}

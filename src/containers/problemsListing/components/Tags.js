@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ReactComponent as CrossIcon } from "images/charm_cross.svg";
-
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { getEasyAssignUser } from "utils/utilities";
@@ -30,6 +29,7 @@ const Tags = ({
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedTagsList, setSelectedTagsList] = useState([]);
   const [filteredTags, setFilteredTags] = useState(tags);
+  const [search_term, setSearchTerm] = useState("");
   useEffect(() => {
     if (!tags.length) {
       getAllTags();
@@ -64,11 +64,13 @@ const Tags = ({
       }
     } else {
       let existingTagIndex = selectedTags.findIndex((i) => i === tagId);
+
       if (existingTagIndex > -1) {
         selectedTags.splice(existingTagIndex, 1);
         selectedTagsList.splice(existingTagIndex, 1);
         setSelectedTagsList([...selectedTagsList]);
         setSelectedTags([...selectedTags]);
+
         if (mode === "listing") {
           getProblemsByTags({ tag_ids: selectedTags });
         } else {
@@ -87,24 +89,38 @@ const Tags = ({
     const data = tags.filter((el) => {
       return el.label.includes(event.target.value);
     });
+    setSearchTerm(event.target.value);
     setFilteredTags(data);
   };
 
   const onSelectAllTags = () => {
-    const tagsSelected = tags.map((el) => el.id);
+    const tagsCopyArray = [...tags];
+    const tagsSelected = tagsCopyArray.map((el) => el.id);
     setSelectedTags(tagsSelected);
-    setSelectedTagsList(tags);
-    getProblemsByTags({ tag_ids: tagsSelected });
+    setSelectedTagsList(tagsCopyArray);
+    if (mode === "listing") {
+      getProblemsByTags({ tag_ids: tagsSelected });
+    } else {
+      getSelectedTags({
+        selectedTags: tagsSelected,
+        selectedTagsList: tagsCopyArray,
+      });
+    }
   };
 
   const onDeselectAll = () => {
     setSelectedTagsList([]);
     setSelectedTags([]);
-    getProblemsByTags({ tag_ids: [] });
+    if (mode === "listing") {
+      getProblemsByTags({ tag_ids: [] });
+    } else {
+      getSelectedTags({ selectedTags: [], selectedTagsList: [] });
+    }
   };
 
   const tagsToShow =
     mode === "listing" || mode === "modal" ? filteredTags : tags;
+  tagsToShow.sort((a, b) => a.label.localeCompare(b.label));
 
   return (
     <div className="tag_bg postion-relative" columns={mode === "modal" ? 2 : 3}>
@@ -114,7 +130,22 @@ const Tags = ({
         <>
           {mode === "listing" && (
             <div className="tags_filters">
-              <Input placeholder="search tags" onChange={onSearchTags} />
+              <div className="input_search d-flex">
+                <Input
+                  placeholder="search tags"
+                  value={search_term}
+                  onChange={onSearchTags}
+                />
+                {search_term.length > 0 && (
+                  <CrossIcon
+                    onClick={() => {
+                      setSearchTerm("");
+                      setFilteredTags(tags);
+                    }}
+                  />
+                )}
+              </div>
+
               <button className="select_All" onClick={onSelectAllTags}>
                 Select All
               </button>
@@ -125,7 +156,21 @@ const Tags = ({
           )}
           {mode === "modal" && (
             <div className="tags_filters">
-              <Input placeholder="search tags" onChange={onSearchTags} />
+              <div className="input_search d-flex">
+                <Input
+                  placeholder="search tags"
+                  value={search_term}
+                  onChange={onSearchTags}
+                />
+                {search_term.length > 0 && (
+                  <CrossIcon
+                    onClick={() => {
+                      setSearchTerm("");
+                      setFilteredTags(tags);
+                    }}
+                  />
+                )}
+              </div>
             </div>
           )}
           <ul>

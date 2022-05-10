@@ -255,11 +255,12 @@ const Problems = ({
     setDownloadToggle(!downloadToggle);
   };
 
-  console.log("problemsproblems=", problems);
-
   return (
     <>
-      <div columns={3}>
+      <div
+        className="d-flex justify-content-between align-items-center"
+        columns={3}
+      >
         {user && user.type === "admin" ? (
           <button
             className="d-none"
@@ -316,6 +317,7 @@ const Problems = ({
         >
           Logout
         </button> */}
+        <p>Problems Count : {problems.length}</p>
       </div>
       <div columns={3} className="position-relative">
         {isGetProblemsByTags ? (

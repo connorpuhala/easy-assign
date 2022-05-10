@@ -25,7 +25,7 @@ const ProblemsListing = ({ user }) => {
             <img src={LogoImg} alt="logo" />
           </div>
           <div
-            className="user_email"
+            className="user_email bounce_effect"
             onClick={(e) => {
               e.preventDefault();
               history.push("/subscriptions");
