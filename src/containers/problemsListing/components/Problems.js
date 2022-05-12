@@ -26,6 +26,7 @@ import {
 import ConfirmDeleteModal from "./confirmDeleteModal";
 import SwitchToggler from "components/common/SwitchToggler";
 import ProblemZoomIn from "./ProblemZoomIn";
+import AddNotesForPDFModal from "./addPdfNoteModal";
 
 const Problems = ({
   user,
@@ -56,7 +57,7 @@ const Problems = ({
   const [downloadToggle, setDownloadToggle] = useState(false);
   const [isProblemClicked, SetProblemClicked] = useState(false);
   const [probleImage, setProblemImage] = useState();
-
+  const [isOpenDownloadPDF, setOpenDownloadPDF] = useState(false);
   const toggleProbloemZoomIn = () => {
     SetProblemClicked(!isProblemClicked);
   };
@@ -182,13 +183,18 @@ const Problems = ({
     createNewTag(body);
   };
 
-  const downloadProblemsPdfHandler = async (isAnswersLabel) => {
+  const downloadProblemsPdfHandler = async (isAnswersLabel, note) => {
     let pdf = new jsPDF("p", "mm", "a4");
     const margin = 10;
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
     pdf.setFontSize(8);
     const length = problems.length;
+    if (note) {
+      pdf.text(`Note: ${note} `, 40, 5, "right");
+    }
+    pdf.text(`Total Problems: ${length} `, 40, 10, "right");
+    pdf.text(`Date :  ${new Date().toLocaleDateString()} `, 40, 15, "right");
     for (let i = 0; i < length; i++) {
       let { imgWidth, imgHeight } = getImageWidthHeight({
         url: problems[i].image_url,
@@ -202,7 +208,8 @@ const Problems = ({
       let sw1 = imgWidth * scale;
       let sh1 = imgHeight * scale;
       let x = 20;
-      let y = 20;
+      let y = 30;
+
       // if (isAnswersLabel) {
       //   var splitTitle = pdf.splitTextToSize(
       //     `Answer: If you’re benchmarking or experiencing performance problems in your React apps, make sure you’re testing with the minified production build.
@@ -222,6 +229,13 @@ const Problems = ({
         null,
         `$prob_${i}`
       );
+
+      var splitTitle = pdf.splitTextToSize(
+        `Tags: ${problems[i].tag.map((el) => el.label).join(" // ")}`,
+        pageWidth - 20
+      );
+      pdf.text(40, 240, splitTitle);
+
       if (isAnswersLabel) {
         pdf.text(`Answer: ${problems[i].answer}`, 40, 250, "center");
       }
@@ -255,6 +269,10 @@ const Problems = ({
     setDownloadToggle(!downloadToggle);
   };
 
+  const toggleDownloadModal = () => {
+    setOpenDownloadPDF(!isOpenDownloadPDF);
+  };
+
   return (
     <>
       <div
@@ -285,7 +303,7 @@ const Problems = ({
           </button>
         ) : null}
 
-        <Dropdown isOpen={downloadToggle} toggle={toggleDownloadDropdown}>
+        {/* <Dropdown isOpen={downloadToggle} toggle={toggleDownloadDropdown}>
           <DropdownToggle caret className="drop">
             Download PDF
           </DropdownToggle>
@@ -309,7 +327,14 @@ const Problems = ({
               Without answers
             </DropdownItem>
           </DropdownMenu>
-        </Dropdown>
+        </Dropdown> */}
+        <button
+          className="download_pdf"
+          disabled={problems.length === 0}
+          onClick={toggleDownloadModal}
+        >
+          Download PDF
+        </button>
         {/* <button
           className="d-none"
           ref={logoutBtnRef}
@@ -363,6 +388,11 @@ const Problems = ({
           isOpen={isProblemClicked}
           toggleProbloemZoomIn={toggleProbloemZoomIn}
           probleImage={probleImage}
+        />
+        <AddNotesForPDFModal
+          downloadPDf={downloadProblemsPdfHandler}
+          isOpen={isOpenDownloadPDF}
+          toggle={toggleDownloadModal}
         />
       </div>
     </>
