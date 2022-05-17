@@ -3,6 +3,9 @@ import LogoImg from "../../images/Logo.svg";
 import BackImg from "../../images/back_arrow.png";
 import { useHistory } from "react-router-dom";
 import UserIcon from "../../images/user-icon.svg";
+import Yellow_tick from "../../images/yellow_tcik.png";
+import Blue_tick from "../../images/blue_tick.png";
+import Green_tick from "../../images/green_tick.png";
 import { getEasyAssignUser, removeEasyAssignUser } from "utils/utilities";
 import { connect } from "react-redux";
 import { logoutAction } from "redux/actions/loginSignup";
@@ -52,52 +55,105 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
           </button>
         </div>
         <div className="row">
-          <div className="col position-relative">
-            <div className="subscription active_subs">
-              <h3>Free</h3>
-              <ul>
-                <li>
-                  unlimited access to over 1200 official CollageBoard SAT and
-                  ACT problems
-                </li>
-              </ul>
-              <h1>$0/Month</h1>
+          <div className="col-md-4">
+            <div className="subscription_pack">
+              <div className="pack_name yellow_pack">
+                <p>Free</p>
+                <h1>$0.00</h1>
+                <span>per month</span>
+              </div>
+              <div className="pack_details">
+                <ul>
+                  <li>
+                    <span>
+                      <img src={Yellow_tick} />
+                    </span>
+                    <p>
+                      unlimited access to over 1200 official CollageBoard SAT
+                      and ACT problems
+                    </p>
+                  </li>
+                </ul>
+                <button className="get_started yellow-btn">Get Started</button>
+              </div>
             </div>
           </div>
-          <div className="col position-relative">
-            <p className="coming_soon_text">Coming Soon </p>
-            <div className="subscription inactive_subs">
-              <h3>Single User</h3>
-              <ul>
-                <li>
-                  unlimited access to over 1200 official CollageBoard SAT and
-                  ACT problems
-                </li>
-                <li>
-                  unlimited access to Easy Assign additional 1500 SAT and ACT
-                  problems
-                </li>
-                <li>1 account</li>
-              </ul>
-              <h1>$3/Month</h1>
+
+          <div className="col-md-4">
+            <div className="subscription_pack">
+              <div className="pack_name blue_pack">
+                <p>Single User</p>
+                <h1>$3.00</h1>
+                <span>per month</span>
+              </div>
+              <div className="pack_details">
+                <ul>
+                  <li>
+                    <span>
+                      <img src={Blue_tick} />
+                    </span>
+                    <p>
+                      unlimited access to over 1200 official CollageBoard SAT
+                      and ACT problems
+                    </p>
+                  </li>
+                  <li>
+                    <span>
+                      <img src={Blue_tick} />
+                    </span>
+                    <p>
+                      unlimited access to Easy Assign additional 1500 SAT and
+                      ACT problems
+                    </p>
+                  </li>
+                  <li>
+                    <span>
+                      <img src={Blue_tick} />
+                    </span>
+                    <p>1 account</p>
+                  </li>
+                </ul>
+                <button className="get_started blue-btn">Get Started</button>
+              </div>
             </div>
           </div>
-          <div className="col position-relative">
-            <p className="coming_soon_text">Coming Soon </p>
-            <div className="subscription  inactive_subs">
-              <h3>Organization</h3>
-              <ul>
-                <li>
-                  unlimited access to over 1200 official CollageBoard SAT and
-                  ACT problems
-                </li>
-                <li>
-                  unlimited access to Easy Assign additional 1500 SAT and ACT
-                  problems
-                </li>
-                <li>100 account</li>
-              </ul>
-              <h1>$50/Month</h1>
+
+          <div className="col-md-4">
+            <div className="subscription_pack">
+              <div className="pack_name green_pack">
+                <p>Organization</p>
+                <h1>$50.00</h1>
+                <span>per month</span>
+              </div>
+              <div className="pack_details">
+                <ul>
+                  <li>
+                    <span>
+                      <img src={Green_tick} />
+                    </span>
+                    <p>
+                      unlimited access to over 1200 official CollageBoard SAT
+                      and ACT problems
+                    </p>
+                  </li>
+                  <li>
+                    <span>
+                      <img src={Green_tick} />
+                    </span>
+                    <p>
+                      unlimited access to Easy Assign additional 1500 SAT and
+                      ACT problems
+                    </p>
+                  </li>
+                  <li>
+                    <span>
+                      <img src={Green_tick} />
+                    </span>
+                    <p>100 account</p>
+                  </li>
+                </ul>
+                <button className="get_started green-btn">Get Started</button>
+              </div>
             </div>
           </div>
         </div>
