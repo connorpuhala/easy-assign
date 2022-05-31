@@ -25,6 +25,7 @@ const Tags = ({
   tagList,
   deleteTag,
   isEditTags,
+  setSelectedProblemTags,
 }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedTagsList, setSelectedTagsList] = useState([]);
@@ -48,6 +49,13 @@ const Tags = ({
       setSelectedTagsList([...tagList]);
     }
   }, [selectedTagIds]);
+
+  useEffect(()=>{
+    if(selectedTagsList && selectedTagsList.length > 0){
+      setSelectedProblemTags([...selectedTagsList])
+    }
+
+  },[selectedTagsList])
 
   const selectTagOnChangeHandler = (tag) => {
     const tagId = tag.id;
@@ -85,9 +93,11 @@ const Tags = ({
   };
 
   const onSearchTags = (event) => {
+    const value = event.target.value.toLowerCase()
     event.preventDefault();
     const data = tags.filter((el) => {
-      return el.label.includes(event.target.value);
+      const label = el.label.toLowerCase()
+      return label.includes(value);
     });
     setSearchTerm(event.target.value);
     setFilteredTags(data);

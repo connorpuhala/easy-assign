@@ -17,16 +17,13 @@ import createNotification from "components/global/createNotification";
 import { jsPDF } from "jspdf";
 import { isValidHttpUrl, removeEasyAssignUser } from "utils/utilities";
 import { useHistory } from "react-router-dom";
-import {
-  Dropdown,
-  DropdownMenu,
-  DropdownToggle,
-  DropdownItem,
-} from "reactstrap";
+
 import ConfirmDeleteModal from "./confirmDeleteModal";
 import SwitchToggler from "components/common/SwitchToggler";
 import ProblemZoomIn from "./ProblemZoomIn";
 import AddNotesForPDFModal from "./addPdfNoteModal";
+
+import LogoImg from "../../../images/Logo.png";
 
 const Problems = ({
   user,
@@ -46,6 +43,7 @@ const Problems = ({
   deleteProblem,
   isShowAllAnswers,
   isShowAllTags,
+  selectedTags
 }) => {
   const history = useHistory();
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
@@ -90,7 +88,6 @@ const Problems = ({
         label: newTag,
       };
       createNewTag(newTagBody).then((action) => {
-        console.log("action ====", action);
         if (action.type === "CREATE_TAG_SUCCESS") {
           if (mode === "Create") {
             const newProblemBody = {
@@ -187,14 +184,46 @@ const Problems = ({
     let pdf = new jsPDF("p", "mm", "a4");
     const margin = 10;
     const pageWidth = pdf.internal.pageSize.getWidth();
+    
     const pageHeight = pdf.internal.pageSize.getHeight();
     pdf.setFontSize(8);
     const length = problems.length;
+    // let { imgWidth, imgHeight } = getImageWidthHeight({
+    //   url:LogoImg,
+    // });
+    // let sectionWidth = (2 * pageWidth) / 3;
+    // let sectionHeight = (2 * pageHeight) / 3;
+    // let scale = Math.min(sectionWidth / imgWidth, sectionHeight / imgHeight);
+
+    let sw1 = 150
+    let sh1 = 40;
+    let x = 30;
+    let y = 50;
+    pdf.addImage(
+      LogoImg,
+      "PNG",
+      x,
+      y,
+      sw1,
+      sh1,
+      null,
+    );
+    pdf.setFontSize(42);
+    pdf.text(`Problem Set `, 50, y+80, "left")
+    pdf.setFontSize(14);
+    pdf.text(`Total Problems: ${length} `, 20, 200, "left");
+   var splitTitle = pdf.splitTextToSize(
+        `Tags: ${selectedTags.map((el) => el.label).join(" // ")}`,
+        pageWidth /2
+      );
+      pdf.text(20, 210, splitTitle)
     if (note) {
-      pdf.text(`Note: ${note} `, 40, 5, "right");
+      pdf.text(`Note: ${note} `, 50, 280, "left");
     }
-    pdf.text(`Total Problems: ${length} `, 40, 10, "right");
-    pdf.text(`Date :  ${new Date().toLocaleDateString()} `, 40, 15, "right");
+    pdf.text(`Date :  ${new Date().toLocaleDateString()} `,pageWidth - 30, 200, "right");
+ ;
+    pdf.addPage();
+    pdf.setFontSize(24);
     for (let i = 0; i < length; i++) {
       let { imgWidth, imgHeight } = getImageWidthHeight({
         url: problems[i].image_url,
@@ -209,16 +238,6 @@ const Problems = ({
       let sh1 = imgHeight * scale;
       let x = 20;
       let y = 30;
-
-      // if (isAnswersLabel) {
-      //   var splitTitle = pdf.splitTextToSize(
-      //     `Answer: If you’re benchmarking or experiencing performance problems in your React apps, make sure you’re testing with the minified production build.
-
-      //     By default, React includes many helpful warnings. These warnings are very useful in development. However, they make React larger and slower so you should make sure to use the production version when you deploy the app.`,
-      //     pageWidth - 10
-      //   );
-      //   pdf.text(10, 10, splitTitle);
-      // }
       pdf.addImage(
         problems[i].image_url,
         "JPEG",
@@ -229,13 +248,6 @@ const Problems = ({
         null,
         `$prob_${i}`
       );
-
-      var splitTitle = pdf.splitTextToSize(
-        `Tags: ${problems[i].tag.map((el) => el.label).join(" // ")}`,
-        pageWidth - 20
-      );
-      pdf.text(40, 240, splitTitle);
-
       if (isAnswersLabel) {
         pdf.text(`Answer: ${problems[i].answer}`, 40, 250, "center");
       }
@@ -258,11 +270,7 @@ const Problems = ({
   };
 
   const createNewTagModalHandler = (val) => {
-    // createNewTagBtnRef
-    // if(createNewTagBtnRef?.current){
-    // createNewTagBtnRef.current.click()
     setIsCreateTagModal(val);
-    // }
   };
 
   const toggleDownloadDropdown = () => {
@@ -272,6 +280,7 @@ const Problems = ({
   const toggleDownloadModal = () => {
     setOpenDownloadPDF(!isOpenDownloadPDF);
   };
+
 
   return (
     <>
@@ -303,31 +312,7 @@ const Problems = ({
           </button>
         ) : null}
 
-        {/* <Dropdown isOpen={downloadToggle} toggle={toggleDownloadDropdown}>
-          <DropdownToggle caret className="drop">
-            Download PDF
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem
-              disabled={!problems.length}
-              onClick={() => {
-                downloadProblemsPdfHandler(true);
-                setDownloadToggle(!downloadToggle);
-              }}
-            >
-              With answers
-            </DropdownItem>
-            <DropdownItem
-              disabled={!problems.length}
-              onClick={() => {
-                downloadProblemsPdfHandler(false);
-                setDownloadToggle(!downloadToggle);
-              }}
-            >
-              Without answers
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown> */}
+        
         <button
           className="download_pdf"
           disabled={problems.length === 0}
@@ -335,13 +320,7 @@ const Problems = ({
         >
           Download PDF
         </button>
-        {/* <button
-          className="d-none"
-          ref={logoutBtnRef}
-          onClick={() => logoutHandler()}
-        >
-          Logout
-        </button> */}
+       
         <p>Problems Count : {problems.length}</p>
       </div>
       <div columns={3} className="position-relative">

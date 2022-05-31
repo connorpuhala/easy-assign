@@ -15,7 +15,9 @@ const AddNotesForPDFModal = ({ isOpen, toggle, downloadPDf }) => {
             <span>
               <SepratorIcon />
             </span>
-            <div className="cross" color="black" onClick={toggle}>
+            <div className="cross" color="black" onClick={()=>{toggle()
+            setNotes("")
+            }}>
               <CrossIcon />
             </div>
           </div>
@@ -33,7 +35,7 @@ const AddNotesForPDFModal = ({ isOpen, toggle, downloadPDf }) => {
                 <button
                   className="create_prob"
                   onClick={() => {
-                    toggle();
+                    
                     downloadPDf(true, notes);
                   }}
                 >
@@ -42,7 +44,7 @@ const AddNotesForPDFModal = ({ isOpen, toggle, downloadPDf }) => {
                 <button
                   className="create_new_tag"
                   onClick={() => {
-                    toggle();
+                   
                     downloadPDf(false, notes);
                   }}
                 >

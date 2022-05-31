@@ -59,7 +59,6 @@ export const createProblem = (body) => {
     });
     try {
       const data = await API.createProblem(body);
-      console.log("data =====", data);
       // await sleep(2000);
       return dispatch({
         type: types.CREATE_PROBLEM_SUCCESS,
@@ -82,13 +81,11 @@ export const editProblem = (body, id) => {
     });
     try {
       const data = await API.editProblem(body, id);
-      console.log("editProblem data =====", data);
       return dispatch({
         type: types.EDIT_PROBLEM_SUCCESS,
         payload: data,
       });
     } catch (error) {
-      console.log("errorrr editProblem", error);
       return dispatch({
         type: types.EDIT_PROBLEM_ERROR,
         payload: error.message,
@@ -104,7 +101,6 @@ export const deleteProblem = (id) => {
     });
     try {
       const res = await API.deleteProblem(id);
-      console.log("resres=", res);
       return dispatch({
         type: types.DELETE_PROBLEM_SUCCESS,
         payload: id,

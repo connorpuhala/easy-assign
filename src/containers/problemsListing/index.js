@@ -17,6 +17,7 @@ const ProblemsListing = ({ user }) => {
   const [isShowAllAnswers, setShowAllAnswers] = useState(false);
   const [isShowAllTags, setShowAllTags] = useState(false);
   const [isEditTags, setEditTags] = useState(false);
+  const [selectedProblemTags, setSelectedProblemTags] = useState([])
   return (
     <div className="container">
       <div className="row">
@@ -91,7 +92,7 @@ const ProblemsListing = ({ user }) => {
             </button>
           </div> */}
         </div>
-        <Tags mode="listing" isEditTags={isEditTags} />
+        <Tags mode="listing" isEditTags={isEditTags} setSelectedProblemTags = {setSelectedProblemTags}/>
         <div className="tags_answer_switch">
           <SwitchToggler
             id="all"
@@ -111,6 +112,7 @@ const ProblemsListing = ({ user }) => {
           />
         </div>
         <Problems
+          selectedTags={selectedProblemTags}
           createProblemBtnRef={createProblemBtnRef}
           createNewTagBtnRef={createNewTagBtnRef}
           logoutBtnRef={logoutBtnRef}

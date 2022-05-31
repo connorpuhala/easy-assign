@@ -56,7 +56,7 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
         </div>
         <div className="row">
           <div className="col-md-4">
-            <div className="subscription_pack">
+            <div className="subscription_pack active_subs">
               <div className="pack_name yellow_pack">
                 <p>Free</p>
                 <h1>$0.00</h1>
@@ -74,7 +74,7 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
                     </p>
                   </li>
                 </ul>
-                <button className="get_started yellow-btn">Get Started</button>
+                <button className="get_started yellow-btn">Current Plan</button>
               </div>
             </div>
           </div>
@@ -113,7 +113,7 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
                     <p>1 account</p>
                   </li>
                 </ul>
-                <button className="get_started blue-btn">Get Started</button>
+                <button className="get_started blue-btn">Coming Soon</button>
               </div>
             </div>
           </div>
@@ -152,7 +152,7 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
                     <p>100 account</p>
                   </li>
                 </ul>
-                <button className="get_started green-btn">Get Started</button>
+                <button className="get_started green-btn">Coming Soon</button>
               </div>
             </div>
           </div>

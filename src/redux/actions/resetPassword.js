@@ -9,7 +9,6 @@ export const sendResetPasswordLink = (values) => {
     });
     try {
       const results = await API.sendResetPasswordLink(values);
-      console.log("results ====", results);
       return dispatch({
         type: types.RESET_PASSWORD_LINK_SUCCESS,
         payload : results.message,

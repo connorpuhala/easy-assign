@@ -995,7 +995,7 @@ button.user_icon {
 
 .active_subs {
     background-color: #ecf2f9;
-    border: 2px solid #0053d0;
+    border: 5px solid #f3c202 !important;
 }
 
 .inactive_subs {
