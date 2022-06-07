@@ -50,12 +50,15 @@ const Tags = ({
     }
   }, [selectedTagIds]);
 
-  useEffect(()=>{
-    if(selectedTagsList && selectedTagsList.length > 0){
-      setSelectedProblemTags([...selectedTagsList])
+  useEffect(() => {
+    if (
+      selectedTagsList &&
+      selectedTagsList.length > 0 &&
+      setSelectedProblemTags
+    ) {
+      setSelectedProblemTags([...selectedTagsList]);
     }
-
-  },[selectedTagsList])
+  }, [selectedTagsList]);
 
   const selectTagOnChangeHandler = (tag) => {
     const tagId = tag.id;
@@ -93,10 +96,10 @@ const Tags = ({
   };
 
   const onSearchTags = (event) => {
-    const value = event.target.value.toLowerCase()
+    const value = event.target.value.toLowerCase();
     event.preventDefault();
     const data = tags.filter((el) => {
-      const label = el.label.toLowerCase()
+      const label = el.label.toLowerCase();
       return label.includes(value);
     });
     setSearchTerm(event.target.value);
