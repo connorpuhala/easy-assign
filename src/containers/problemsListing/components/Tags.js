@@ -28,6 +28,7 @@ const Tags = ({
   setSelectedProblemTags,
 }) => {
   const [selectedTags, setSelectedTags] = useState([]);
+  const [requiredTags, setRequiredTags] = useState([]);
   const [selectedTagsList, setSelectedTagsList] = useState([]);
   const [filteredTags, setFilteredTags] = useState(tags);
   const [search_term, setSearchTerm] = useState("");
@@ -63,29 +64,59 @@ const Tags = ({
   const selectTagOnChangeHandler = (tag) => {
     const tagId = tag.id;
     const checked = !selectedTags.includes(tag.id);
-    if (checked) {
+    const required = !requiredTags.includes(tag.id);
+
+    if (checked && required) {
       selectedTags.push(tagId);
       selectedTagsList.push(tag);
       setSelectedTags([...selectedTags]);
       setSelectedTagsList([...selectedTagsList]);
+
       if (mode === "listing") {
-        getProblemsByTags({ tag_ids: selectedTags });
+        getProblemsByTags({
+          tag_ids: selectedTags,
+          required_tag_ids: requiredTags,
+        });
       } else {
         getSelectedTags({ selectedTags, selectedTagsList });
       }
-    } else {
-      let existingTagIndex = selectedTags.findIndex((i) => i === tagId);
-
+    } else if (required && mode === "listing") {
+      const existingTagIndex = selectedTags.findIndex((i) => i === tagId);
       if (existingTagIndex > -1) {
-        selectedTags.splice(existingTagIndex, 1);
-        selectedTagsList.splice(existingTagIndex, 1);
-        setSelectedTagsList([...selectedTagsList]);
+        const tagToReuired = selectedTags.splice(existingTagIndex, 1);
+        const updatedRequiredTags = [...requiredTags, tagToReuired[0]];
+        setRequiredTags(updatedRequiredTags);
         setSelectedTags([...selectedTags]);
 
         if (mode === "listing") {
-          getProblemsByTags({ tag_ids: selectedTags });
+          getProblemsByTags({
+            tag_ids: selectedTags,
+            required_tag_ids: updatedRequiredTags,
+          });
         } else {
           getSelectedTags({ selectedTags, selectedTagsList });
+        }
+      }
+    } else {
+      if (mode === "listing") {
+        const existingTagIndex = requiredTags.findIndex((i) => i === tagId);
+        if (existingTagIndex > -1) {
+          requiredTags.splice(existingTagIndex, 1);
+          selectedTagsList.splice(existingTagIndex, 1);
+          setSelectedTagsList([...selectedTagsList]);
+          setRequiredTags([...requiredTags]);
+        }
+        getProblemsByTags({
+          tag_ids: selectedTags,
+          required_tag_ids: requiredTags,
+        });
+      } else {
+        const existingTagIndex = selectedTags.findIndex((i) => i === tagId);
+        if (existingTagIndex > -1) {
+          selectedTags.splice(existingTagIndex, 1);
+          selectedTagsList.splice(existingTagIndex, 1);
+          setSelectedTagsList([...selectedTagsList]);
+          setSelectedTags([...selectedTags]);
         }
       }
     }
@@ -192,6 +223,7 @@ const Tags = ({
                 key={tag.id}
                 tag={tag}
                 selectedTags={selectedTags}
+                requiredTags={requiredTags}
                 selectTagOnChangeHandler={selectTagOnChangeHandler}
                 mode={mode}
                 deleteTag={deleteTagHandler}
@@ -233,6 +265,7 @@ const TagItem = ({
   tag,
   selectTagOnChangeHandler,
   selectedTags,
+  requiredTags,
   mode,
   deleteTag,
   isEditTags,
@@ -248,6 +281,8 @@ const TagItem = ({
           mode !== "listing-readonly"
             ? selectedTags.includes(tag.id)
               ? "selected-tag"
+              : requiredTags.includes(tag.id)
+              ? "required-tag"
               : ""
             : ""
         }

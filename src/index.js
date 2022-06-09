@@ -5,7 +5,6 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import { BrowserRouter } from "react-router-dom";
-// import "semantic-ui-css/semantic.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/style.css";
 import rootReducer from "./redux/reducers";

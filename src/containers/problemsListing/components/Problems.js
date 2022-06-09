@@ -43,7 +43,7 @@ const Problems = ({
   deleteProblem,
   isShowAllAnswers,
   isShowAllTags,
-  selectedTags
+  selectedTags,
 }) => {
   const history = useHistory();
   const [isCreateProblemModal, setIsCreateProblemModal] = useState({
@@ -182,48 +182,41 @@ const Problems = ({
 
   const downloadProblemsPdfHandler = async (isAnswersLabel, note) => {
     let pdf = new jsPDF("p", "mm", "a4");
+    pdf.setFont("Roboto");
     const margin = 10;
     const pageWidth = pdf.internal.pageSize.getWidth();
-    
+
     const pageHeight = pdf.internal.pageSize.getHeight();
     pdf.setFontSize(8);
     const length = problems.length;
-    // let { imgWidth, imgHeight } = getImageWidthHeight({
-    //   url:LogoImg,
-    // });
-    // let sectionWidth = (2 * pageWidth) / 3;
-    // let sectionHeight = (2 * pageHeight) / 3;
-    // let scale = Math.min(sectionWidth / imgWidth, sectionHeight / imgHeight);
 
-    let sw1 = 150
+    let sw1 = 80;
     let sh1 = 40;
-    let x = 30;
+    let x = pageWidth / 2 - sw1 / 2;
     let y = 50;
-    pdf.addImage(
-      LogoImg,
-      "PNG",
-      x,
-      y,
-      sw1,
-      sh1,
-      null,
-    );
-    pdf.setFontSize(42);
-    pdf.text(`Problem Set `, 50, y+80, "left")
+    pdf.addImage(LogoImg, "PNG", x, y, sw1, sh1, null);
+
     pdf.setFontSize(14);
     pdf.text(`Total Problems: ${length} `, 20, 200, "left");
-   var splitTitle = pdf.splitTextToSize(
-        `Tags: ${selectedTags.map((el) => el.label).join(" // ")}`,
-        pageWidth /2
-      );
-      pdf.text(20, 210, splitTitle)
+    var splitTitle = pdf.splitTextToSize(
+      `Tags: ${selectedTags.map((el) => el.label).join(" // ")}`,
+      pageWidth / 2
+    );
+    const data = pdf.text(20, 210, splitTitle);
+    console.log("data", data);
+    const dimentions = pdf.getTextDimensions(splitTitle);
+    console.log("dimentionsdimentions=", dimentions);
     if (note) {
-      pdf.text(`Note: ${note} `, 50, 280, "left");
+      pdf.text(`Note: ${note} `, 20, dimentions.h + 215, "left");
     }
-    pdf.text(`Date :  ${new Date().toLocaleDateString()} `,pageWidth - 30, 200, "right");
- ;
+    pdf.text(
+      `Date :  ${new Date().toLocaleString()} `,
+      pageWidth - 10,
+      200,
+      "right"
+    );
     pdf.addPage();
-    pdf.setFontSize(24);
+    pdf.setFontSize(10);
     for (let i = 0; i < length; i++) {
       let { imgWidth, imgHeight } = getImageWidthHeight({
         url: problems[i].image_url,
@@ -249,7 +242,11 @@ const Problems = ({
         `$prob_${i}`
       );
       if (isAnswersLabel) {
-        pdf.text(`Answer: ${problems[i].answer}`, 40, 250, "center");
+        const splitAnswer = pdf.splitTextToSize(
+          `Answer: ${problems[i].answer}`,
+          pageWidth - 30
+        );
+        pdf.text(splitAnswer, 20, pageHeight - 30, "left");
       }
       if (i + 1 === length) {
         const pdfName = `Assignment_${new Date().toLocaleString()}_${
@@ -281,7 +278,6 @@ const Problems = ({
     setOpenDownloadPDF(!isOpenDownloadPDF);
   };
 
-
   return (
     <>
       <div
@@ -312,7 +308,6 @@ const Problems = ({
           </button>
         ) : null}
 
-        
         <button
           className="download_pdf"
           disabled={problems.length === 0}
@@ -320,7 +315,7 @@ const Problems = ({
         >
           Download PDF
         </button>
-       
+
         <p>Problems Count : {problems.length}</p>
       </div>
       <div columns={3} className="position-relative">
