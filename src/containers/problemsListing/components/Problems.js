@@ -190,7 +190,7 @@ const Problems = ({
     pdf.setFontSize(8);
     const length = problems.length;
 
-    let sw1 = 80;
+    let sw1 = 120;
     let sh1 = 40;
     let x = pageWidth / 2 - sw1 / 2;
     let y = 50;
