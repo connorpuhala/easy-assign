@@ -142,8 +142,9 @@ const Tags = ({
     const tagsSelected = tagsCopyArray.map((el) => el.id);
     setSelectedTags(tagsSelected);
     setSelectedTagsList(tagsCopyArray);
+    setRequiredTags([]);
     if (mode === "listing") {
-      getProblemsByTags({ tag_ids: tagsSelected });
+      getProblemsByTags({ tag_ids: tagsSelected, required_tag_ids: [] });
     } else {
       getSelectedTags({
         selectedTags: tagsSelected,
@@ -155,8 +156,9 @@ const Tags = ({
   const onDeselectAll = () => {
     setSelectedTagsList([]);
     setSelectedTags([]);
+    setRequiredTags([]);
     if (mode === "listing") {
-      getProblemsByTags({ tag_ids: [] });
+      getProblemsByTags({ tag_ids: [], required_tag_ids: [] });
     } else {
       getSelectedTags({ selectedTags: [], selectedTagsList: [] });
     }

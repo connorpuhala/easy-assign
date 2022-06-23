@@ -190,8 +190,8 @@ const Problems = ({
     pdf.setFontSize(8);
     const length = problems.length;
 
-    let sw1 = 120;
-    let sh1 = 40;
+    let sw1 = 80;
+    let sh1 = 30;
     let x = pageWidth / 2 - sw1 / 2;
     let y = 50;
     pdf.addImage(LogoImg, "PNG", x, y, sw1, sh1, null);
@@ -221,8 +221,8 @@ const Problems = ({
       let { imgWidth, imgHeight } = getImageWidthHeight({
         url: problems[i].image_url,
       });
-      let sectionWidth = (2 * pageWidth) / 3;
-      let sectionHeight = (2 * pageHeight) / 3;
+      let sectionWidth = (2 * pageWidth) / 4;
+      let sectionHeight = (2 * pageHeight) / 4;
       let scale = Math.min(sectionWidth / imgWidth, sectionHeight / imgHeight);
 
       // let sw1 = 0 , sh1 = 0
@@ -503,14 +503,13 @@ export const ProblemItem = ({
       </div>
       {isShowAnswer ? (
         <div className="answer">
-          <h1>Answer:</h1> <p>{problem.answer}</p>
+          <p>Answer:{problem.answer}</p>
           {isLoading ? <LoaderWithinWrapper /> : null}
         </div>
       ) : null}
       {isShowTag ? (
         <div className="answer">
-          <h1>Tags:</h1>{" "}
-          <p>{problem?.tag?.map((el) => el.label).join(" // ")}</p>
+          <p>Tags:{problem?.tag?.map((el) => el.label).join(" // ")}</p>
           {isLoading ? <LoaderWithinWrapper /> : null}
         </div>
       ) : null}
