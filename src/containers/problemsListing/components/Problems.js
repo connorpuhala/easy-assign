@@ -191,7 +191,7 @@ const Problems = ({
     const length = problems.length;
 
     let sw1 = 80;
-    let sh1 = 30;
+    let sh1 = 20;
     let x = pageWidth / 2 - sw1 / 2;
     let y = 50;
     pdf.addImage(LogoImg, "PNG", x, y, sw1, sh1, null);
@@ -203,14 +203,18 @@ const Problems = ({
       pageWidth / 2
     );
     const data = pdf.text(20, 210, splitTitle);
-    console.log("data", data);
     const dimentions = pdf.getTextDimensions(splitTitle);
-    console.log("dimentionsdimentions=", dimentions);
     if (note) {
       pdf.text(`Note: ${note} `, 20, dimentions.h + 215, "left");
     }
     pdf.text(
-      `Date :  ${new Date().toLocaleString()} `,
+      `Date :  ${new Date().toLocaleString("en-US", {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      })} `,
       pageWidth - 10,
       200,
       "right"
@@ -249,9 +253,13 @@ const Problems = ({
         pdf.text(splitAnswer, 20, pageHeight - 30, "left");
       }
       if (i + 1 === length) {
-        const pdfName = `Assignment_${new Date().toLocaleString()}_${
-          isAnswersLabel ? "With_Answers" : "Without_Answers"
-        }`;
+        const pdfName = `Assignment_${new Date().toLocaleString("en-US", {
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit",
+        })}_${isAnswersLabel ? "With_Answers" : "Without_Answers"}`;
         pdf.save(pdfName);
       } else {
         pdf.addPage();
@@ -503,13 +511,13 @@ export const ProblemItem = ({
       </div>
       {isShowAnswer ? (
         <div className="answer">
-          <p>Answer:{problem.answer}</p>
+          <p>Answer: {"  " + problem.answer}</p>
           {isLoading ? <LoaderWithinWrapper /> : null}
         </div>
       ) : null}
       {isShowTag ? (
         <div className="answer">
-          <p>Tags:{problem?.tag?.map((el) => el.label).join(" // ")}</p>
+          <p>Tags:{"  " + problem?.tag?.map((el) => el.label).join(" // ")}</p>
           {isLoading ? <LoaderWithinWrapper /> : null}
         </div>
       ) : null}

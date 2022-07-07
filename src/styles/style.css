@@ -400,7 +400,7 @@ button.user_icon_sub {
 }
 
 .prob_img {
-  max-width: 550px;
+  max-width: 500px;
   margin: 0 auto;
 }
 
@@ -951,7 +951,7 @@ button.user_icon_sub {
 }
 
 .select_All {
-  background-color: #136f63;
+  background-color: #4088c4;
   border: none;
   color: #fff;
   width: 125px;

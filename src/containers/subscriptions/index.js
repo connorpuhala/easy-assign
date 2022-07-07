@@ -29,7 +29,7 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
           </div>
         </div>
         <div className="problem_heading">
-          <h3>Problems at your fingertips - SAT/ACT</h3>
+          <h3>SAT problems at your fingertips</h3>
         </div>
         <div className="top_buttons">
           <div className="logout">
@@ -69,8 +69,7 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
                       <img src={Yellow_tick} />
                     </span>
                     <p>
-                      unlimited access to over 1200 official CollageBoard SAT
-                      and ACT problems
+                      unlimited access to official CollegeBoard SAT problems
                     </p>
                   </li>
                 </ul>
@@ -93,8 +92,7 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
                       <img src={Blue_tick} />
                     </span>
                     <p>
-                      unlimited access to over 1200 official CollageBoard SAT
-                      and ACT problems
+                      unlimited access to official CollegeBoard SAT problems
                     </p>
                   </li>
                   <li>
@@ -132,8 +130,7 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
                       <img src={Green_tick} />
                     </span>
                     <p>
-                      unlimited access to over 1200 official CollageBoard SAT
-                      and ACT problems
+                      unlimited access to official CollegeBoard SAT problems
                     </p>
                   </li>
                   <li>
@@ -149,7 +146,7 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
                     <span>
                       <img src={Green_tick} />
                     </span>
-                    <p>100 account</p>
+                    <p>100 accounts</p>
                   </li>
                 </ul>
                 <button className="get_started green-btn">Coming Soon</button>

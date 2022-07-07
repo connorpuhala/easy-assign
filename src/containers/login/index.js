@@ -37,7 +37,7 @@ const Login = ({
           <img src={LogoImg} alt="logo" />
         </div>
         <div className="login_heading">
-          <h1>Login your account</h1>
+          <h1>Login to your account</h1>
         </div>
         {isLogging && <LoaderWithinWrapper text="Logging in..." />}
         {isLoggingError && <div>{isLoggingErrorMsg}</div>}
