@@ -236,7 +236,7 @@ const Problems = ({
       let x = 20;
       let y = 30;
       pdf.addImage(
-        problems[i].image_url,
+        problems[i].image_url + "?dummyParam=true",
         "JPEG",
         x,
         y,
