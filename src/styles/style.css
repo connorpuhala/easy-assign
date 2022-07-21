@@ -329,8 +329,11 @@ button.user_icon_sub {
 }
 
 .tag_bg ul li:hover {
-  background-color: #4088c4;
+  /* background-color: #4088c4; */
+  background-color: gray;
+  transform: scale(1.2);
   color: #fff;
+  z-index: 2;
 }
 
 .selected-tag {
@@ -1275,4 +1278,14 @@ button.user_icon {
   width: 100%;
   text-align: right;
   margin-top: 15px;
+}
+.splash_enterapp button {
+  margin: 19px auto;
+}
+.splash_enterapp a {
+  color: grey;
+  text-align: center;
+
+  margin-bottom: 2px;
+
 }

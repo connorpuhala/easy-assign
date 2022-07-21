@@ -9,7 +9,7 @@ import {
   deleteTag,
 } from "redux/actions/problems";
 import { LoaderWithinWrapper } from "components/global/loader";
-import { Input } from "reactstrap";
+import { Input ,Tooltip ,UncontrolledTooltip ,Button} from "reactstrap";
 
 const Tags = ({
   isGetAllTags,
@@ -32,6 +32,7 @@ const Tags = ({
   const [selectedTagsList, setSelectedTagsList] = useState([]);
   const [filteredTags, setFilteredTags] = useState(tags);
   const [search_term, setSearchTerm] = useState("");
+  // const [tooltipOpen,setTooltipOpen] = useState(false);
   useEffect(() => {
     if (!tags.length) {
       getAllTags();
@@ -60,12 +61,19 @@ const Tags = ({
       setSelectedProblemTags([...selectedTagsList]);
     }
   }, [selectedTagsList]);
+  
+  
 
   const selectTagOnChangeHandler = (tag) => {
     const tagId = tag.id;
     const checked = !selectedTags.includes(tag.id);
     const required = !requiredTags.includes(tag.id);
-
+    // const seletedRequiredTag = selectedTags.includes(tag.id)
+    //  if(seletedRequiredTag) {
+    //   setTooltipOpen(true)   
+    //  } else {
+    //   setTooltipOpen(false)
+    //  }
     if (checked && required) {
       selectedTags.push(tagId);
       selectedTagsList.push(tag);
@@ -230,6 +238,7 @@ const Tags = ({
                 mode={mode}
                 deleteTag={deleteTagHandler}
                 isEditTags={isEditTags}
+                // tooltipOpen={tooltipOpen}
               />
             ))}
           </ul>
@@ -237,6 +246,7 @@ const Tags = ({
       ) : (
         "No tags found"
       )}
+      
     </div>
   );
 };
@@ -271,7 +281,12 @@ const TagItem = ({
   mode,
   deleteTag,
   isEditTags,
+  tooltipOpen
 }) => {
+  // const [open,setOpen] = useState(false)
+  // const toggle =  () => {
+  //   setOpen(!open)
+  // }
   return (
     <>
       <li
@@ -288,6 +303,9 @@ const TagItem = ({
               : ""
             : ""
         }
+      // id={requiredTags.includes(tag.id)
+      //   ?`required-tag`
+      //   : ""}   
       >
         <p>
           {tag.label}
@@ -303,6 +321,20 @@ const TagItem = ({
           )}
         </p>
       </li>
+        <div className="text-center">
+  {/* <Button id="ScheduleUpdateTooltip">
+    Click me
+  </Button> */}
+  {/* {tooltipOpen?
+  <UncontrolledTooltip
+    placement="right"
+    target="required-tag"
+    trigger="click"
+  >
+    fddgfdgfdggggggggggggg
+  </UncontrolledTooltip>  :''} */}
+ 
+</div>
     </>
   );
 };
