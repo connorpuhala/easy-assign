@@ -55,7 +55,7 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
           </button>
         </div>
         <div className="row">
-          <div className="col-md-4">
+          {/* <div className="col-md-4">
             <div className="subscription_pack active_subs">
               <div className="pack_name yellow_pack">
                 <p>Free</p>
@@ -152,7 +152,7 @@ const Subscriptions = ({ user, emptyStateAfterLogout, logoutAction }) => {
                 <button className="get_started green-btn">Coming Soon</button>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="footer_content">

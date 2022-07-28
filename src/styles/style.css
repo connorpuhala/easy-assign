@@ -1289,3 +1289,53 @@ button.user_icon {
   margin-bottom: 2px;
 
 }
+
+.splash_enterapp .iframe_video {
+  text-decoration: underline;
+  color: gray
+}
+@media screen and (max-width:767px) {
+  .top_logo {
+    margin-top: 22px;
+    
+}
+.user_email {
+  position: inherit;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  margin-top: 15px;
+}
+.problem_heading h3 {
+
+  margin-top: 14px;
+ 
+}
+.top_buttons {
+  align-items: center;
+  text-align: center;
+}
+.create_edit_tag {
+  margin-top: 15px;
+}
+.tags_filters {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+.tags_filters input {
+  margin-right: 0;
+  width: 100%;
+}
+.input_search {
+  margin-bottom: 10px;
+  display: inline-block !important;
+  width: 100%;
+}
+.select_All {
+  height: 40px;
+}
+.deSelect_All {
+  height: 40px;
+}
+}

@@ -8,6 +8,7 @@ import {
   getProblemsByTags,
   deleteTag,
 } from "redux/actions/problems";
+import { AiFillLock } from 'react-icons/ai';
 import { LoaderWithinWrapper } from "components/global/loader";
 import { Input ,Tooltip ,UncontrolledTooltip ,Button} from "reactstrap";
 
@@ -307,7 +308,9 @@ const TagItem = ({
       //   ?`required-tag`
       //   : ""}   
       >
+        
         <p>
+         {requiredTags.includes(tag.id) ? <span><AiFillLock/></span> : ""}
           {tag.label}
           {mode === "listing" && isEditTags && (
             <span>
