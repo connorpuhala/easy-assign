@@ -13,7 +13,7 @@ const SplashScreen = () => {
         <a  className="iframe_video" onClick={() => setVideo(!isVideo)}>What is Easy Assign?</a>
         {/* <a href="http://www.youtube.com/embed/To1flvGxdG0">What is Easy Assign?</a> */}
         {isVideo ?
-          <iframe width="420" height="345"
+          <iframe width="840" height="690"
             src="http://www.youtube.com/embed/To1flvGxdG0">
           </iframe>
           : ""}
